@@ -1,0 +1,6 @@
+# macOS generated file
+*.DS_Store
+
+# Ignore paths
+/**/__WIP__
+/**/__Ignore__
