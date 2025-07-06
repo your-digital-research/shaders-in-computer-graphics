@@ -4,3 +4,11 @@
 # Ignore paths
 /**/__WIP__
 /**/__Ignore__
+
+# Build directories
+build/
+bin/
+lib/
+
+# VS Code workspace files
+.vscode/
