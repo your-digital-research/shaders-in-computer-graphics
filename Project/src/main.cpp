@@ -1,5 +1,6 @@
 #define GL_SILENCE_DEPRECATION
 
+#include <glad/glad.h> // Must be included before GLFW
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -28,6 +29,13 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to initialize GLAD" << std::endl;
+
+        return -1;
+    }
 
     while (!glfwWindowShouldClose(window))
     {
