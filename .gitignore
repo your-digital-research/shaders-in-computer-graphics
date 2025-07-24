@@ -12,3 +12,6 @@ lib/
 
 # VS Code workspace files
 .vscode/
+
+# JetBrains IDEs
+.idea/
