@@ -20,7 +20,8 @@ target_include_directories(glad PUBLIC external/glad/include)
 add_subdirectory(external/GLFW)
 
 # Executable and headers
-add_executable(${PROJECT_NAME} src/main.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 # Link libraries
