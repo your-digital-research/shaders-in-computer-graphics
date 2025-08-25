@@ -30,7 +30,7 @@ void DisplayRandomColor() {
 Engine::Engine(Window* window)
     : m_Window(window), m_Running(true)
 {
-    std::cout << "Engine created successfully!" << std::endl;
+    // std::cout << "Engine created successfully!" << std::endl;
 }
 
 void Engine::Run() const
