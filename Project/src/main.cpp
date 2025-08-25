@@ -1,5 +1,6 @@
-#include "core/application.hpp"
 #include <iostream>
+
+#include "core/application.hpp"
 
 int main()
 {
@@ -7,7 +8,7 @@ int main()
     std::cout << "Welcome to \"Shaders In Computer Graphics\" ^_^" << std::endl;
 
     // Create an instance of the Application class.
-    Application application;
+    const Application application;
 
     // Run the application.
     application.Run();

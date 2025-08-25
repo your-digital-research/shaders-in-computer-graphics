@@ -1,5 +1,6 @@
-#include "platform/window.hpp"
 #include <iostream>
+
+#include "platform/window.hpp"
 
 Window::Window(const int width, const int height, const std::string &title)
 {
@@ -39,6 +40,8 @@ Window::Window(const int width, const int height, const std::string &title)
 
     // Enable V-Sync
     glfwSwapInterval(1);
+
+    std::cout << "Window created successfully!" << std::endl;
 }
 
 Window::~Window()

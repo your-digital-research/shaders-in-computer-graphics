@@ -1,6 +1,7 @@
 #pragma once
 
 #include "platform/window.hpp"
+#include "core/engine.hpp"
 
 class Application
 {
@@ -10,14 +11,14 @@ public:
     ~Application();
 
     // Application management
-    void Run();
+    void Run() const;
 
 private:
     // Member variables
     Window *m_Window = nullptr;
+    Engine *m_Engine = nullptr;
 
-    // Initialization, main loop, and shutdown
+    // Initialization and shutdown
     void Initialize();
-    void StartLoop();
     void Shutdown();
 };

@@ -1,10 +1,11 @@
 #define GL_SILENCE_DEPRECATION
 
-#include "core/application.hpp"
-#include "platform/window.hpp"
 #include <iostream>
 
-Application::Application() : m_Window(nullptr)
+#include "core/application.hpp"
+#include "platform/window.hpp"
+
+Application::Application()
 {
     Initialize();
 }
@@ -14,37 +15,26 @@ Application::~Application()
     Shutdown();
 }
 
-void Application::Run()
+void Application::Run() const
 {
-    StartLoop();
+    m_Engine->Run();
 }
 
 void Application::Initialize()
 {
     m_Window = new Window(800, 600, "Shaders In Computer Graphics");
+    m_Engine = new Engine(m_Window);
 
-    std::cout << "Window initialized successfully!" << std::endl;
-}
-
-void Application::StartLoop()
-{
-    while (!m_Window->ShouldClose())
-    {
-        m_Window->PollEvents();
-
-        // Coloring the window with a grey color
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        m_Window->SwapBuffers();
-    }
+    std::cout << "Application initialized successfully!" << std::endl;
 }
 
 void Application::Shutdown()
 {
     delete m_Window;
+    delete m_Engine;
 
     m_Window = nullptr;
+    m_Engine = nullptr;
 
     std::cout << "Application shutdown successfully!" << std::endl;
 }
