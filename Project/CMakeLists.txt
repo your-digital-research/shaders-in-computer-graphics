@@ -31,10 +31,24 @@ target_link_libraries(${PROJECT_NAME}
         glfw
 )
 
-# macOS-specific OpenGL framework
-if(APPLE)
+if (APPLE)
+    # macOS-specific OpenGL framework
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
             "-framework OpenGL"
     )
-endif()
+elseif (WIN32)
+    # Windows-specific OpenGL library
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            opengl32
+    )
+else ()
+    # Linux-specific OpenGL library
+    find_package(OpenGL REQUIRED)
+
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            OpenGL::GL
+    )
+endif ()
