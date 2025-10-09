@@ -6,7 +6,8 @@
 #include "core/engine.hpp"
 
 // Temporary function for test
-void DisplayRandomColor() {
+void DisplayRandomColor()
+{
     static std::mt19937 rng(static_cast<unsigned>(time(nullptr)));
     static std::uniform_real_distribution<float> dist(0.2f, 0.8f); // softer range
     static float r = dist(rng), g = dist(rng), b = dist(rng);

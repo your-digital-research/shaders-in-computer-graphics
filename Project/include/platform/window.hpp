@@ -8,11 +8,11 @@ class Window
 {
 public:
     // Constructor and Destructor
-    Window(int width, int height, const std::string &title);
+    Window(int width, int height, const std::string& title);
     ~Window();
 
     // Getters
-    GLFWwindow *GetNativeWindow() const;
+    GLFWwindow* GetNativeWindow() const;
 
     // Window management
     bool ShouldClose() const;
@@ -21,5 +21,5 @@ public:
 
 private:
     // Member variables
-    GLFWwindow *m_Window;
+    GLFWwindow* m_Window;
 };

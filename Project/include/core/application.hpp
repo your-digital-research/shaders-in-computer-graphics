@@ -15,8 +15,8 @@ public:
 
 private:
     // Member variables
-    Window *m_Window = nullptr;
-    Engine *m_Engine = nullptr;
+    Window* m_Window = nullptr;
+    Engine* m_Engine = nullptr;
 
     // Initialization and shutdown
     void Initialize();

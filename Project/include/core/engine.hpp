@@ -6,7 +6,7 @@ class Engine
 {
 public:
     // Constructor and Destructor
-    explicit Engine(Window *window);
+    explicit Engine(Window* window);
     ~Engine() = default;
 
     // Engine management
@@ -14,7 +14,7 @@ public:
 
 private:
     // Member variables
-    Window *m_Window;
+    Window* m_Window;
 
     // Engine state
     bool m_Running;
