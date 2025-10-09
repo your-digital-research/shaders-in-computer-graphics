@@ -1,6 +1,6 @@
-# Shaders in Computer Graphics
+# Shaders In Computer Graphics
 
-This repository, developed by [Davit Badalyan](https://github.com/davit-badalyan), is a collection of materials related to a master's thesis on **Shaders in Computer Graphics**.
+This repository, developed by [Davit Badalyan](https://github.com/davit-badalyan), is a collection of materials related to a master's thesis on **Shaders In Computer Graphics**.
 
 ## Table of Contents
 
