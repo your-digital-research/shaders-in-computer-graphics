@@ -12,41 +12,53 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Output path for binary
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# ---------------------------------------------------------------------------
 # GLAD
+# ---------------------------------------------------------------------------
 add_library(glad STATIC external/glad/src/glad.c)
 target_include_directories(glad PUBLIC external/glad/include)
 
+# ---------------------------------------------------------------------------
 # GLFW
+# ---------------------------------------------------------------------------
 add_subdirectory(external/GLFW)
 
+# ---------------------------------------------------------------------------
 # Executable and headers
+# ---------------------------------------------------------------------------
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/external
+)
+
+# ---------------------------------------------------------------------------
 # Link libraries
+# ---------------------------------------------------------------------------
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         glad       # Must come before glfw
         glfw
 )
 
+# ---------------------------------------------------------------------------
+# Platform-specific OpenGL linkage
+# ---------------------------------------------------------------------------
 if (APPLE)
-    # macOS-specific OpenGL framework
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
             "-framework OpenGL"
     )
 elseif (WIN32)
-    # Windows-specific OpenGL library
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
             opengl32
     )
 else ()
-    # Linux-specific OpenGL library
     find_package(OpenGL REQUIRED)
-
     target_link_libraries(${PROJECT_NAME}
         PRIVATE
             OpenGL::GL
