@@ -1,6 +1,7 @@
 #pragma once
 
 #include "platform/window.hpp"
+#include "graphics/renderer.hpp"
 
 class Engine
 {
@@ -15,7 +16,11 @@ public:
 private:
     // Member variables
     Window* m_Window;
+    graphics::Renderer* m_Renderer;
 
     // Engine state
     bool m_Running;
+
+    // Initialization
+    void Initialize();
 };

@@ -1,47 +1,38 @@
-#define GL_SILENCE_DEPRECATION
-
 #include <iostream>
-#include <random>
 
 #include "core/engine.hpp"
 
-// Temporary function for test
-void DisplayRandomColor()
+Engine::Engine(Window* window)
+    : m_Window(window), m_Renderer(nullptr), m_Running(true)
 {
-    static std::mt19937 rng(static_cast<unsigned>(time(nullptr)));
-    static std::uniform_real_distribution<float> dist(0.2f, 0.8f); // softer range
-    static float r = dist(rng), g = dist(rng), b = dist(rng);
-    static float targetR = dist(rng), targetG = dist(rng), targetB = dist(rng);
-
-    // Smoothly interpolate toward the target
-    constexpr float speed = 0.01f;
-    r += (targetR - r) * speed;
-    g += (targetG - g) * speed;
-    b += (targetB - b) * speed;
-
-    // If close to a target, pick a new one
-    if (fabs(r - targetR) < 0.01f) targetR = dist(rng);
-    if (fabs(g - targetG) < 0.01f) targetG = dist(rng);
-    if (fabs(b - targetB) < 0.01f) targetB = dist(rng);
-
-    glClearColor(r, g, b, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    Initialize();
 }
 
-Engine::Engine(Window* window)
-    : m_Window(window), m_Running(true)
+void Engine::Initialize()
 {
-    // std::cout << "Engine created successfully!" << std::endl;
+    // Create a Renderer after OpenGL context is created
+    m_Renderer = new graphics::Renderer();
+
+    // Set the initial clear color
+    m_Renderer->SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+    // Set the initial viewport
+    graphics::Renderer::SetViewport(0, 0, 800, 600);
 }
 
 void Engine::Run() const
 {
     while (m_Running && !m_Window->ShouldClose())
     {
+        // Poll for events
         m_Window->PollEvents();
 
-        DisplayRandomColor();
+        // Clear the screen
+        m_Renderer->Clear();
 
+        // TODO: Update and render active scene here
+
+        // Swap buffers
         m_Window->SwapBuffers();
     }
 }

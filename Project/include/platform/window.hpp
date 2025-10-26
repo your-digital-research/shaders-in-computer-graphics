@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <GlFW/glfw3.h>
+#include "graphics/gl.hpp"
 
 class Window
 {
