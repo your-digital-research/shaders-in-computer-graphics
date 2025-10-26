@@ -2,71 +2,74 @@
 
 #include "platform/window.hpp"
 
-Window::Window(const int width, const int height, const std::string& title)
+namespace platform
 {
-    // Try to initialize GLFW
-    if (!glfwInit())
+    Window::Window(const int width, const int height, const std::string &title)
     {
-        std::cerr << "[GLFW Error] Failed to initialize GLFW!" << std::endl;
+        // Try to initialize GLFW
+        if (!glfwInit())
+        {
+            std::cerr << "[GLFW Error] Failed to initialize GLFW!" << std::endl;
 
-        std::exit(EXIT_FAILURE);
-    }
+            std::exit(EXIT_FAILURE);
+        }
 
-    // Set GLFW window hints
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // Set GLFW window hints
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
-    // macOS specific hint for OpenGL compatibility
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        // macOS specific hint for OpenGL compatibility
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-    // Create the GLFW window
-    m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+        // Create the GLFW window
+        m_Window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
-    // Check if the window was created successfully
-    if (!m_Window)
-    {
-        std::cerr << "[GLFW Error] Failed to create GLFW window!" << std::endl;
+        // Check if the window was created successfully
+        if (!m_Window)
+        {
+            std::cerr << "[GLFW Error] Failed to create GLFW window!" << std::endl;
 
-        glfwTerminate();
+            glfwTerminate();
 
-        std::exit(EXIT_FAILURE);
+            std::exit(EXIT_FAILURE);
+        }
+
+        // Make the window's context current
+        glfwMakeContextCurrent(m_Window);
+
+        // Enable V-Sync
+        glfwSwapInterval(1);
+
+        // std::cout << "Window created successfully!" << std::endl;
     }
 
-    // Make the window's context current
-    glfwMakeContextCurrent(m_Window);
+    Window::~Window()
+    {
+        glfwDestroyWindow(m_Window);
 
-    // Enable V-Sync
-    glfwSwapInterval(1);
+        glfwTerminate();
+    }
 
-    // std::cout << "Window created successfully!" << std::endl;
-}
+    GLFWwindow *Window::GetNativeWindow() const
+    {
+        return m_Window;
+    }
 
-Window::~Window()
-{
-    glfwDestroyWindow(m_Window);
+    bool Window::ShouldClose() const
+    {
+        return glfwWindowShouldClose(m_Window);
+    }
 
-    glfwTerminate();
-}
+    void Window::PollEvents() const
+    {
+        glfwPollEvents();
+    }
 
-GLFWwindow* Window::GetNativeWindow() const
-{
-    return m_Window;
-}
-
-bool Window::ShouldClose() const
-{
-    return glfwWindowShouldClose(m_Window);
-}
-
-void Window::PollEvents() const
-{
-    glfwPollEvents();
-}
-
-void Window::SwapBuffers() const
-{
-    glfwSwapBuffers(m_Window);
+    void Window::SwapBuffers() const
+    {
+        glfwSwapBuffers(m_Window);
+    }
 }

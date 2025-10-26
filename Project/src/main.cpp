@@ -8,7 +8,7 @@ int main()
     std::cout << "Welcome to \"Shaders In Computer Graphics\" ^_^" << std::endl;
 
     // Create an instance of the Application class.
-    const Application application;
+    const core::Application application;
 
     // Run the application.
     application.Run();
