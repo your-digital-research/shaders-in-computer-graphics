@@ -22,7 +22,7 @@ namespace core
 
     void Application::Initialize()
     {
-        m_Window = new platform::Window(800, 600, "Shaders In Computer Graphics");
+        m_Window = new platform::Window(1280, 720, "Shaders In Computer Graphics");
         m_Engine = new Engine(m_Window);
 
         std::cout << "Application initialized successfully!" << std::endl;

@@ -75,7 +75,7 @@ namespace examples
 
         // Setup camera
         m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 3.0f));
-        m_Camera->SetProjection(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f); // Initial aspect ratio of 1.0, will be updated
     }
 
     void CubeScene::OnUpdate(const float deltaTime)

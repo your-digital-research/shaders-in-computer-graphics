@@ -19,6 +19,13 @@ namespace scene
         virtual void OnRender() = 0;
         virtual void OnDestroy() = 0;
 
+    public:
+        // Viewport handling
+        void UpdateAspectRatio(const float aspect) const
+        {
+            if (m_Camera) m_Camera->UpdateAspectRatio(aspect);
+        }
+
     protected:
         // Scene components
         view::Camera* m_Camera;

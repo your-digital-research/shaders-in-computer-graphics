@@ -34,6 +34,11 @@ namespace view
         m_FarPlane = far;
     }
 
+    void Camera::UpdateAspectRatio(const float aspect)
+    {
+        m_AspectRatio = aspect;
+    }
+
     void Camera::SetPosition(const glm::vec3& position)
     {
         m_Position = position;

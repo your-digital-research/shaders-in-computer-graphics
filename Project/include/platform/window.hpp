@@ -23,8 +23,24 @@ namespace platform
         void PollEvents() const;
         void SwapBuffers() const;
 
+        // Window properties
+        [[nodiscard]] int GetWidth() const { return m_Width; }
+        [[nodiscard]] int GetHeight() const { return m_Height; }
+        [[nodiscard]] float GetAspectRatio() const { return static_cast<float>(m_Width) / static_cast<float>(m_Height); }
+
+        // Update notification
+        void OnFramebufferResize();
+        void OnWindowFocus();
+
     private:
+        // Callback handling
+        static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+        static void WindowFocusCallback(GLFWwindow* window, int focused);
+        static void WindowSizeCallback(GLFWwindow* window, int width, int height);
+
         // Member variables
         GLFWwindow* m_Window;
+        int m_Width;
+        int m_Height;
     };
 }
