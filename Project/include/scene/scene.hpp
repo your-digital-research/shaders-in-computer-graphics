@@ -19,7 +19,6 @@ namespace scene
         virtual void OnRender() = 0;
         virtual void OnDestroy() = 0;
 
-    public:
         // Viewport handling
         void UpdateAspectRatio(const float aspect) const
         {

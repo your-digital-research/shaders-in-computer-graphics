@@ -2,15 +2,15 @@
 
 namespace graphics
 {
-    Mesh::Mesh(
-        const std::vector<glm::vec3>& positions,
-        const std::vector<unsigned int>& indices)
+    Mesh::Mesh(const std::vector<glm::vec3>& positions,
+               const std::vector<unsigned int>& indices,
+               const std::vector<glm::vec3>& colors)
         : m_VAO(0),
           m_VBO(0),
           m_IBO(0),
           m_IndexCount(indices.size())
     {
-        SetupMesh(positions, indices);
+        SetupMesh(positions, indices, colors);
     }
 
     Mesh::~Mesh()
@@ -35,7 +35,9 @@ namespace graphics
         glBindVertexArray(0);
     }
 
-    void Mesh::SetupMesh(const std::vector<glm::vec3>& positions, const std::vector<unsigned int>& indices)
+    void Mesh::SetupMesh(const std::vector<glm::vec3>& positions,
+                         const std::vector<unsigned int>& indices,
+                         const std::vector<glm::vec3>& colors)
     {
         // Create buffers/arrays
         glGenVertexArrays(1, &m_VAO);
@@ -45,9 +47,38 @@ namespace graphics
         // Bind VAO first
         glBindVertexArray(m_VAO);
 
-        // Load vertex data
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_STATIC_DRAW);
+        const bool hasColors = !colors.empty();
+        const size_t stride = hasColors ? sizeof(glm::vec3) * 2 : sizeof(glm::vec3);
+
+        if (hasColors)
+        {
+            // Interleave position and color data
+            std::vector<float> vertexData;
+            vertexData.reserve(positions.size() * 6); // 3 floats for position + 3 for color
+
+            for (size_t i = 0; i < positions.size(); i++)
+            {
+                // Position
+                vertexData.push_back(positions[i].x);
+                vertexData.push_back(positions[i].y);
+                vertexData.push_back(positions[i].z);
+
+                // Color
+                vertexData.push_back(colors[i].x);
+                vertexData.push_back(colors[i].y);
+                vertexData.push_back(colors[i].z);
+            }
+
+            // Load interleaved data
+            glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+            glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+        }
+        else
+        {
+            // Load position data only
+            glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+            glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_STATIC_DRAW);
+        }
 
         // Load index data
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
@@ -56,7 +87,14 @@ namespace graphics
         // Set vertex attribute pointers
         // Position attribute
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), static_cast<void*>(nullptr));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
+
+        // Color attribute (if present)
+        if (hasColors)
+        {
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(glm::vec3)));
+        }
 
         // Unbind VAO
         glBindVertexArray(0);

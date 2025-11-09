@@ -1,10 +1,29 @@
 #include "scene/scene_manager.hpp"
+#include "examples/scenes/cube_scene.hpp"
+#include "examples/scenes/triangle_rainbow_scene.hpp"
+#include "platform/window.hpp"
 
 namespace scene
 {
-    SceneManager::SceneManager() : m_ActiveScene(nullptr)
+    SceneManager::SceneManager(platform::Window* window)
+        : m_Window(window),
+          m_ActiveScene(nullptr)
     {
         //
+    }
+
+    void SceneManager::InitializeDefaultScenes()
+    {
+        // Create default scenes
+        auto cubeScene = std::make_unique<examples::CubeScene>();
+        auto triangleScene = std::make_unique<examples::TriangleRainbowScene>();
+
+        // Add scenes to the manager
+        AddScene("cube", std::move(cubeScene));
+        AddScene("triangle", std::move(triangleScene));
+
+        // Set the default active scene
+        SetActiveScene("triangle");
     }
 
     SceneManager::~SceneManager()
@@ -65,6 +84,10 @@ namespace scene
     {
         if (!m_ActiveScene) return;
 
+        // Update aspect ratio first
+        m_ActiveScene->UpdateAspectRatio(m_Window->GetAspectRatio());
+
+        // Then update scene logic
         m_ActiveScene->OnUpdate(deltaTime);
     }
 

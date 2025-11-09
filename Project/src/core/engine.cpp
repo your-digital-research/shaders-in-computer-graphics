@@ -1,14 +1,11 @@
-#include <iostream>
-#include <memory>
-
 #include "core/engine.hpp"
-#include "examples/scenes/cube_scene.hpp"
 
 namespace core
 {
     Engine::Engine(platform::Window* window)
         : m_Window(window),
           m_Renderer(nullptr),
+          m_SceneManager(window),
           m_LastFrameTime(static_cast<float>(glfwGetTime())),
           m_Running(true)
     {
@@ -24,22 +21,13 @@ namespace core
     {
         // Create renderer
         m_Renderer = new graphics::Renderer();
+
+        // Set Renderer defaults
         graphics::Renderer::SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         graphics::Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 
-        // Update the scene with an initial aspect ratio
-        const float aspectRatio = m_Window->GetAspectRatio();
-
-        // Create and add the cube scene
-        auto cubeScene = std::make_unique<examples::CubeScene>();
-        m_SceneManager.AddScene("cube", std::move(cubeScene));
-        m_SceneManager.SetActiveScene("cube");
-
-        // Update initial aspect ratio
-        if (m_SceneManager.GetActiveScene())
-        {
-            m_SceneManager.GetActiveScene()->UpdateAspectRatio(m_Window->GetAspectRatio());
-        }
+        // Initialize scenes after a renderer is set up
+        m_SceneManager.InitializeDefaultScenes();
     }
 
     void Engine::Shutdown()
@@ -69,13 +57,7 @@ namespace core
             // Calculate delta time
             const float deltaTime = CalculateDeltaTime();
 
-            // Update aspect ratio if needed
-            if (m_SceneManager.GetActiveScene())
-            {
-                m_SceneManager.GetActiveScene()->UpdateAspectRatio(m_Window->GetAspectRatio());
-            }
-
-            // Update scene
+            // Update scene (includes aspect ratio update)
             m_SceneManager.UpdateActiveScene(deltaTime);
 
             // Clear screen

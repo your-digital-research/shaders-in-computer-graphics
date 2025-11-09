@@ -28,7 +28,7 @@ namespace view
         return glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
     }
 
-    void Camera::SetProjection(float fov, float aspect, float near, float far)
+    void Camera::SetProjection(const float fov, const float aspect, const float near, const float far)
     {
         m_Fov = fov;
         m_AspectRatio = aspect;
@@ -51,7 +51,7 @@ namespace view
         m_Yaw = yaw;
         m_Pitch = pitch;
 
-        // Make sure that when pitch is out of bounds, screen doesn't get flipped
+        // Make sure that when pitch is out of bounds, the screen doesn't get flipped
         m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
 
         UpdateCameraVectors();
@@ -61,9 +61,11 @@ namespace view
     {
         // Calculate the new front vector
         glm::vec3 front;
+
         front.x = cos(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
         front.y = sin(glm::radians(m_Pitch));
         front.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
+
         m_Front = glm::normalize(front);
 
         // Re-calculate the right and up vector

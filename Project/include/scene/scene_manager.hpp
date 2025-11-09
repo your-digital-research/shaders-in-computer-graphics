@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "platform/window.hpp"
 #include "scene/scene.hpp"
 
 namespace scene
@@ -11,8 +12,12 @@ namespace scene
     class SceneManager
     {
     public:
-        SceneManager();
+        // Constructor and Destructor
+        explicit SceneManager(platform::Window* window);
         ~SceneManager();
+
+        // Initialize default scenes
+        void InitializeDefaultScenes();
 
         // Add a scene to the manager
         void AddScene(const std::string& name, std::unique_ptr<Scene> scene);
@@ -31,7 +36,9 @@ namespace scene
         void RenderActiveScene() const;
 
     private:
+        // Member variables
         std::unordered_map<std::string, std::unique_ptr<Scene>> m_Scenes;
+        platform::Window* m_Window;
         Scene* m_ActiveScene;
     };
 }
