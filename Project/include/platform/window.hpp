@@ -20,13 +20,17 @@ namespace platform
         [[nodiscard]] bool ShouldClose() const;
 
         // Window management
-        void PollEvents() const;
+        static void PollEvents();
         void SwapBuffers() const;
 
         // Window properties
         [[nodiscard]] int GetWidth() const { return m_Width; }
         [[nodiscard]] int GetHeight() const { return m_Height; }
-        [[nodiscard]] float GetAspectRatio() const { return static_cast<float>(m_Width) / static_cast<float>(m_Height); }
+
+        [[nodiscard]] float GetAspectRatio() const
+        {
+            return static_cast<float>(m_Width) / static_cast<float>(m_Height);
+        }
 
         // Update notification
         void OnFramebufferResize();

@@ -59,6 +59,7 @@ namespace graphics
         if (!success)
         {
             GLchar infoLog[512];
+
             glGetShaderInfoLog(shader, sizeof(infoLog), nullptr, infoLog);
 
             std::cerr << "[Shader Error] "
@@ -91,10 +92,13 @@ namespace graphics
         if (!success)
         {
             GLchar infoLog[512];
+
             glGetProgramInfoLog(m_RendererID, sizeof(infoLog), nullptr, infoLog);
 
-            std::cerr << "[Shader Error] Program linking failed:\n"
-                << infoLog << std::endl;
+            std::cerr
+                << "[Shader Error] Program linking failed:\n"
+                << infoLog
+                << std::endl;
 
             glDeleteProgram(m_RendererID);
             m_RendererID = 0;
@@ -121,7 +125,7 @@ namespace graphics
 
             std::stringstream stream;
 
-            // Read the file's buffer contents into stream
+            // Read the file's buffer contents into the stream
             stream << file.rdbuf();
 
             // Close file handler

@@ -82,7 +82,7 @@ namespace platform
         return glfwWindowShouldClose(m_Window);
     }
 
-    void Window::PollEvents() const
+    void Window::PollEvents()
     {
         glfwPollEvents();
     }

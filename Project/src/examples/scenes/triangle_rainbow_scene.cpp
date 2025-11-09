@@ -27,9 +27,9 @@ namespace examples
         };
 
         const std::vector<Vertex> vertices = {
-            {glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)},     // Top vertex (Red)
-            {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},   // Bottom left (Green)
-            {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)}     // Bottom right (Blue)
+            {glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)}, // Top vertex (Red)
+            {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)}, // Bottom left (Green)
+            {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)} // Bottom right (Blue)
         };
 
         // Extract positions and colors into separate vectors for our Mesh class
@@ -63,7 +63,7 @@ namespace examples
     {
         // Bind shader and set uniforms
         m_Shader->Bind();
-        m_Shader->SetMat4("uModel", glm::mat4(1.0f));   // Identity matrix - no transformations
+        m_Shader->SetMat4("uModel", glm::mat4(1.0f)); // Identity matrix - no transformations
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 

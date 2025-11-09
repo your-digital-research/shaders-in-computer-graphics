@@ -1,7 +1,7 @@
+#include "platform/window.hpp"
 #include "scene/scene_manager.hpp"
 #include "examples/scenes/cube_scene.hpp"
 #include "examples/scenes/triangle_rainbow_scene.hpp"
-#include "platform/window.hpp"
 
 namespace scene
 {

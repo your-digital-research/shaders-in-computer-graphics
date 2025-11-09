@@ -21,7 +21,7 @@ namespace examples
 
     private:
         // Scene resources
-        graphics::Mesh *m_TriangleMesh;
-        graphics::Shader *m_Shader;
+        graphics::Mesh* m_TriangleMesh;
+        graphics::Shader* m_Shader;
     };
 }
