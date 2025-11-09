@@ -16,6 +16,6 @@ echo "🛠️ Configuring with CMake..."
 cmake ..
 
 echo "⚙️ Building project..."
-cmake --build .
+cmake --build . --parallel $(sysctl -n hw.ncpu)
 
 echo "✅ Done!"
