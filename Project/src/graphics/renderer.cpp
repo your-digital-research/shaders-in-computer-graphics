@@ -20,14 +20,17 @@ namespace graphics
         }
 
         // Print OpenGL version
-        std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-        std::cout << "OpenGL Vendor: " << glGetString(GL_VENDOR) << std::endl;
-        std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
-        std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+        // std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
+        // std::cout << "OpenGL Vendor: " << glGetString(GL_VENDOR) << std::endl;
+        // std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
+        // std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
         // Set default OpenGL state
         EnableDepthTest();
         EnableBlending();
+
+        // Set default depth function
+        glDepthFunc(GL_LESS);
 
         // Set default blend function
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -36,6 +39,9 @@ namespace graphics
     void Renderer::Clear() const
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // Reset depth buffer
+        glClearDepth(1.0f);
     }
 
     void Renderer::SetClearColor(const float r, const float g, const float b, const float a) const
