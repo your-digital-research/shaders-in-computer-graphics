@@ -1,9 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 #include <glm/gtc/type_ptr.hpp>
-
 #include "graphics/shader.hpp"
 
 namespace graphics
@@ -67,6 +67,7 @@ namespace graphics
                 << infoLog << std::endl;
 
             glDeleteShader(shader);
+
             return 0;
         }
 
@@ -105,16 +106,22 @@ namespace graphics
         std::string content;
         std::ifstream file;
 
-        // Ensure ifstream objects can throw exceptions
-        file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-
         try
         {
             // Open file
             file.open(filepath);
+
+            if (!file.is_open())
+            {
+                std::cerr << "[Shader Error] Failed to open shader file: " << filepath << std::endl;
+                std::cerr << "Current working directory: " << std::filesystem::current_path() << std::endl;
+
+                return content;
+            }
+
             std::stringstream stream;
 
-            // Read file's buffer contents into stream
+            // Read the file's buffer contents into stream
             stream << file.rdbuf();
 
             // Close file handler
@@ -122,12 +129,19 @@ namespace graphics
 
             // Convert stream into string
             content = stream.str();
+
+            if (content.empty())
+            {
+                std::cerr << "[Shader Error] Shader file is empty: " << filepath << std::endl;
+            }
         }
-        catch (const std::ifstream::failure& e)
+        catch (const std::exception& e)
         {
             std::cerr << "[Shader Error] Failed to read shader file: "
                 << filepath << "\n"
-                << e.what() << std::endl;
+                << "Error: "
+                << e.what()
+                << std::endl;
         }
 
         return content;
@@ -137,15 +151,20 @@ namespace graphics
     {
         // Check if the uniform location is already in cache
         if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+        {
             return m_UniformLocationCache[name];
+        }
 
         // If not in cache, get it from OpenGL and cache it
         const GLint location = glGetUniformLocation(m_RendererID, name.c_str());
 
         if (location == -1)
+        {
             std::cerr << "[Shader Warning] Uniform '" << name << "' doesn't exist!" << std::endl;
+        }
 
         m_UniformLocationCache[name] = location;
+
         return location;
     }
 
