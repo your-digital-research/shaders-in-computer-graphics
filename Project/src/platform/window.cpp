@@ -4,7 +4,7 @@
 
 namespace platform
 {
-    Window::Window(const int width, const int height, const std::string &title)
+    Window::Window(const int width, const int height, const std::string& title)
     {
         // Try to initialize GLFW
         if (!glfwInit())
@@ -53,7 +53,7 @@ namespace platform
         glfwTerminate();
     }
 
-    GLFWwindow *Window::GetNativeWindow() const
+    GLFWwindow* Window::GetNativeWindow() const
     {
         return m_Window;
     }

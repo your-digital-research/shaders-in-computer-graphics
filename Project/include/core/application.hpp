@@ -17,8 +17,8 @@ namespace core
 
     private:
         // Member variables
-        platform::Window *m_Window = nullptr;
-        Engine *m_Engine = nullptr;
+        platform::Window* m_Window = nullptr;
+        Engine* m_Engine = nullptr;
 
         // Initialization and shutdown
         void Initialize();

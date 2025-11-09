@@ -24,11 +24,11 @@ namespace scene
         void SetActiveScene(const std::string& name);
 
         // Get the active scene
-        Scene* GetActiveScene() const { return m_ActiveScene; }
+        [[nodiscard]] Scene* GetActiveScene() const { return m_ActiveScene; }
 
         // Update and render the active scene
-        void UpdateActiveScene(float deltaTime);
-        void RenderActiveScene();
+        void UpdateActiveScene(float deltaTime) const;
+        void RenderActiveScene() const;
 
     private:
         std::unordered_map<std::string, std::unique_ptr<Scene>> m_Scenes;

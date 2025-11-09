@@ -17,8 +17,8 @@ namespace view
         );
 
         // Camera matrices
-        glm::mat4 GetViewMatrix() const;
-        glm::mat4 GetProjectionMatrix() const;
+        [[nodiscard]] glm::mat4 GetViewMatrix() const;
+        [[nodiscard]] glm::mat4 GetProjectionMatrix() const;
 
         // Camera properties
         void SetProjection(float fov, float aspect, float near, float far);
@@ -28,12 +28,12 @@ namespace view
         void SetRotation(float yaw, float pitch);
 
         // Getters
-        const glm::vec3& GetPosition() const { return m_Position; }
-        const glm::vec3& GetFront() const { return m_Front; }
-        const glm::vec3& GetUp() const { return m_Up; }
-        const glm::vec3& GetRight() const { return m_Right; }
-        float GetYaw() const { return m_Yaw; }
-        float GetPitch() const { return m_Pitch; }
+        [[nodiscard]] const glm::vec3& GetPosition() const { return m_Position; }
+        [[nodiscard]] const glm::vec3& GetFront() const { return m_Front; }
+        [[nodiscard]] const glm::vec3& GetUp() const { return m_Up; }
+        [[nodiscard]] const glm::vec3& GetRight() const { return m_Right; }
+        [[nodiscard]] float GetYaw() const { return m_Yaw; }
+        [[nodiscard]] float GetPitch() const { return m_Pitch; }
 
     private:
         // Camera attributes

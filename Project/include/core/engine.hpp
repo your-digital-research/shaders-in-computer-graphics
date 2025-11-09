@@ -16,6 +16,9 @@ namespace core
         // Engine management
         void Run();
 
+        // Timing
+        [[nodiscard]] float CalculateDeltaTime();
+
         // Scene management
         scene::SceneManager& GetSceneManager() { return m_SceneManager; }
 

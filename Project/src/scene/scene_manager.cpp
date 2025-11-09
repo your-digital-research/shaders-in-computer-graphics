@@ -61,14 +61,14 @@ namespace scene
         }
     }
 
-    void SceneManager::UpdateActiveScene(float deltaTime)
+    void SceneManager::UpdateActiveScene(const float deltaTime) const
     {
         if (!m_ActiveScene) return;
 
         m_ActiveScene->OnUpdate(deltaTime);
     }
 
-    void SceneManager::RenderActiveScene()
+    void SceneManager::RenderActiveScene() const
     {
         if (!m_ActiveScene) return;
 

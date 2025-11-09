@@ -12,19 +12,19 @@ namespace graphics
         ~Renderer() = default;
 
         // Render state
-        void Clear() const;
-        void SetClearColor(float r, float g, float b, float a) const;
+        static void Clear();
+        static void SetClearColor(float r, float g, float b, float a);
 
         // OpenGL state management
         static void EnableDepthTest();
         static void DisableDepthTest();
-
         static void EnableBlending();
         static void DisableBlending();
 
+        // Viewport management
         static void SetViewport(int x, int y, int width, int height);
 
     private:
-        void Initialize();
+        static void Initialize();
     };
 }

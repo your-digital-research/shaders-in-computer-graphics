@@ -36,7 +36,7 @@ namespace graphics
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    void Renderer::Clear() const
+    void Renderer::Clear()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -44,7 +44,7 @@ namespace graphics
         glClearDepth(1.0f);
     }
 
-    void Renderer::SetClearColor(const float r, const float g, const float b, const float a) const
+    void Renderer::SetClearColor(const float r, const float g, const float b, const float a)
     {
         glClearColor(r, g, b, a);
     }

@@ -14,10 +14,12 @@ namespace platform
         ~Window();
 
         // Getters
-        GLFWwindow* GetNativeWindow() const;
+        [[nodiscard]] GLFWwindow* GetNativeWindow() const;
+
+        // Window state
+        [[nodiscard]] bool ShouldClose() const;
 
         // Window management
-        bool ShouldClose() const;
         void PollEvents() const;
         void SwapBuffers() const;
 

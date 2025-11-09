@@ -24,7 +24,7 @@ namespace core
     {
         // Create renderer
         m_Renderer = new graphics::Renderer();
-        m_Renderer->SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        graphics::Renderer::SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         graphics::Renderer::SetViewport(0, 0, 800, 600);
 
         // Create and add the cube scene
@@ -36,7 +36,18 @@ namespace core
     void Engine::Shutdown()
     {
         delete m_Renderer;
+
         m_Renderer = nullptr;
+    }
+
+    float Engine::CalculateDeltaTime()
+    {
+        const auto currentTime = static_cast<float>(glfwGetTime());
+        const float deltaTime = currentTime - m_LastFrameTime;
+
+        m_LastFrameTime = currentTime;
+
+        return deltaTime;
     }
 
     void Engine::Run()
@@ -47,16 +58,13 @@ namespace core
             m_Window->PollEvents();
 
             // Calculate delta time
-            const auto currentTime = static_cast<float>(glfwGetTime());
-            const float deltaTime = currentTime - m_LastFrameTime;
-
-            m_LastFrameTime = currentTime;
+            const float deltaTime = CalculateDeltaTime();
 
             // Update scene
             m_SceneManager.UpdateActiveScene(deltaTime);
 
             // Clear screen
-            m_Renderer->Clear();
+            graphics::Renderer::Clear();
 
             // Render scene
             m_SceneManager.RenderActiveScene();
