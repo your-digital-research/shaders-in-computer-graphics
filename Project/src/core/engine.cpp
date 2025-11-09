@@ -1,13 +1,14 @@
 #include <iostream>
+#include <memory>
 
 #include "core/engine.hpp"
+#include "examples/scenes/cube_scene.hpp"
 
 namespace core
 {
     Engine::Engine(platform::Window* window)
         : m_Window(window),
           m_Renderer(nullptr),
-          m_ActiveScene(nullptr),
           m_LastFrameTime(static_cast<float>(glfwGetTime())),
           m_Running(true)
     {
@@ -26,16 +27,15 @@ namespace core
         m_Renderer->SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         graphics::Renderer::SetViewport(0, 0, 800, 600);
 
-        // Create a test scene
-        m_ActiveScene = new scene::CubeScene();
+        // Create and add the cube scene
+        auto cubeScene = std::make_unique<examples::CubeScene>();
+        m_SceneManager.AddScene("cube", std::move(cubeScene));
+        m_SceneManager.SetActiveScene("cube");
     }
 
     void Engine::Shutdown()
     {
-        delete m_ActiveScene;
         delete m_Renderer;
-
-        m_ActiveScene = nullptr;
         m_Renderer = nullptr;
     }
 
@@ -53,13 +53,13 @@ namespace core
             m_LastFrameTime = currentTime;
 
             // Update scene
-            if (m_ActiveScene) m_ActiveScene->OnUpdate(deltaTime);
+            m_SceneManager.UpdateActiveScene(deltaTime);
 
             // Clear screen
             m_Renderer->Clear();
 
             // Render scene
-            if (m_ActiveScene) m_ActiveScene->OnRender();
+            m_SceneManager.RenderActiveScene();
 
             // Swap buffers
             m_Window->SwapBuffers();

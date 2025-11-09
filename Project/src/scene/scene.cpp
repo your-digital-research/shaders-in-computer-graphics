@@ -2,9 +2,8 @@
 
 namespace scene
 {
-    Scene::Scene()
-        : m_Camera(nullptr)
+    Scene::Scene() : m_Camera(nullptr)
     {
-        m_Camera = new Camera();
+        m_Camera = new view::Camera();
     }
 }

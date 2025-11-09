@@ -4,9 +4,9 @@
 #include "graphics/mesh.hpp"
 #include "graphics/shader.hpp"
 
-namespace scene
+namespace examples
 {
-    class CubeScene : public Scene
+    class CubeScene final : public scene::Scene
     {
     public:
         // Constructor and Destructor

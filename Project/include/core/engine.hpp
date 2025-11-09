@@ -2,7 +2,7 @@
 
 #include "platform/window.hpp"
 #include "graphics/renderer.hpp"
-#include "scene/cube_scene.hpp"
+#include "scene/scene_manager.hpp"
 
 namespace core
 {
@@ -16,11 +16,14 @@ namespace core
         // Engine management
         void Run();
 
+        // Scene management
+        scene::SceneManager& GetSceneManager() { return m_SceneManager; }
+
     private:
         // Member variables
         platform::Window* m_Window;
         graphics::Renderer* m_Renderer;
-        scene::Scene* m_ActiveScene;
+        scene::SceneManager m_SceneManager;
 
         // Timing
         float m_LastFrameTime;

@@ -1,10 +1,17 @@
-#include "scene/camera.hpp"
+#include "view/camera.hpp"
 
-namespace scene
+namespace view
 {
     Camera::Camera(const glm::vec3& position, const glm::vec3& up, float yaw, float pitch)
-        : m_Position(position), m_WorldUp(up), m_Yaw(yaw), m_Pitch(pitch), m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-          m_Fov(45.0f), m_AspectRatio(1.0f), m_NearPlane(0.1f), m_FarPlane(100.0f)
+        : m_Position(position),
+          m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+          m_WorldUp(up),
+          m_Yaw(yaw),
+          m_Pitch(pitch),
+          m_Fov(45.0f),
+          m_AspectRatio(1.0f),
+          m_NearPlane(0.1f),
+          m_FarPlane(100.0f)
     {
         UpdateCameraVectors();
     }

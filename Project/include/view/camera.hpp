@@ -3,16 +3,18 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-namespace scene
+namespace view
 {
     class Camera
     {
     public:
         // Constructor
-        Camera(const glm::vec3 &position = glm::vec3(0.0f, 0.0f, 3.0f),
-               const glm::vec3 &up = glm::vec3(0.0f, 1.0f, 0.0f),
-               float yaw = -90.0f,
-               float pitch = 0.0f);
+        explicit Camera(
+            const glm::vec3& position = glm::vec3(0.0f, 0.0f, 3.0f),
+            const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f),
+            float yaw = -90.0f,
+            float pitch = 0.0f
+        );
 
         // Camera matrices
         glm::mat4 GetViewMatrix() const;
@@ -22,14 +24,14 @@ namespace scene
         void SetProjection(float fov, float aspect, float near, float far);
 
         // Camera movement
-        void SetPosition(const glm::vec3 &position);
+        void SetPosition(const glm::vec3& position);
         void SetRotation(float yaw, float pitch);
 
         // Getters
-        const glm::vec3 &GetPosition() const { return m_Position; }
-        const glm::vec3 &GetFront() const { return m_Front; }
-        const glm::vec3 &GetUp() const { return m_Up; }
-        const glm::vec3 &GetRight() const { return m_Right; }
+        const glm::vec3& GetPosition() const { return m_Position; }
+        const glm::vec3& GetFront() const { return m_Front; }
+        const glm::vec3& GetUp() const { return m_Up; }
+        const glm::vec3& GetRight() const { return m_Right; }
         float GetYaw() const { return m_Yaw; }
         float GetPitch() const { return m_Pitch; }
 

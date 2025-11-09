@@ -6,9 +6,10 @@
 #endif
 
 #include <glm/gtc/matrix_transform.hpp>
-#include "scene/cube_scene.hpp"
+#include "examples/scenes/cube_scene.hpp"
+#include "view/camera.hpp"
 
-namespace scene
+namespace examples
 {
     CubeScene::CubeScene()
         : m_CubeMesh(nullptr),

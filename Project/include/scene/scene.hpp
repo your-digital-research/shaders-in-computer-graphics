@@ -1,8 +1,8 @@
 #pragma once
 
-#include "scene/camera.hpp"
 #include "graphics/shader.hpp"
 #include "graphics/mesh.hpp"
+#include "view/camera.hpp"
 
 namespace scene
 {
@@ -21,6 +21,6 @@ namespace scene
 
     protected:
         // Scene components
-        Camera *m_Camera;
+        view::Camera* m_Camera;
     };
 }
