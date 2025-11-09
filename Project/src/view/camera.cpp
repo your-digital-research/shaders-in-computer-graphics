@@ -5,6 +5,8 @@ namespace view
     Camera::Camera(const glm::vec3& position, const glm::vec3& up, float yaw, float pitch)
         : m_Position(position),
           m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+          m_Up(up),
+          m_Right(glm::vec3(1.0f, 0.0f, 0.0f)),
           m_WorldUp(up),
           m_Yaw(yaw),
           m_Pitch(pitch),
