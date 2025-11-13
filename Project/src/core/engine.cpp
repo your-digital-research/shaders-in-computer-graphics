@@ -52,7 +52,7 @@ namespace core
         while (m_Running && !m_Window->ShouldClose())
         {
             // Poll for events
-            m_Window->PollEvents();
+            platform::Window::PollEvents();
 
             // Calculate delta time
             const float deltaTime = CalculateDeltaTime();
