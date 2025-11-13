@@ -23,7 +23,7 @@ namespace core
         m_Renderer = new graphics::Renderer();
 
         // Set Renderer defaults
-        graphics::Renderer::SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        graphics::Renderer::SetClearColor(0.15f, 0.18f, 0.22f, 1.0f);
         graphics::Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 
         // Initialize scenes after a renderer is set up
