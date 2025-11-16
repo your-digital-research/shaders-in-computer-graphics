@@ -1,15 +1,15 @@
 // Colored Vertex Shader
 // Transforms vertex positions and passes vertex colors to fragment shader
-// Supports per-vertex coloring with smooth interpolation across faces
+// Supports per-vertex coloring with RGBA (alpha transparency support)
 
 #version 330 core
 
 // Input vertex attributes
 layout(location = 0) in vec3 aPosition;  // Vertex position in model space
-layout(location = 1) in vec3 aColor;     // Vertex color (RGB)
+layout(location = 1) in vec4 aColor;     // Vertex color (RGBA)
 
 // Output to fragment shader
-out vec3 vColor;  // Interpolated color
+out vec4 vColor;  // Interpolated color with alpha
 
 // Uniform matrices for transformations
 uniform mat4 uModel;       // Model matrix (local to world space)

@@ -49,19 +49,20 @@ namespace graphics
 
         // Interleave position and color data
         vector<float> vertexData;
-        vertexData.reserve(vertices.size() * 6); // 3 floats for position + 3 for color
+        vertexData.reserve(vertices.size() * 7); // 3 floats for position + 4 for RGBA color
 
         for (const auto& vertex : vertices)
         {
-            // Position
+            // Position (vec3)
             vertexData.push_back(vertex.position.x);
             vertexData.push_back(vertex.position.y);
             vertexData.push_back(vertex.position.z);
 
-            // Color
-            vertexData.push_back(vertex.color.x);
-            vertexData.push_back(vertex.color.y);
-            vertexData.push_back(vertex.color.z);
+            // Color (vec4 - RGBA)
+            vertexData.push_back(vertex.color.r);
+            vertexData.push_back(vertex.color.g);
+            vertexData.push_back(vertex.color.b);
+            vertexData.push_back(vertex.color.a);
         }
 
         // Load interleaved data
@@ -72,7 +73,7 @@ namespace graphics
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-        constexpr size_t stride = sizeof(vec3) * 2; // position + color
+        constexpr size_t stride = sizeof(vec3) + sizeof(vec4); // position (vec3) + color (vec4)
 
         // Position attribute
         glEnableVertexAttribArray(0);
@@ -80,7 +81,7 @@ namespace graphics
 
         // Color attribute
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(vec3)));
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(vec3)));
 
         // Unbind VAO
         glBindVertexArray(0);

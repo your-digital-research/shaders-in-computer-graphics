@@ -34,12 +34,12 @@ namespace examples
     void CubeScene::OnCreate()
     {
         // Define soft pastel colors for each face
-        const vec3 softCoral = Color::RGB(1.0f, 0.7f, 0.7f);
-        const vec3 softMint = Color::RGB(0.7f, 1.0f, 0.8f);
-        const vec3 softLavender = Color::RGB(0.8f, 0.7f, 1.0f);
-        const vec3 softPeach = Color::RGB(1.0f, 0.85f, 0.7f);
-        const vec3 softSkyBlue = Color::RGB(0.7f, 0.85f, 1.0f);
-        const vec3 softRose = Color::RGB(1.0f, 0.75f, 0.85f);
+        const vec4 softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
+        const vec4 softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
+        const vec4 softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
+        const vec4 softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
+        const vec4 softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
+        const vec4 softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
 
         // Create cube vertices with soft pastel colors for each face
         const Vertices vertices = {
