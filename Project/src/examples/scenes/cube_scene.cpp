@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "view/camera.hpp"
+#include "graphics/types.hpp"
 #include "examples/scenes/cube_scene.hpp"
 
 namespace examples
@@ -33,22 +34,22 @@ namespace examples
     void CubeScene::OnCreate()
     {
         // Create cube vertices
-        const vector vertices = {
+        const Vertices vertices = {
             // Front face
-            vec3(-0.5f, -0.5f, 0.5f),
-            vec3(0.5f, -0.5f, 0.5f),
-            vec3(0.5f, 0.5f, 0.5f),
-            vec3(-0.5f, 0.5f, 0.5f),
+            Vertex(vec3(-0.5f, -0.5f, 0.5f)),
+            Vertex(vec3(0.5f, -0.5f, 0.5f)),
+            Vertex(vec3(0.5f, 0.5f, 0.5f)),
+            Vertex(vec3(-0.5f, 0.5f, 0.5f)),
 
             // Back face
-            vec3(-0.5f, -0.5f, -0.5f),
-            vec3(-0.5f, 0.5f, -0.5f),
-            vec3(0.5f, 0.5f, -0.5f),
-            vec3(0.5f, -0.5f, -0.5f)
+            Vertex(vec3(-0.5f, -0.5f, -0.5f)),
+            Vertex(vec3(-0.5f, 0.5f, -0.5f)),
+            Vertex(vec3(0.5f, 0.5f, -0.5f)),
+            Vertex(vec3(0.5f, -0.5f, -0.5f))
         };
 
         // Create cube indices
-        const vector<unsigned int> indices = {
+        const VertexIndices indices = {
             // Front face
             0, 1, 2,
             2, 3, 0,

@@ -2,8 +2,10 @@
 
 #include <vector>
 
-#include "graphics/gl.hpp"
 #include <glm/glm.hpp>
+
+#include "graphics/gl.hpp"
+#include "graphics/types.hpp"
 
 namespace graphics
 {
@@ -14,9 +16,7 @@ namespace graphics
     {
     public:
         // Constructor and Destructor
-        Mesh(const vector<vec3>& positions,
-             const vector<unsigned int>& indices,
-             const vector<vec3>& colors = vector<vec3>());
+        Mesh(const Vertices& vertices, const VertexIndices& indices);
         ~Mesh();
 
         // Delete copy constructor and assignment operator
@@ -37,9 +37,7 @@ namespace graphics
         // Mesh data
         unsigned int m_IndexCount;
 
-        // Setup
-        void SetupMesh(const vector<vec3>& positions,
-                       const vector<unsigned int>& indices,
-                       const vector<vec3>& colors);
+        // Setup method
+        void SetupMesh(const Vertices& vertices, const VertexIndices& indices);
     };
 }

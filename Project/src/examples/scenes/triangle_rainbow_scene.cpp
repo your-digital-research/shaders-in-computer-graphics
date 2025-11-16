@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "view/camera.hpp"
+#include "graphics/types.hpp"
 #include "examples/scenes/triangle_rainbow_scene.hpp"
 
 namespace examples
@@ -23,39 +24,23 @@ namespace examples
 
     void TriangleRainbowScene::OnCreate()
     {
-        // Define vertices with positions and colors
-        struct Vertex
-        {
-            vec3 position;
-            vec3 color;
+        // Define vertices with positions and colors using predefined Color constants
+        const Vertices vertices = {
+            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red),      // Top vertex (Red)
+            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green),  // Bottom left (Green)
+            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue)     // Bottom right (Blue)
         };
 
-        const vector<Vertex> vertices = {
-            {vec3(0.0f, 0.5f, 0.0f), vec3(1.0f, 0.0f, 0.0f)}, // Top vertex (Red)
-            {vec3(-0.5f, -0.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f)}, // Bottom left (Green)
-            {vec3(0.5f, -0.5f, 0.0f), vec3(0.0f, 0.0f, 1.0f)} // Bottom right (Blue)
-        };
-
-        // Extract positions and colors into separate vectors for our Mesh class
-        vector<vec3> positions;
-        vector<vec3> colors;
-
-        for (const auto& [position, color] : vertices)
-        {
-            positions.push_back(position);
-            colors.push_back(color);
-        }
-
-        // Create indices (though for a single triangle, we could draw without indices)
-        const vector<unsigned int> indices = {0, 1, 2};
+        // Create indices
+        const VertexIndices indices = {0, 1, 2};
 
         // Create mesh and shader
-        m_TriangleMesh = new Mesh(positions, indices, colors);
+        m_TriangleMesh = new Mesh(vertices, indices);
         m_Shader = new Shader("shaders/rainbow/vertex.glsl", "shaders/rainbow/fragment.glsl");
 
         // Setup camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 3.0f));
-        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f); // Aspect ratio will be updated by the engine
+        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f); // The engine will update an aspect ratio
     }
 
     void TriangleRainbowScene::OnUpdate(float deltaTime)
