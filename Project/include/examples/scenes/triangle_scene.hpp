@@ -9,12 +9,12 @@ namespace examples
     using namespace scene;
     using namespace graphics;
 
-    class TriangleRainbowScene final : public Scene
+    class TriangleScene final : public Scene
     {
     public:
         // Constructor and Destructor
-        TriangleRainbowScene();
-        ~TriangleRainbowScene() override;
+        TriangleScene();
+        ~TriangleScene() override;
 
         // Scene lifecycle
         void OnCreate() override;
