@@ -2,8 +2,10 @@
 
 namespace scene
 {
+    using namespace view;
+
     Scene::Scene() : m_Camera(nullptr)
     {
-        m_Camera = new view::Camera();
+        m_Camera = new Camera();
     }
 }

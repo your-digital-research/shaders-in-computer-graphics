@@ -5,7 +5,11 @@
 
 namespace scene
 {
-    SceneManager::SceneManager(platform::Window* window)
+    using namespace std;
+    using namespace platform;
+    using namespace examples;
+
+    SceneManager::SceneManager(Window* window)
         : m_Window(window),
           m_ActiveScene(nullptr)
     {
@@ -15,10 +19,11 @@ namespace scene
     void SceneManager::InitializeDefaultScenes()
     {
         // Create default scenes
-        auto cubeScene = std::make_unique<examples::CubeScene>();
-        auto triangleScene = std::make_unique<examples::TriangleRainbowScene>();
+        auto cubeScene = make_unique<CubeScene>();
+        auto triangleScene = make_unique<TriangleRainbowScene>();
 
         // Add scenes to the manager
+        // NOTE: std::move explicitly qualified (best practice for move semantics)
         AddScene("cube", std::move(cubeScene));
         AddScene("triangle", std::move(triangleScene));
 
@@ -32,11 +37,12 @@ namespace scene
         m_Scenes.clear();
     }
 
-    void SceneManager::AddScene(const std::string& name, std::unique_ptr<Scene> scene)
+    void SceneManager::AddScene(const string& name, unique_ptr<Scene> scene)
     {
         if (m_Scenes.find(name) != m_Scenes.end())
         {
             // Scene already exists, replace it
+            // NOTE: std::move explicitly qualified (best practice for move semantics)
             m_Scenes[name] = std::move(scene);
 
             // Update the active scene pointer if it was the one we replaced
@@ -48,6 +54,7 @@ namespace scene
         else
         {
             // Add a new scene
+            // NOTE: std::move explicitly qualified (best practice for move semantics)
             m_Scenes[name] = std::move(scene);
 
             // If this is the first scene, make it active
@@ -58,7 +65,7 @@ namespace scene
         }
     }
 
-    void SceneManager::RemoveScene(const std::string& name)
+    void SceneManager::RemoveScene(const string& name)
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {
@@ -72,7 +79,7 @@ namespace scene
         }
     }
 
-    void SceneManager::SetActiveScene(const std::string& name)
+    void SceneManager::SetActiveScene(const string& name)
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {

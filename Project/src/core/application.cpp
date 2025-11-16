@@ -5,6 +5,9 @@
 
 namespace core
 {
+    using namespace std;
+    using namespace platform;
+
     Application::Application()
     {
         Initialize();
@@ -22,10 +25,10 @@ namespace core
 
     void Application::Initialize()
     {
-        m_Window = new platform::Window(1280, 720, "Shaders In Computer Graphics");
+        m_Window = new Window(1280, 720, "Shaders In Computer Graphics");
         m_Engine = new Engine(m_Window);
 
-        std::cout << "Application initialized successfully!" << std::endl;
+        cout << "Application initialized successfully!" << endl;
     }
 
     void Application::Shutdown()
@@ -36,6 +39,6 @@ namespace core
         m_Window = nullptr;
         m_Engine = nullptr;
 
-        std::cout << "Application shutdown successfully!" << std::endl;
+        cout << "Application shutdown successfully!" << endl;
     }
 }

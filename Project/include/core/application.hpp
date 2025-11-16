@@ -5,6 +5,8 @@
 
 namespace core
 {
+    using namespace platform;
+
     class Application
     {
     public:
@@ -17,7 +19,7 @@ namespace core
 
     private:
         // Member variables
-        platform::Window* m_Window = nullptr;
+        Window* m_Window = nullptr;
         Engine* m_Engine = nullptr;
 
         // Initialization and shutdown

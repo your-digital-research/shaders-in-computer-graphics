@@ -7,13 +7,16 @@
 
 namespace graphics
 {
+    using namespace std;
+    using namespace glm;
+
     class Mesh
     {
     public:
         // Constructor and Destructor
-        Mesh(const std::vector<glm::vec3>& positions,
-             const std::vector<unsigned int>& indices,
-             const std::vector<glm::vec3>& colors = std::vector<glm::vec3>());
+        Mesh(const vector<vec3>& positions,
+             const vector<unsigned int>& indices,
+             const vector<vec3>& colors = vector<vec3>());
         ~Mesh();
 
         // Delete copy constructor and assignment operator
@@ -35,8 +38,8 @@ namespace graphics
         unsigned int m_IndexCount;
 
         // Setup
-        void SetupMesh(const std::vector<glm::vec3>& positions,
-                       const std::vector<unsigned int>& indices,
-                       const std::vector<glm::vec3>& colors);
+        void SetupMesh(const vector<vec3>& positions,
+                       const vector<unsigned int>& indices,
+                       const vector<vec3>& colors);
     };
 }

@@ -9,24 +9,23 @@
 
 namespace scene
 {
+    using namespace std;
+    using namespace platform;
+
     class SceneManager
     {
     public:
         // Constructor and Destructor
-        explicit SceneManager(platform::Window* window);
+        explicit SceneManager(Window* window);
         ~SceneManager();
 
-        // Initialize default scenes
+        // Initialization
         void InitializeDefaultScenes();
 
-        // Add a scene to the manager
-        void AddScene(const std::string& name, std::unique_ptr<Scene> scene);
-
-        // Remove a scene from the manager
-        void RemoveScene(const std::string& name);
-
-        // Set the active scene
-        void SetActiveScene(const std::string& name);
+        // Scene management
+        void AddScene(const string& name, unique_ptr<Scene> scene);
+        void RemoveScene(const string& name);
+        void SetActiveScene(const string& name);
 
         // Get the active scene
         [[nodiscard]] Scene* GetActiveScene() const { return m_ActiveScene; }
@@ -37,8 +36,8 @@ namespace scene
 
     private:
         // Member variables
-        std::unordered_map<std::string, std::unique_ptr<Scene>> m_Scenes;
-        platform::Window* m_Window;
+        Window* m_Window;
         Scene* m_ActiveScene;
+        unordered_map<string, unique_ptr<Scene>> m_Scenes;
     };
 }

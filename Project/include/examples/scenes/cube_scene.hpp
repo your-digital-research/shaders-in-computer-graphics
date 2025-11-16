@@ -6,7 +6,11 @@
 
 namespace examples
 {
-    class CubeScene final : public scene::Scene
+    using namespace glm;
+    using namespace scene;
+    using namespace graphics;
+
+    class CubeScene final : public Scene
     {
     public:
         // Constructor and Destructor
@@ -21,11 +25,11 @@ namespace examples
 
     private:
         // Scene resources
-        graphics::Mesh* m_CubeMesh;
-        graphics::Shader* m_Shader;
+        Mesh* m_CubeMesh;
+        Shader* m_Shader;
 
         // Transform matrices
-        glm::mat4 m_ModelMatrix;
+        mat4 m_ModelMatrix;
         float m_RotationAngle;
     };
 }

@@ -4,6 +4,8 @@
 
 namespace graphics
 {
+    using namespace std;
+
     Renderer::Renderer()
     {
         Initialize();
@@ -14,16 +16,16 @@ namespace graphics
         // Initialize GLAD
         if (!gladLoadGL())
         {
-            std::cerr << "[OpenGL Error] Failed to initialize GLAD!" << std::endl;
+            cerr << "[OpenGL Error] Failed to initialize GLAD!" << endl;
 
             return;
         }
 
         // Print OpenGL version
-        // std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-        // std::cout << "OpenGL Vendor: " << glGetString(GL_VENDOR) << std::endl;
-        // std::cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << std::endl;
-        // std::cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+        // cout << "OpenGL Version: " << glGetString(GL_VERSION) << endl;
+        // cout << "OpenGL Vendor: " << glGetString(GL_VENDOR) << endl;
+        // cout << "OpenGL Renderer: " << glGetString(GL_RENDERER) << endl;
+        // cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 
         // Set default OpenGL state
         EnableDepthTest();

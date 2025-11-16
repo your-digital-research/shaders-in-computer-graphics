@@ -2,9 +2,12 @@
 
 namespace graphics
 {
-    Mesh::Mesh(const std::vector<glm::vec3>& positions,
-               const std::vector<unsigned int>& indices,
-               const std::vector<glm::vec3>& colors)
+    using namespace std;
+    using namespace glm;
+
+    Mesh::Mesh(const vector<vec3>& positions,
+               const vector<unsigned int>& indices,
+               const vector<vec3>& colors)
         : m_VAO(0),
           m_VBO(0),
           m_IBO(0),
@@ -35,9 +38,9 @@ namespace graphics
         glBindVertexArray(0);
     }
 
-    void Mesh::SetupMesh(const std::vector<glm::vec3>& positions,
-                         const std::vector<unsigned int>& indices,
-                         const std::vector<glm::vec3>& colors)
+    void Mesh::SetupMesh(const vector<vec3>& positions,
+                         const vector<unsigned int>& indices,
+                         const vector<vec3>& colors)
     {
         // Create buffers/arrays
         glGenVertexArrays(1, &m_VAO);
@@ -48,12 +51,12 @@ namespace graphics
         glBindVertexArray(m_VAO);
 
         const bool hasColors = !colors.empty();
-        const size_t stride = hasColors ? sizeof(glm::vec3) * 2 : sizeof(glm::vec3);
+        const size_t stride = hasColors ? sizeof(vec3) * 2 : sizeof(vec3);
 
         if (hasColors)
         {
             // Interleave position and color data
-            std::vector<float> vertexData;
+            vector<float> vertexData;
             vertexData.reserve(positions.size() * 6); // 3 floats for position + 3 for color
 
             for (size_t i = 0; i < positions.size(); i++)
@@ -77,7 +80,7 @@ namespace graphics
         {
             // Load position data only
             glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-            glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), positions.data(), GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(vec3), positions.data(), GL_STATIC_DRAW);
         }
 
         // Load index data
@@ -93,7 +96,7 @@ namespace graphics
         if (hasColors)
         {
             glEnableVertexAttribArray(1);
-            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(glm::vec3)));
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(vec3)));
         }
 
         // Unbind VAO

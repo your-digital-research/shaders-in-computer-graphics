@@ -6,7 +6,10 @@
 
 namespace examples
 {
-    class TriangleRainbowScene final : public scene::Scene
+    using namespace scene;
+    using namespace graphics;
+
+    class TriangleRainbowScene final : public Scene
     {
     public:
         // Constructor and Destructor
@@ -21,7 +24,7 @@ namespace examples
 
     private:
         // Scene resources
-        graphics::Mesh* m_TriangleMesh;
-        graphics::Shader* m_Shader;
+        Mesh* m_TriangleMesh;
+        Shader* m_Shader;
     };
 }

@@ -5,16 +5,19 @@
 
 namespace platform
 {
-    Window::Window(const int width, const int height, const std::string& title)
+    using namespace std;
+    using namespace graphics;
+
+    Window::Window(const int width, const int height, const string& title)
         : m_Width(width),
           m_Height(height)
     {
         // Try to initialize GLFW
         if (!glfwInit())
         {
-            std::cerr << "[GLFW Error] Failed to initialize GLFW!" << std::endl;
+            cerr << "[GLFW Error] Failed to initialize GLFW!" << endl;
 
-            std::exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
 
         // Set GLFW window hints
@@ -40,11 +43,11 @@ namespace platform
         // Check if the window was created successfully
         if (!m_Window)
         {
-            std::cerr << "[GLFW Error] Failed to create GLFW window!" << std::endl;
+            cerr << "[GLFW Error] Failed to create GLFW window!" << endl;
 
             glfwTerminate();
 
-            std::exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
 
         // Make the window's context current
@@ -62,7 +65,7 @@ namespace platform
         // Enable V-Sync
         glfwSwapInterval(1);
 
-        // std::cout << "Window created successfully!" << std::endl;
+        // cout << "Window created successfully!" << endl;
     }
 
     Window::~Window()
@@ -101,7 +104,7 @@ namespace platform
         m_Width = width;
         m_Height = height;
 
-        graphics::Renderer::SetViewport(0, 0, width, height);
+        Renderer::SetViewport(0, 0, width, height);
     }
 
     void Window::OnWindowFocus()

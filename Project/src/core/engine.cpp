@@ -2,7 +2,10 @@
 
 namespace core
 {
-    Engine::Engine(platform::Window* window)
+    using namespace platform;
+    using namespace graphics;
+
+    Engine::Engine(Window* window)
         : m_Window(window),
           m_Renderer(nullptr),
           m_SceneManager(window),
@@ -20,11 +23,11 @@ namespace core
     void Engine::Initialize()
     {
         // Create renderer
-        m_Renderer = new graphics::Renderer();
+        m_Renderer = new Renderer();
 
         // Set Renderer defaults
-        graphics::Renderer::SetClearColor(0.15f, 0.18f, 0.22f, 1.0f);
-        graphics::Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
+        Renderer::SetClearColor(0.15f, 0.18f, 0.22f, 1.0f);
+        Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 
         // Initialize scenes after a renderer is set up
         m_SceneManager.InitializeDefaultScenes();
@@ -52,7 +55,7 @@ namespace core
         while (m_Running && !m_Window->ShouldClose())
         {
             // Poll for events
-            platform::Window::PollEvents();
+            Window::PollEvents();
 
             // Calculate delta time
             const float deltaTime = CalculateDeltaTime();
@@ -61,7 +64,7 @@ namespace core
             m_SceneManager.UpdateActiveScene(deltaTime);
 
             // Clear screen
-            graphics::Renderer::Clear();
+            Renderer::Clear();
 
             // Render scene
             m_SceneManager.RenderActiveScene();

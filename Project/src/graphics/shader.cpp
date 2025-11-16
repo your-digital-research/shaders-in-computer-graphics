@@ -8,12 +8,14 @@
 
 namespace graphics
 {
-    Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+    using namespace std;
+
+    Shader::Shader(const string& vertexPath, const string& fragmentPath)
         : m_RendererID(0)
     {
         // Read shader source files
-        const std::string vertexSource = ReadFile(vertexPath);
-        const std::string fragmentSource = ReadFile(fragmentPath);
+        const string vertexSource = ReadFile(vertexPath);
+        const string fragmentSource = ReadFile(fragmentPath);
 
         // Compile shaders
         const GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSource);
@@ -42,7 +44,7 @@ namespace graphics
         glUseProgram(0);
     }
 
-    GLuint Shader::CompileShader(const GLenum type, const std::string& source)
+    GLuint Shader::CompileShader(const GLenum type, const string& source)
     {
         // Create shader
         const GLuint shader = glCreateShader(type);
@@ -62,10 +64,11 @@ namespace graphics
 
             glGetShaderInfoLog(shader, sizeof(infoLog), nullptr, infoLog);
 
-            std::cerr << "[Shader Error] "
+            cerr
+                << "[Shader Error] "
                 << (type == GL_VERTEX_SHADER ? "Vertex" : "Fragment")
                 << " shader compilation failed:\n"
-                << infoLog << std::endl;
+                << infoLog << endl;
 
             glDeleteShader(shader);
 
@@ -95,35 +98,36 @@ namespace graphics
 
             glGetProgramInfoLog(m_RendererID, sizeof(infoLog), nullptr, infoLog);
 
-            std::cerr
+            cerr
                 << "[Shader Error] Program linking failed:\n"
                 << infoLog
-                << std::endl;
+                << endl;
 
             glDeleteProgram(m_RendererID);
             m_RendererID = 0;
         }
     }
 
-    std::string Shader::ReadFile(const std::string& filepath)
+    string Shader::ReadFile(const string& filepath)
     {
-        std::string content;
-        std::ifstream file;
+        string content;
 
         try
         {
+            ifstream file;
+
             // Open file
             file.open(filepath);
 
             if (!file.is_open())
             {
-                std::cerr << "[Shader Error] Failed to open shader file: " << filepath << std::endl;
-                std::cerr << "Current working directory: " << std::filesystem::current_path() << std::endl;
+                cerr << "[Shader Error] Failed to open shader file: " << filepath << endl;
+                cerr << "Current working directory: " << filesystem::current_path() << endl;
 
                 return content;
             }
 
-            std::stringstream stream;
+            stringstream stream;
 
             // Read the file's buffer contents into the stream
             stream << file.rdbuf();
@@ -136,22 +140,23 @@ namespace graphics
 
             if (content.empty())
             {
-                std::cerr << "[Shader Error] Shader file is empty: " << filepath << std::endl;
+                cerr << "[Shader Error] Shader file is empty: " << filepath << endl;
             }
         }
-        catch (const std::exception& e)
+        catch (const exception& e)
         {
-            std::cerr << "[Shader Error] Failed to read shader file: "
+            cerr
+                << "[Shader Error] Failed to read shader file: "
                 << filepath << "\n"
                 << "Error: "
                 << e.what()
-                << std::endl;
+                << endl;
         }
 
         return content;
     }
 
-    GLint Shader::GetUniformLocation(const std::string& name) const
+    GLint Shader::GetUniformLocation(const string& name) const
     {
         // Check if the uniform location is already in cache
         if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
@@ -164,7 +169,7 @@ namespace graphics
 
         if (location == -1)
         {
-            std::cerr << "[Shader Warning] Uniform '" << name << "' doesn't exist!" << std::endl;
+            cerr << "[Shader Warning] Uniform '" << name << "' doesn't exist!" << endl;
         }
 
         m_UniformLocationCache[name] = location;
@@ -173,43 +178,43 @@ namespace graphics
     }
 
     // Uniform setters implementation
-    void Shader::SetBool(const std::string& name, const bool value) const
+    void Shader::SetBool(const string& name, const bool value) const
     {
         glUniform1i(GetUniformLocation(name), static_cast<int>(value));
     }
 
-    void Shader::SetInt(const std::string& name, const int value) const
+    void Shader::SetInt(const string& name, const int value) const
     {
         glUniform1i(GetUniformLocation(name), value);
     }
 
-    void Shader::SetFloat(const std::string& name, const float value) const
+    void Shader::SetFloat(const string& name, const float value) const
     {
         glUniform1f(GetUniformLocation(name), value);
     }
 
-    void Shader::SetVec2(const std::string& name, const glm::vec2& value) const
+    void Shader::SetVec2(const string& name, const vec2& value) const
     {
-        glUniform2fv(GetUniformLocation(name), 1, glm::value_ptr(value));
+        glUniform2fv(GetUniformLocation(name), 1, value_ptr(value));
     }
 
-    void Shader::SetVec3(const std::string& name, const glm::vec3& value) const
+    void Shader::SetVec3(const string& name, const vec3& value) const
     {
-        glUniform3fv(GetUniformLocation(name), 1, glm::value_ptr(value));
+        glUniform3fv(GetUniformLocation(name), 1, value_ptr(value));
     }
 
-    void Shader::SetVec4(const std::string& name, const glm::vec4& value) const
+    void Shader::SetVec4(const string& name, const vec4& value) const
     {
-        glUniform4fv(GetUniformLocation(name), 1, glm::value_ptr(value));
+        glUniform4fv(GetUniformLocation(name), 1, value_ptr(value));
     }
 
-    void Shader::SetMat3(const std::string& name, const glm::mat3& value) const
+    void Shader::SetMat3(const string& name, const mat3& value) const
     {
-        glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+        glUniformMatrix3fv(GetUniformLocation(name), 1, GL_FALSE, value_ptr(value));
     }
 
-    void Shader::SetMat4(const std::string& name, const glm::mat4& value) const
+    void Shader::SetMat4(const string& name, const mat4& value) const
     {
-        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(value));
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, value_ptr(value));
     }
 }

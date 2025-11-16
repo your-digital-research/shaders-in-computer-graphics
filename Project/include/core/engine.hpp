@@ -6,11 +6,15 @@
 
 namespace core
 {
+    using namespace platform;
+    using namespace graphics;
+    using namespace scene;
+
     class Engine
     {
     public:
         // Constructor and Destructor
-        explicit Engine(platform::Window* window);
+        explicit Engine(Window* window);
         ~Engine();
 
         // Engine management
@@ -20,13 +24,13 @@ namespace core
         [[nodiscard]] float CalculateDeltaTime();
 
         // Scene management
-        scene::SceneManager& GetSceneManager() { return m_SceneManager; }
+        SceneManager& GetSceneManager() { return m_SceneManager; }
 
     private:
         // Member variables
-        platform::Window* m_Window;
-        graphics::Renderer* m_Renderer;
-        scene::SceneManager m_SceneManager;
+        Window* m_Window;
+        Renderer* m_Renderer;
+        SceneManager m_SceneManager;
 
         // Timing
         float m_LastFrameTime;

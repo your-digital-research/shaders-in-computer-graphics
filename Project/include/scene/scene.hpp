@@ -6,6 +6,8 @@
 
 namespace scene
 {
+    using namespace view;
+
     class Scene
     {
     public:
@@ -27,6 +29,6 @@ namespace scene
 
     protected:
         // Scene components
-        view::Camera* m_Camera;
+        Camera* m_Camera;
     };
 }
