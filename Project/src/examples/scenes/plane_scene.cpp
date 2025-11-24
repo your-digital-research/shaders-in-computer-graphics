@@ -111,7 +111,7 @@ namespace examples
 
         // Setup camera - position it at an angle for better wave visibility
         m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
-        m_Camera->SetRotation(-90.0f, -45.0f);
+        m_Camera->SetRotationEuler(vec3(-90.0f, -45.0f, 0.0f));
         m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 

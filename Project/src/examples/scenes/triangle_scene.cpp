@@ -39,7 +39,8 @@ namespace examples
         m_Shader = new Shader("shaders/colored/vertex.glsl", "shaders/colored/fragment.glsl");
 
         // Setup camera
-        m_Camera->SetPosition(vec3(0.0f, 0.0f, 3.0f));
+        m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
+        m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
         m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 

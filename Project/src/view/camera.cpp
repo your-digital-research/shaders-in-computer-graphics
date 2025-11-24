@@ -4,14 +4,24 @@ namespace view
 {
     using namespace glm;
 
-    Camera::Camera(const vec3& position, const vec3& up, float yaw, float pitch)
+    Camera::Camera(const vec3& position, const vec3& up, const float yaw, const float pitch, const float roll)
         : m_Position(position),
           m_Front(vec3(0.0f, 0.0f, -1.0f)),
+          m_Back(vec3(0.0f, 0.0f, 1.0f)),
           m_Up(up),
+          m_Down(-up),
           m_Right(vec3(1.0f, 0.0f, 0.0f)),
+          m_Left(vec3(-1.0f, 0.0f, 0.0f)),
+          m_WorldFront(vec3(0.0f, 0.0f, -1.0f)),
+          m_WorldBack(vec3(0.0f, 0.0f, 1.0f)),
           m_WorldUp(up),
+          m_WorldDown(-up),
+          m_WorldRight(vec3(1.0f, 0.0f, 0.0f)),
+          m_WorldLeft(vec3(-1.0f, 0.0f, 0.0f)),
           m_Yaw(yaw),
           m_Pitch(pitch),
+          m_Roll(roll),
+          m_Orientation(quat(1.0f, 0.0f, 0.0f, 0.0f)),
           m_Fov(45.0f),
           m_AspectRatio(1.0f),
           m_NearPlane(0.1f),
@@ -48,20 +58,49 @@ namespace view
         m_Position = position;
     }
 
-    void Camera::SetRotation(float yaw, float pitch)
+    void Camera::SetRotationEuler(const vec3& eulerAngles)
     {
-        m_Yaw = yaw;
-        m_Pitch = pitch;
+        m_Yaw = eulerAngles.x;
+        m_Pitch = eulerAngles.y;
+        m_Roll = eulerAngles.z;
 
-        // Make sure that when pitch is out of bounds, the screen doesn't get flipped
+        // Clamp pitch to prevent gimbal lock
         m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
+
+        UpdateCameraVectors();
+    }
+
+    void Camera::SetRotationQuaternion(const quat& quaternion)
+    {
+        m_Orientation = normalize(quaternion);
+
+        UpdateEulerFromQuaternion();
+        UpdateCameraVectors();
+    }
+
+    void Camera::Rotate(const float yaw, const float pitch, const float roll)
+    {
+        m_Yaw += yaw;
+        m_Pitch += pitch;
+        m_Roll += roll;
+
+        // Clamp pitch to prevent gimbal lock
+        m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
+
+        // Normalize yaw to [-180, 180]
+        while (m_Yaw > 180.0f) m_Yaw -= 360.0f;
+        while (m_Yaw < -180.0f) m_Yaw += 360.0f;
+
+        // Normalize roll to [-180, 180]
+        while (m_Roll > 180.0f) m_Roll -= 360.0f;
+        while (m_Roll < -180.0f) m_Roll += 360.0f;
 
         UpdateCameraVectors();
     }
 
     void Camera::UpdateCameraVectors()
     {
-        // Calculate the new front vector
+        // Calculate front vector from Euler angles
         vec3 front;
 
         front.x = cos(radians(m_Yaw)) * cos(radians(m_Pitch));
@@ -69,9 +108,55 @@ namespace view
         front.z = sin(radians(m_Yaw)) * cos(radians(m_Pitch));
 
         m_Front = normalize(front);
+        m_Back = -m_Front;
 
-        // Re-calculate the right and up vector
+        // Calculate right vector
         m_Right = normalize(cross(m_Front, m_WorldUp));
-        m_Up = normalize(cross(m_Right, m_Front));
+
+        // Calculate up vector considering roll
+        const vec3 baseUp = normalize(cross(m_Right, m_Front));
+
+        // Apply roll rotation around the front axis
+        if (abs(m_Roll) > 0.001f)
+        {
+            const quat rollQuat = angleAxis(radians(m_Roll), m_Front);
+
+            m_Up = normalize(rollQuat * baseUp);
+            m_Right = normalize(cross(m_Front, m_Up));
+        }
+        else
+        {
+            m_Up = baseUp;
+        }
+
+        // Calculate left and down vectors
+        m_Left = -m_Right;
+        m_Down = -m_Up;
+
+        // Update quaternion from Euler angles
+        UpdateQuaternionFromEuler();
+    }
+
+    void Camera::UpdateQuaternionFromEuler()
+    {
+        // Convert Euler angles to quaternion (YXZ order: Yaw-Pitch-Roll)
+        const quat qYaw = angleAxis(radians(m_Yaw), vec3(0.0f, 1.0f, 0.0f));
+        const quat qPitch = angleAxis(radians(m_Pitch), vec3(1.0f, 0.0f, 0.0f));
+        const quat qRoll = angleAxis(radians(m_Roll), vec3(0.0f, 0.0f, 1.0f));
+
+        m_Orientation = normalize(qYaw * qPitch * qRoll);
+    }
+
+    void Camera::UpdateEulerFromQuaternion()
+    {
+        // Convert quaternion to Euler angles
+        const vec3 euler = eulerAngles(m_Orientation);
+
+        m_Yaw = degrees(euler.y);
+        m_Pitch = degrees(euler.x);
+        m_Roll = degrees(euler.z);
+
+        // Clamp pitch
+        m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
     }
 }
