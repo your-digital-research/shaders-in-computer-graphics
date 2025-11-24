@@ -19,6 +19,9 @@ endif ()
 # Output path for binary
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Copy shaders to binary directory
+file(COPY ${CMAKE_SOURCE_DIR}/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin)
+
 # ---------------------------------------------------------------------------
 # GLAD
 # ---------------------------------------------------------------------------
@@ -35,9 +38,6 @@ add_subdirectory(external/GLFW)
 # ---------------------------------------------------------------------------
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 add_executable(${PROJECT_NAME} ${SOURCES})
-
-# Copy shaders to binary directory
-file(COPY ${CMAKE_SOURCE_DIR}/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin)
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
