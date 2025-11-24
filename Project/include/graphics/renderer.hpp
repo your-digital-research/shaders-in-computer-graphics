@@ -1,9 +1,13 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "graphics/gl.hpp"
 
 namespace graphics
 {
+    using namespace glm;
+
     class Renderer
     {
     public:
@@ -13,7 +17,8 @@ namespace graphics
 
         // Render state
         static void Clear();
-        static void SetClearColor(float r, float g, float b, float a);
+        static void SetClearColor(const vec3& color, float alpha = 1.0f);
+        static void SetClearColor(const vec4& color);  // RGBA overload
 
         // OpenGL state management
         static void EnableDepthTest();
