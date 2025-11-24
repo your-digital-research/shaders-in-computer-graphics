@@ -34,12 +34,12 @@ namespace examples
     void CubeScene::OnCreate()
     {
         // Define soft pastel colors for each face
-        const vec4 softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
-        const vec4 softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
-        const vec4 softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
-        const vec4 softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
-        const vec4 softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
-        const vec4 softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
+        const Color softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
+        const Color softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
+        const Color softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
+        const Color softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
+        const Color softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
+        const Color softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
 
         // Create cube vertices with soft pastel colors for each face
         const Vertices vertices = {
@@ -139,7 +139,7 @@ namespace examples
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
         // Set a uniform color when using a basic shader (not used in colored shader)
-        // m_Shader->SetVec4("uColor", Color::GrayAlpha(0.7f, 1.0f));
+        // m_Shader->SetVec4("uColor", Color::GrayAlpha(0.7f, 1.0f).ToVec4());
 
         // Render cube
         m_CubeMesh->Bind();

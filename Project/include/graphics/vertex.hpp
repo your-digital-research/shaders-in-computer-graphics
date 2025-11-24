@@ -15,28 +15,11 @@ namespace graphics
     struct Vertex
     {
         vec3 position;
-        vec4 color;
+        Color color;
 
-        // Constructor with vec4 color (RGBA) - defaults to white
-        explicit Vertex(const vec3& pos, const vec4& col = vec4(Color::White, 1.0f))
+        explicit Vertex(const vec3& pos, const Color& color = Color::White)
             : position(pos),
-              color(col)
-        {
-            //
-        }
-
-        // Constructor with vec3 color (RGB) - defaults to white with full opacity
-        explicit Vertex(const vec3& pos, const vec3& col = Color::White)
-            : position(pos),
-              color(vec4(col, 1.0f))
-        {
-            //
-        }
-
-        // Constructor with position only - defaults to white
-        explicit Vertex(const vec3& pos)
-            : position(pos),
-              color(vec4(Color::White, 1.0f))
+              color(color)
         {
             //
         }
@@ -45,6 +28,6 @@ namespace graphics
     // Vertex-related type aliases
     using Vertices = vector<Vertex>;
     using VertexPositions = vector<vec3>;
-    using VertexColors = vector<vec3>;
+    using VertexColors = vector<Color>;
     using VertexIndices = vector<unsigned int>;
 }

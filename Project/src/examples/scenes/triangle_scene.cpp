@@ -26,9 +26,9 @@ namespace examples
     {
         // Define vertices with positions and colors
         const Vertices vertices = {
-            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red), // Top vertex (Red)
-            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green), // Bottom left (Green)
-            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue) // Bottom right (Blue)
+            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red),             // Top vertex (Red)
+            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green),         // Bottom left (Green)
+            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue)            // Bottom right (Blue)
         };
 
         // Create indices

@@ -46,12 +46,7 @@ namespace graphics
         glClearDepth(1.0f);
     }
 
-    void Renderer::SetClearColor(const vec3& color, const float alpha)
-    {
-        glClearColor(color.r, color.g, color.b, alpha);
-    }
-
-    void Renderer::SetClearColor(const vec4& color)
+    void Renderer::SetClearColor(const Color& color)
     {
         glClearColor(color.r, color.g, color.b, color.a);
     }

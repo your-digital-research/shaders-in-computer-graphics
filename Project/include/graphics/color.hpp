@@ -6,37 +6,72 @@ namespace graphics
 {
     using namespace glm;
 
-    // Color helper struct with predefined colors and constructors
     struct Color
     {
-        // Predefined colors
-        static const vec3 White;
-        static const vec3 Black;
-        static const vec3 Red;
-        static const vec3 Green;
-        static const vec3 Blue;
-        static const vec3 Yellow;
-        static const vec3 Cyan;
-        static const vec3 Magenta;
+        float r, g, b, a;
 
-        // RGB constructors (vec3 - no alpha)
-        // RGB constructor (values 0.0 to 1.0)
-        static vec3 RGB(float r, float g, float b);
+        // Default constructor (white with full opacity)
+        constexpr Color() : r(1.0f), g(1.0f), b(1.0f), a(1.0f)
+        {
+            //
+        }
 
-        // RGB constructor with integer values (0 to 255)
-        static vec3 RGB255(int r, int g, int b);
+        // RGBA constructor with default alpha = 1.0
+        constexpr Color(const float red, const float green, const float blue, const float alpha = 1.0f)
+            : r(red), g(green), b(blue), a(alpha)
+        {
+            //
+        }
 
-        // Grayscale constructor
-        static vec3 Gray(float value);
+        // Factory methods for creating colors
+        static constexpr Color RGB(float r, float g, float b) { return {r, g, b, 1.0f}; }
+        static constexpr Color RGBA(float r, float g, float b, float a) { return {r, g, b, a}; }
+        static constexpr Color Gray(float value) { return {value, value, value, 1.0f}; }
+        static constexpr Color GrayAlpha(float value, float alpha) { return {value, value, value, alpha}; }
 
-        // RGBA constructors (vec4 - with alpha)
-        // RGBA constructor (values 0.0 to 1.0)
-        static vec4 RGBA(float r, float g, float b, float a);
+        // Factory methods for 0-255 integer color values
+        static constexpr Color RGB255(const int r, const int g, const int b)
+        {
+            return {
+                static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f,
+                static_cast<float>(b) / 255.0f, 1.0f
+            };
+        }
 
-        // RGBA constructor with integer values (0 to 255)
-        static vec4 RGBA255(int r, int g, int b, int a);
+        static constexpr Color RGBA255(const int r, const int g, const int b, const int a)
+        {
+            return {
+                static_cast<float>(r) / 255.0f, static_cast<float>(g) / 255.0f,
+                static_cast<float>(b) / 255.0f, static_cast<float>(a) / 255.0f
+            };
+        }
 
-        // Grayscale with alpha constructor
-        static vec4 GrayAlpha(float value, float alpha);
+        // Convert to glm vector types
+        [[nodiscard]] vec3 ToVec3() const { return {r, g, b}; }
+        [[nodiscard]] vec4 ToVec4() const { return {r, g, b, a}; }
+
+        // Conversions for compatibility
+        explicit operator vec3() const { return ToVec3(); }
+        explicit operator vec4() const { return ToVec4(); }
+
+        // Predefined color constants
+        static const Color White;
+        static const Color Black;
+        static const Color Red;
+        static const Color Green;
+        static const Color Blue;
+        static const Color Yellow;
+        static const Color Cyan;
+        static const Color Magenta;
     };
+
+    // Color constant definitions
+    inline const Color Color::White{1.0f, 1.0f, 1.0f, 1.0f};
+    inline const Color Color::Black{0.0f, 0.0f, 0.0f, 1.0f};
+    inline const Color Color::Red{1.0f, 0.0f, 0.0f, 1.0f};
+    inline const Color Color::Green{0.0f, 1.0f, 0.0f, 1.0f};
+    inline const Color Color::Blue{0.0f, 0.0f, 1.0f, 1.0f};
+    inline const Color Color::Yellow{1.0f, 1.0f, 0.0f, 1.0f};
+    inline const Color Color::Cyan{0.0f, 1.0f, 1.0f, 1.0f};
+    inline const Color Color::Magenta{1.0f, 0.0f, 1.0f, 1.0f};
 }

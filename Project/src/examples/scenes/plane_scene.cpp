@@ -58,7 +58,7 @@ namespace examples
                 const float normalizedDist = distFromCenter / (halfSize * 1.414f); // Normalize to [0, 1]
 
                 // Create a color based on distance (will be used for interpolation)
-                const auto color = vec4(normalizedDist, 0.5f, 1.0f - normalizedDist, 1.0f);
+                const auto color = Color(normalizedDist, 0.5f, 1.0f - normalizedDist, 1.0f);
 
                 vertices.emplace_back(vec3(xPos, 0.0f, zPos), color);
             }
@@ -136,11 +136,10 @@ namespace examples
         m_Shader->SetFloat("uOpacityFadeStart", m_OpacityFadeStart);
         m_Shader->SetFloat("uPlaneRadius", m_PlaneRadius);
 
-        // Apply current gradient theme colors
-        m_Shader->SetVec3("uCenterColor", m_CenterColor);
-        m_Shader->SetVec3("uEdgeColor", m_EdgeColor);
-        m_Shader->SetVec3("uWavePeakColor", m_WavePeakColor);
-        m_Shader->SetVec3("uWaveTroughColor", m_WaveTroughColor);
+        m_Shader->SetVec4("uCenterColor", m_CenterColor.ToVec4());
+        m_Shader->SetVec4("uEdgeColor", m_EdgeColor.ToVec4());
+        m_Shader->SetVec4("uWavePeakColor", m_WavePeakColor.ToVec4());
+        m_Shader->SetVec4("uWaveTroughColor", m_WaveTroughColor.ToVec4());
 
         // Enable blending for transparency
         glEnable(GL_BLEND);
@@ -180,80 +179,80 @@ namespace examples
                 break;
 
             case GradientTheme::AuroraSunset:
-                m_CenterColor = Color::RGB(0.6f, 0.2f, 0.8f);               // Deep purple
-                m_EdgeColor = Color::RGB(1.0f, 0.6f, 0.3f);                 // Warm orange
-                m_WavePeakColor = Color::RGB(1.0f, 0.9f, 0.4f);             // Golden yellow
-                m_WaveTroughColor = Color::RGB(0.4f, 0.15f, 0.6f);          // Dark purple
+                m_CenterColor = Color::RGB(0.6f, 0.2f, 0.8f);           // Deep purple
+                m_EdgeColor = Color::RGB(1.0f, 0.6f, 0.3f);             // Warm orange
+                m_WavePeakColor = Color::RGB(1.0f, 0.9f, 0.4f);         // Golden yellow
+                m_WaveTroughColor = Color::RGB(0.4f, 0.15f, 0.6f);      // Dark purple
                 break;
 
             case GradientTheme::NeonCyberpunk:
-                m_CenterColor = Color::RGB(1.0f, 0.0f, 0.8f);               // Hot magenta
-                m_EdgeColor = Color::RGB(0.0f, 0.9f, 1.0f);                 // Bright cyan
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 1.0f);             // Pure white
-                m_WaveTroughColor = Color::RGB(0.4f, 0.0f, 0.6f);           // Deep magenta
+                m_CenterColor = Color::RGB(1.0f, 0.0f, 0.8f);           // Hot magenta
+                m_EdgeColor = Color::RGB(0.0f, 0.9f, 1.0f);             // Bright cyan
+                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 1.0f);         // Pure white
+                m_WaveTroughColor = Color::RGB(0.4f, 0.0f, 0.6f);       // Deep magenta
                 break;
 
             case GradientTheme::OceanDepth:
-                m_CenterColor = Color::RGB(0.0f, 0.3f, 0.6f);               // Deep ocean blue
-                m_EdgeColor = Color::RGB(0.2f, 0.9f, 0.9f);                 // Bright turquoise
-                m_WavePeakColor = Color::RGB(0.7f, 1.0f, 1.0f);             // Light aqua foam
-                m_WaveTroughColor = Color::RGB(0.0f, 0.2f, 0.4f);           // Dark navy
+                m_CenterColor = Color::RGB(0.0f, 0.3f, 0.6f);           // Deep ocean blue
+                m_EdgeColor = Color::RGB(0.2f, 0.9f, 0.9f);             // Bright turquoise
+                m_WavePeakColor = Color::RGB(0.7f, 1.0f, 1.0f);         // Light aqua foam
+                m_WaveTroughColor = Color::RGB(0.0f, 0.2f, 0.4f);       // Dark navy
                 break;
 
             case GradientTheme::FireLava:
-                m_CenterColor = Color::RGB(0.8f, 0.1f, 0.0f);               // Deep red
-                m_EdgeColor = Color::RGB(1.0f, 0.8f, 0.0f);                 // Bright yellow
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f);             // White hot
-                m_WaveTroughColor = Color::RGB(0.5f, 0.0f, 0.0f);           // Dark crimson
+                m_CenterColor = Color::RGB(0.8f, 0.1f, 0.0f);           // Deep red
+                m_EdgeColor = Color::RGB(1.0f, 0.8f, 0.0f);             // Bright yellow
+                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f);         // White hot
+                m_WaveTroughColor = Color::RGB(0.5f, 0.0f, 0.0f);       // Dark crimson
                 break;
 
             case GradientTheme::MintRose:
-                m_CenterColor = Color::RGB(1.0f, 0.4f, 0.7f);               // Soft rose pink
-                m_EdgeColor = Color::RGB(0.4f, 1.0f, 0.8f);                 // Mint green
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.85f);           // Cream white
-                m_WaveTroughColor = Color::RGB(0.7f, 0.2f, 0.5f);           // Deep rose
+                m_CenterColor = Color::RGB(1.0f, 0.4f, 0.7f);           // Soft rose pink
+                m_EdgeColor = Color::RGB(0.4f, 1.0f, 0.8f);             // Mint green
+                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.85f);       // Cream white
+                m_WaveTroughColor = Color::RGB(0.7f, 0.2f, 0.5f);       // Deep rose
                 break;
 
             case GradientTheme::ToxicGreen:
-                m_CenterColor = Color::RGB(0.2f, 0.8f, 0.1f);               // Bright lime
-                m_EdgeColor = Color::RGB(0.8f, 1.0f, 0.0f);                 // Neon yellow-green
-                m_WavePeakColor = Color::RGB(0.9f, 1.0f, 0.7f);             // Light lime
-                m_WaveTroughColor = Color::RGB(0.1f, 0.4f, 0.0f);           // Dark forest green
+                m_CenterColor = Color::RGB(0.2f, 0.8f, 0.1f);           // Bright lime
+                m_EdgeColor = Color::RGB(0.8f, 1.0f, 0.0f);             // Neon yellow-green
+                m_WavePeakColor = Color::RGB(0.9f, 1.0f, 0.7f);         // Light lime
+                m_WaveTroughColor = Color::RGB(0.1f, 0.4f, 0.0f);       // Dark forest green
                 break;
 
             case GradientTheme::RoyalPurpleGold:
-                m_CenterColor = Color::RGB(0.5f, 0.1f, 0.8f);               // Royal purple
-                m_EdgeColor = Color::RGB(1.0f, 0.85f, 0.2f);                // Rich gold
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.6f);            // Light gold
-                m_WaveTroughColor = Color::RGB(0.3f, 0.05f, 0.5f);          // Deep violet
+                m_CenterColor = Color::RGB(0.5f, 0.1f, 0.8f);           // Royal purple
+                m_EdgeColor = Color::RGB(1.0f, 0.85f, 0.2f);            // Rich gold
+                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.6f);        // Light gold
+                m_WaveTroughColor = Color::RGB(0.3f, 0.05f, 0.5f);      // Deep violet
                 break;
 
             case GradientTheme::CottonCandy:
-                m_CenterColor = Color::RGB(1.0f, 0.6f, 0.9f);               // Pink
-                m_EdgeColor = Color::RGB(0.6f, 0.8f, 1.0f);                 // Baby blue
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 1.0f);            // Almost white
-                m_WaveTroughColor = Color::RGB(0.8f, 0.4f, 0.7f);           // Mauve
+                m_CenterColor = Color::RGB(1.0f, 0.6f, 0.9f);           // Pink
+                m_EdgeColor = Color::RGB(0.6f, 0.8f, 1.0f);             // Baby blue
+                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 1.0f);        // Almost white
+                m_WaveTroughColor = Color::RGB(0.8f, 0.4f, 0.7f);       // Mauve
                 break;
 
             case GradientTheme::ElectricStorm:
-                m_CenterColor = Color::RGB(0.1f, 0.1f, 0.9f);               // Electric blue
-                m_EdgeColor = Color::RGB(0.9f, 0.9f, 1.0f);                 // Bright white-blue
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.7f);             // Lightning yellow
-                m_WaveTroughColor = Color::RGB(0.05f, 0.0f, 0.5f);          // Deep indigo
+                m_CenterColor = Color::RGB(0.1f, 0.1f, 0.9f);           // Electric blue
+                m_EdgeColor = Color::RGB(0.9f, 0.9f, 1.0f);             // Bright white-blue
+                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.7f);         // Lightning yellow
+                m_WaveTroughColor = Color::RGB(0.05f, 0.0f, 0.5f);      // Deep indigo
                 break;
 
             case GradientTheme::PeachSunset:
-                m_CenterColor = Color::RGB(1.0f, 0.5f, 0.3f);               // Coral peach
-                m_EdgeColor = Color::RGB(1.0f, 0.9f, 0.5f);                 // Soft yellow
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.8f);            // Cream
-                m_WaveTroughColor = Color::RGB(0.8f, 0.3f, 0.2f);           // Deep orange
+                m_CenterColor = Color::RGB(1.0f, 0.5f, 0.3f);           // Coral peach
+                m_EdgeColor = Color::RGB(1.0f, 0.9f, 0.5f);             // Soft yellow
+                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.8f);        // Cream
+                m_WaveTroughColor = Color::RGB(0.8f, 0.3f, 0.2f);       // Deep orange
                 break;
 
             case GradientTheme::MatrixGreen:
-                m_CenterColor = Color::RGB(0.0f, 0.8f, 0.3f);               // Matrix green
-                m_EdgeColor = Color::RGB(0.5f, 1.0f, 0.6f);                 // Light green
-                m_WavePeakColor = Color::RGB(0.8f, 1.0f, 0.9f);             // Mint white
-                m_WaveTroughColor = Color::RGB(0.0f, 0.4f, 0.1f);           // Dark emerald
+                m_CenterColor = Color::RGB(0.0f, 0.8f, 0.3f);           // Matrix green
+                m_EdgeColor = Color::RGB(0.5f, 1.0f, 0.6f);             // Light green
+                m_WavePeakColor = Color::RGB(0.8f, 1.0f, 0.9f);         // Mint white
+                m_WaveTroughColor = Color::RGB(0.0f, 0.4f, 0.1f);       // Dark emerald
                 break;
         }
     }

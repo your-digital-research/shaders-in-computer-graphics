@@ -61,10 +61,10 @@ namespace examples
         float m_PlaneRadius;
 
         // Gradient colors
-        vec3 m_CenterColor = Color::White;
-        vec3 m_EdgeColor = Color::White;
-        vec3 m_WavePeakColor = Color::White;
-        vec3 m_WaveTroughColor = Color::White;
+        Color m_CenterColor = Color::White;
+        Color m_EdgeColor = Color::White;
+        Color m_WavePeakColor = Color::White;
+        Color m_WaveTroughColor = Color::White;
         GradientTheme m_CurrentGradient = GradientTheme::Unknown;
 
         // Mesh generation

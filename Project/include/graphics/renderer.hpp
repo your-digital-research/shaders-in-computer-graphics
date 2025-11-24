@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "graphics/gl.hpp"
+#include "graphics/color.hpp"
 
 namespace graphics
 {
@@ -17,8 +18,7 @@ namespace graphics
 
         // Render state
         static void Clear();
-        static void SetClearColor(const vec3& color, float alpha = 1.0f);
-        static void SetClearColor(const vec4& color);  // RGBA overload
+        static void SetClearColor(const Color& color);
 
         // OpenGL state management
         static void EnableDepthTest();

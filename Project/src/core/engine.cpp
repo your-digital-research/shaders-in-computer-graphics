@@ -26,9 +26,9 @@ namespace core
         m_Renderer = new Renderer();
 
         // Set Renderer defaults - using a nice dark blue-gray background
-        const vec3 backgroundColor = Color::RGB(0.15f, 0.18f, 0.22f);
+        const Color backgroundColor = Color::RGB(0.15f, 0.18f, 0.22f);
 
-        Renderer::SetClearColor(backgroundColor, 1.0f);
+        Renderer::SetClearColor(backgroundColor);
         Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 
         // Initialize scenes after a renderer is set up
