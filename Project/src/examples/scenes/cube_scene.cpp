@@ -33,19 +33,51 @@ namespace examples
 
     void CubeScene::OnCreate()
     {
-        // Create cube vertices
-        const Vertices vertices = {
-            // Front face
-            Vertex(vec3(-0.5f, -0.5f, 0.5f)),
-            Vertex(vec3(0.5f, -0.5f, 0.5f)),
-            Vertex(vec3(0.5f, 0.5f, 0.5f)),
-            Vertex(vec3(-0.5f, 0.5f, 0.5f)),
+        // Define soft pastel colors for each face
+        const vec3 softCoral = Color::RGB(1.0f, 0.7f, 0.7f);
+        const vec3 softMint = Color::RGB(0.7f, 1.0f, 0.8f);
+        const vec3 softLavender = Color::RGB(0.8f, 0.7f, 1.0f);
+        const vec3 softPeach = Color::RGB(1.0f, 0.85f, 0.7f);
+        const vec3 softSkyBlue = Color::RGB(0.7f, 0.85f, 1.0f);
+        const vec3 softRose = Color::RGB(1.0f, 0.75f, 0.85f);
 
-            // Back face
-            Vertex(vec3(-0.5f, -0.5f, -0.5f)),
-            Vertex(vec3(-0.5f, 0.5f, -0.5f)),
-            Vertex(vec3(0.5f, 0.5f, -0.5f)),
-            Vertex(vec3(0.5f, -0.5f, -0.5f))
+        // Create cube vertices with soft pastel colors for each face
+        const Vertices vertices = {
+            // Front face (Soft Coral)
+            Vertex(vec3(-0.5f, -0.5f, 0.5f), softCoral),
+            Vertex(vec3(0.5f, -0.5f, 0.5f), softCoral),
+            Vertex(vec3(0.5f, 0.5f, 0.5f), softCoral),
+            Vertex(vec3(-0.5f, 0.5f, 0.5f), softCoral),
+
+            // Back face (Soft Mint)
+            Vertex(vec3(-0.5f, -0.5f, -0.5f), softMint),
+            Vertex(vec3(-0.5f, 0.5f, -0.5f), softMint),
+            Vertex(vec3(0.5f, 0.5f, -0.5f), softMint),
+            Vertex(vec3(0.5f, -0.5f, -0.5f), softMint),
+
+            // Right face (Soft Lavender)
+            Vertex(vec3(0.5f, -0.5f, 0.5f), softLavender),
+            Vertex(vec3(0.5f, -0.5f, -0.5f), softLavender),
+            Vertex(vec3(0.5f, 0.5f, -0.5f), softLavender),
+            Vertex(vec3(0.5f, 0.5f, 0.5f), softLavender),
+
+            // Left face (Soft Peach)
+            Vertex(vec3(-0.5f, -0.5f, -0.5f), softPeach),
+            Vertex(vec3(-0.5f, -0.5f, 0.5f), softPeach),
+            Vertex(vec3(-0.5f, 0.5f, 0.5f), softPeach),
+            Vertex(vec3(-0.5f, 0.5f, -0.5f), softPeach),
+
+            // Top face (Soft Sky Blue)
+            Vertex(vec3(-0.5f, 0.5f, 0.5f), softSkyBlue),
+            Vertex(vec3(0.5f, 0.5f, 0.5f), softSkyBlue),
+            Vertex(vec3(0.5f, 0.5f, -0.5f), softSkyBlue),
+            Vertex(vec3(-0.5f, 0.5f, -0.5f), softSkyBlue),
+
+            // Bottom face (Soft Rose)
+            Vertex(vec3(-0.5f, -0.5f, -0.5f), softRose),
+            Vertex(vec3(0.5f, -0.5f, -0.5f), softRose),
+            Vertex(vec3(0.5f, -0.5f, 0.5f), softRose),
+            Vertex(vec3(-0.5f, -0.5f, 0.5f), softRose)
         };
 
         // Create cube indices
@@ -54,34 +86,34 @@ namespace examples
             0, 1, 2,
             2, 3, 0,
 
-            // Right face
-            1, 7, 6,
-            6, 2, 1,
-
             // Back face
-            7, 4, 5,
-            5, 6, 7,
+            4, 5, 6,
+            6, 7, 4,
+
+            // Right face
+            8, 9, 10,
+            10, 11, 8,
 
             // Left face
-            4, 0, 3,
-            3, 5, 4,
+            12, 13, 14,
+            14, 15, 12,
 
             // Top face
-            3, 2, 6,
-            6, 5, 3,
+            16, 17, 18,
+            18, 19, 16,
 
             // Bottom face
-            4, 7, 1,
-            1, 0, 4
+            20, 21, 22,
+            22, 23, 20
         };
 
         // Create mesh and shader
         m_CubeMesh = new Mesh(vertices, indices);
-        m_Shader = new Shader("shaders/basic/vertex.glsl", "shaders/basic/fragment.glsl");
+        m_Shader = new Shader("shaders/colored/vertex.glsl", "shaders/colored/fragment.glsl");
 
         // Setup camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 3.0f));
-        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f); // Initial aspect ratio of 1.0, will be updated
+        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void CubeScene::OnUpdate(const float deltaTime)
@@ -105,7 +137,9 @@ namespace examples
         m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
-        m_Shader->SetVec4("uColor", vec4(0.2f, 0.3f, 0.8f, 1.0f));
+
+        // Set a uniform color when using a basic shader (optional)
+        m_Shader->SetVec4("uColor", Color::GrayAlpha(0.7f, 1.0f));
 
         // Render cube
         m_CubeMesh->Bind();

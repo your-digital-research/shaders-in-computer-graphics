@@ -1,7 +1,8 @@
 #include "platform/window.hpp"
 #include "scene/scene_manager.hpp"
+
 #include "examples/scenes/cube_scene.hpp"
-#include "examples/scenes/triangle_rainbow_scene.hpp"
+#include "examples/scenes/triangle_scene.hpp"
 
 namespace scene
 {
@@ -19,13 +20,13 @@ namespace scene
     void SceneManager::InitializeDefaultScenes()
     {
         // Create default scenes
+        auto triangleScene = make_unique<TriangleScene>();
         auto cubeScene = make_unique<CubeScene>();
-        auto triangleScene = make_unique<TriangleRainbowScene>();
 
         // Add scenes to the manager
         // NOTE: std::move explicitly qualified (best practice for move semantics)
-        AddScene("cube", std::move(cubeScene));
         AddScene("triangle", std::move(triangleScene));
+        AddScene("cube", std::move(cubeScene));
 
         // Set the default active scene
         SetActiveScene("triangle");
