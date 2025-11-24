@@ -138,8 +138,8 @@ namespace examples
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
-        // Set a uniform color when using a basic shader (optional)
-        m_Shader->SetVec4("uColor", Color::GrayAlpha(0.7f, 1.0f));
+        // Set a uniform color when using a basic shader (not used in colored shader)
+        // m_Shader->SetVec4("uColor", Color::GrayAlpha(0.7f, 1.0f));
 
         // Render cube
         m_CubeMesh->Bind();
