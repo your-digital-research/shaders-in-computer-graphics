@@ -1,3 +1,6 @@
+#include "constants/graphics_constants.hpp"
+#include "utils/math_utils.hpp"
+
 #include "view/camera.hpp"
 
 namespace view
@@ -22,10 +25,10 @@ namespace view
           m_Pitch(pitch),
           m_Roll(roll),
           m_Orientation(quat(1.0f, 0.0f, 0.0f, 0.0f)),
-          m_Fov(45.0f),
+          m_Fov(constants::graphics::DEFAULT_FOV),
           m_AspectRatio(1.0f),
-          m_NearPlane(0.1f),
-          m_FarPlane(100.0f)
+          m_NearPlane(constants::graphics::DEFAULT_NEAR_PLANE),
+          m_FarPlane(constants::graphics::DEFAULT_FAR_PLANE)
     {
         UpdateCameraVectors();
     }

@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "constants/graphics_constants.hpp"
+
 #include "graphics/renderer.hpp"
 
 namespace graphics
@@ -28,8 +30,8 @@ namespace graphics
         // cout << "GLSL Version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 
         // Set default OpenGL state
-        EnableDepthTest();
-        EnableBlending();
+        if (constants::graphics::DEFAULT_DEPTH_TEST) EnableDepthTest();
+        if (constants::graphics::DEFAULT_BLENDING) EnableBlending();
 
         // Set default depth function
         glDepthFunc(GL_LESS);

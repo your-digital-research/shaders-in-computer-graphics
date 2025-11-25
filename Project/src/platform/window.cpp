@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "constants/graphics_constants.hpp"
+
 #include "platform/window.hpp"
 #include "graphics/renderer.hpp"
 
@@ -21,8 +23,8 @@ namespace platform
         }
 
         // Set GLFW window hints
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, constants::graphics::OPENGL_MAJOR_VERSION);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, constants::graphics::OPENGL_MINOR_VERSION);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef __APPLE__
@@ -59,8 +61,11 @@ namespace platform
         glfwSetWindowFocusCallback(m_Window, WindowFocusCallback);
         glfwSetWindowSizeCallback(m_Window, WindowSizeCallback);
 
-        // Set size limits (minimum 640x360 - half of 1280x720)
-        glfwSetWindowSizeLimits(m_Window, 640, 360, GLFW_DONT_CARE, GLFW_DONT_CARE);
+        // Set size limits (minimum half of default size)
+        glfwSetWindowSizeLimits(m_Window,
+                                constants::graphics::DEFAULT_WINDOW_WIDTH / 2,
+                                constants::graphics::DEFAULT_WINDOW_HEIGHT / 2,
+                                GLFW_DONT_CARE, GLFW_DONT_CARE);
 
         // Enable V-Sync
         glfwSwapInterval(1);

@@ -1,5 +1,7 @@
 #include <vector>
 
+#include "constants/paths.hpp"
+
 #include "view/camera.hpp"
 #include "graphics/types.hpp"
 #include "examples/scenes/triangle_scene.hpp"
@@ -8,7 +10,6 @@ namespace examples
 {
     using namespace std;
     using namespace glm;
-    using namespace graphics;
 
     TriangleScene::TriangleScene()
         : m_TriangleMesh(nullptr),
@@ -36,12 +37,12 @@ namespace examples
 
         // Create mesh and shader
         m_TriangleMesh = new Mesh(vertices, indices);
-        m_Shader = new Shader("shaders/colored/vertex.glsl", "shaders/colored/fragment.glsl");
+        m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER, constants::paths::COLORED_FRAGMENT_SHADER);
 
         // Setup camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
-        m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
-        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
+        // m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
+        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void TriangleScene::OnUpdate(float deltaTime)

@@ -7,6 +7,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "constants/paths.hpp"
+#include "utils/math_utils.hpp"
+
 #include "view/camera.hpp"
 #include "graphics/types.hpp"
 #include "examples/scenes/cube_scene.hpp"
@@ -34,12 +37,12 @@ namespace examples
     void CubeScene::OnCreate()
     {
         // Define soft pastel colors for each face
-        const Color softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
-        const Color softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
-        const Color softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
-        const Color softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
-        const Color softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
-        const Color softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
+        constexpr Color softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
+        constexpr Color softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
+        constexpr Color softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
+        constexpr Color softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
+        constexpr Color softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
+        constexpr Color softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
 
         // Create cube vertices with soft pastel colors for each face
         const Vertices vertices = {
@@ -109,12 +112,12 @@ namespace examples
 
         // Create mesh and shader
         m_CubeMesh = new Mesh(vertices, indices);
-        m_Shader = new Shader("shaders/colored/vertex.glsl", "shaders/colored/fragment.glsl");
+        m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER, constants::paths::COLORED_FRAGMENT_SHADER);
 
         // Setup camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 4.0f));
-        m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
-        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
+        // m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
+        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void CubeScene::OnUpdate(const float deltaTime)
@@ -122,13 +125,11 @@ namespace examples
         // Update rotation angle
         m_RotationAngle += deltaTime * 50.0f;
 
-        if (m_RotationAngle >= 360.0f)
-        {
-            m_RotationAngle -= 360.0f;
-        }
+        // Use utility to wrap an angle to [0, 360]
+        m_RotationAngle = utils::math::WrapAngle360(m_RotationAngle);
 
-        // Update model matrix
-        m_ModelMatrix = rotate(mat4(1.0f), radians(m_RotationAngle), vec3(0.5f, 1.0f, 0.0f));
+        // Update model matrix using math utility for conversion
+        m_ModelMatrix = rotate(mat4(1.0f), utils::math::ToRadians(m_RotationAngle), vec3(0.5f, 1.0f, 0.0f));
     }
 
     void CubeScene::OnRender()

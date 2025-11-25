@@ -3,6 +3,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "constants/math_constants.hpp"
+#include "constants/paths.hpp"
+#include "utils/math_utils.hpp"
+
 #include "view/camera.hpp"
 #include "graphics/types.hpp"
 #include "examples/scenes/plane_scene.hpp"
@@ -11,7 +15,6 @@ namespace examples
 {
     using namespace std;
     using namespace glm;
-    using namespace graphics;
 
     PlaneScene::PlaneScene()
         : m_PlaneMesh(nullptr),
@@ -20,7 +23,7 @@ namespace examples
           m_Time(0.0f),
           m_WaveSpeed(5.0f),
           m_WaveAmplitude(0.25f),
-          m_WaveFrequency(3.14159f),
+          m_WaveFrequency(constants::math::PI),
           m_OpacityFadeStart(0.5f),
           m_GridSize(128),
           m_PlaneSize(8.0f),
@@ -96,23 +99,23 @@ namespace examples
 
         // Calculate plane radius (half diagonal from center to corner)
         // For a square plane of size S, diagonal = S * sqrt(2), half diagonal = S * sqrt(2) / 2
-        m_PlaneRadius = m_PlaneSize * 0.70710678118f; // sqrt(2)/2 ≈ 0.707
+        m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
 
         // Create a shader for wave effect
-        m_Shader = new Shader("shaders/wave/vertex.glsl", "shaders/wave/fragment.glsl");
+        m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER, constants::paths::WAVE_FRAGMENT_SHADER);
 
         // Calculate initial frequency based on wave count and plane size
         // We want m_WaveCount full wavelengths to fit in the radius
         // Check if it's a default value
-        if (m_WaveFrequency == 3.14159f)
+        if (utils::math::FloatEqual(m_WaveFrequency, constants::math::PI))
         {
-            m_WaveFrequency = (static_cast<float>(m_WaveCount) * 2.0f * 3.14159f) / m_PlaneRadius;
+            m_WaveFrequency = (static_cast<float>(m_WaveCount) * constants::math::TWO_PI) / m_PlaneRadius;
         }
 
         // Setup camera - position it at an angle for better wave visibility
         m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
         m_Camera->SetRotationEuler(vec3(-90.0f, -45.0f, 0.0f));
-        m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
+        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void PlaneScene::OnUpdate(const float deltaTime)

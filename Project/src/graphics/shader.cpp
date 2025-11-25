@@ -3,6 +3,8 @@
 #include <sstream>
 #include <filesystem>
 
+#include "utils/file_utils.hpp"
+
 #include <glm/gtc/type_ptr.hpp>
 #include "graphics/shader.hpp"
 
@@ -110,47 +112,13 @@ namespace graphics
 
     string Shader::ReadFile(const string& filepath)
     {
-        string content;
+        // Use file utility to read a shader file
+        string content = utils::file::ReadFile(filepath);
 
-        try
+        if (content.empty())
         {
-            ifstream file;
-
-            // Open file
-            file.open(filepath);
-
-            if (!file.is_open())
-            {
-                cerr << "[Shader Error] Failed to open shader file: " << filepath << endl;
-                cerr << "Current working directory: " << filesystem::current_path() << endl;
-
-                return content;
-            }
-
-            stringstream stream;
-
-            // Read the file's buffer contents into the stream
-            stream << file.rdbuf();
-
-            // Close file handler
-            file.close();
-
-            // Convert stream into string
-            content = stream.str();
-
-            if (content.empty())
-            {
-                cerr << "[Shader Error] Shader file is empty: " << filepath << endl;
-            }
-        }
-        catch (const exception& e)
-        {
-            cerr
-                << "[Shader Error] Failed to read shader file: "
-                << filepath << "\n"
-                << "Error: "
-                << e.what()
-                << endl;
+            cerr << "[Shader Error] Failed to read shader file: " << filepath << endl;
+            cerr << "Current working directory: " << filesystem::current_path() << endl;
         }
 
         return content;

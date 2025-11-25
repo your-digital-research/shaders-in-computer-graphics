@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "constants/graphics_constants.hpp"
+
 #include "core/application.hpp"
 #include "platform/window.hpp"
 
@@ -25,7 +27,9 @@ namespace core
 
     void Application::Initialize()
     {
-        m_Window = new Window(1280, 720, "Shaders In Computer Graphics");
+        m_Window = new Window(constants::graphics::DEFAULT_WINDOW_WIDTH,
+                              constants::graphics::DEFAULT_WINDOW_HEIGHT,
+                              constants::graphics::DEFAULT_WINDOW_TITLE);
         m_Engine = new Engine(m_Window);
 
         cout << "Application initialized successfully!" << endl;
