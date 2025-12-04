@@ -1,5 +1,4 @@
 #include "constants/graphics_constants.hpp"
-#include "utils/math_utils.hpp"
 
 #include "view/camera.hpp"
 
@@ -7,7 +6,7 @@ namespace view
 {
     using namespace glm;
 
-    Camera::Camera(const vec3& position, const vec3& up, const float yaw, const float pitch, const float roll)
+    Camera::Camera(const vec3& position, const vec3& up, const float pitch, const float yaw, const float roll)
         : m_Position(position),
           m_Front(vec3(0.0f, 0.0f, -1.0f)),
           m_Back(vec3(0.0f, 0.0f, 1.0f)),
@@ -63,11 +62,10 @@ namespace view
 
     void Camera::SetRotationEuler(const vec3& eulerAngles)
     {
-        m_Yaw = eulerAngles.x;
-        m_Pitch = eulerAngles.y;
+        m_Pitch = eulerAngles.x;
+        m_Yaw = eulerAngles.y;
         m_Roll = eulerAngles.z;
 
-        // Clamp pitch to prevent gimbal lock
         m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
 
         UpdateCameraVectors();
@@ -81,10 +79,10 @@ namespace view
         UpdateCameraVectors();
     }
 
-    void Camera::Rotate(const float yaw, const float pitch, const float roll)
+    void Camera::Rotate(const float pitch, const float yaw, const float roll)
     {
-        m_Yaw += yaw;
         m_Pitch += pitch;
+        m_Yaw += yaw;
         m_Roll += roll;
 
         // Clamp pitch to prevent gimbal lock
@@ -106,9 +104,9 @@ namespace view
         // Calculate front vector from Euler angles
         vec3 front;
 
-        front.x = cos(radians(m_Yaw)) * cos(radians(m_Pitch));
+        front.x = sin(radians(m_Yaw)) * cos(radians(m_Pitch));
         front.y = sin(radians(m_Pitch));
-        front.z = sin(radians(m_Yaw)) * cos(radians(m_Pitch));
+        front.z = -cos(radians(m_Yaw)) * cos(radians(m_Pitch));
 
         m_Front = normalize(front);
         m_Back = -m_Front;
@@ -155,8 +153,8 @@ namespace view
         // Convert quaternion to Euler angles
         const vec3 euler = eulerAngles(m_Orientation);
 
-        m_Yaw = degrees(euler.y);
         m_Pitch = degrees(euler.x);
+        m_Yaw = degrees(euler.y);
         m_Roll = degrees(euler.z);
 
         // Clamp pitch

@@ -116,7 +116,7 @@ namespace examples
 
         // Setup camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 4.0f));
-        // m_Camera->SetRotationEuler(vec3(-90.0f, 0.0f, 0.0f));
+        // m_Camera->SetRotationEuler(vec3(0.0f, 0.0f, 0.0f));
         // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 

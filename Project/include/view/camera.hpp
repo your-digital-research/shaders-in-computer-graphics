@@ -15,8 +15,8 @@ namespace view
         explicit Camera(
             const vec3& position = vec3(0.0f, 0.0f, 3.0f),
             const vec3& up = vec3(0.0f, 1.0f, 0.0f),
-            float yaw = -90.0f,
             float pitch = 0.0f,
+            float yaw = 0.0f,
             float roll = 0.0f);
         ~Camera() = default;
 
@@ -32,7 +32,7 @@ namespace view
         void SetPosition(const vec3& position);
         void SetRotationEuler(const vec3& eulerAngles);
         void SetRotationQuaternion(const quat& quaternion);
-        void Rotate(float yaw, float pitch, float roll);
+        void Rotate(float pitch, float yaw, float roll);
 
         // Getters - Position
         [[nodiscard]] const vec3& GetPosition() const { return m_Position; }
