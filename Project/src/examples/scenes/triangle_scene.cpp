@@ -23,31 +23,33 @@ namespace examples
         TriangleScene::OnDestroy();
     }
 
-    void TriangleScene::OnCreate()
+    void TriangleScene::CreateTriangle()
     {
-        // Define vertices with positions and colors
         const Vertices vertices = {
-            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red),             // Top vertex (Red)
-            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green),         // Bottom left (Green)
-            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue)            // Bottom right (Blue)
+            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red),
+            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green),
+            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue)
         };
 
-        // Create indices
         const VertexIndices indices = {0, 1, 2};
 
-        // Create mesh and shader
         m_TriangleMesh = new Mesh(vertices, indices);
+    }
+
+    void TriangleScene::OnCreate()
+    {
+        CreateTriangle();
+
+        // Create Shader
         m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER, constants::paths::COLORED_FRAGMENT_SHADER);
 
-        // Setup camera
+        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
-        // m_Camera->SetRotationEuler(vec3(0.0f, 0.0f, 0.0f));
-        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void TriangleScene::OnUpdate(float deltaTime)
     {
-        // No animation for the triangle scene
+        //
     }
 
     void TriangleScene::OnRender()

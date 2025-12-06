@@ -26,5 +26,8 @@ namespace examples
         // Scene resources
         Mesh* m_TriangleMesh;
         Shader* m_Shader;
+
+        // Mesh generation
+        void CreateTriangle();
     };
 }

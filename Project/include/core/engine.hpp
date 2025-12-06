@@ -21,7 +21,7 @@ namespace core
         void Run();
 
         // Timing
-        [[nodiscard]] float CalculateDeltaTime();
+        [[nodiscard]] float GetDeltaTime();
 
         // Scene management
         SceneManager& GetSceneManager() { return m_SceneManager; }

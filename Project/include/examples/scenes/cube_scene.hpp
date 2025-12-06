@@ -31,5 +31,8 @@ namespace examples
         // Transform matrices
         mat4 m_ModelMatrix;
         float m_RotationAngle;
+
+        // Mesh generation
+        void CreateCube();
     };
 }

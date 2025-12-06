@@ -11,7 +11,6 @@ namespace graphics
     using namespace std;
     using namespace glm;
 
-    // Vertex structure for combined position, color, and UV data
     struct Vertex
     {
         vec3 position;
@@ -29,7 +28,5 @@ namespace graphics
 
     // Vertex-related type aliases
     using Vertices = vector<Vertex>;
-    using VertexPositions = vector<vec3>;
-    using VertexColors = vector<Color>;
     using VertexIndices = vector<unsigned int>;
 }

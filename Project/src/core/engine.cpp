@@ -22,16 +22,11 @@ namespace core
 
     void Engine::Initialize()
     {
-        // Create renderer
         m_Renderer = new Renderer();
 
-        // Set Renderer defaults - using a nice dark blue-gray background
-        const Color backgroundColor = Color::RGB(0.15f, 0.18f, 0.22f);
-
-        Renderer::SetClearColor(backgroundColor);
+        Renderer::SetClearColor(Color::RGB(0.15f, 0.18f, 0.22f));
         Renderer::SetViewport(0, 0, m_Window->GetWidth(), m_Window->GetHeight());
 
-        // Initialize scenes after a renderer is set up
         m_SceneManager.InitializeDefaultScenes();
     }
 
@@ -42,7 +37,7 @@ namespace core
         m_Renderer = nullptr;
     }
 
-    float Engine::CalculateDeltaTime()
+    float Engine::GetDeltaTime()
     {
         const auto currentTime = static_cast<float>(glfwGetTime());
         const float deltaTime = currentTime - m_LastFrameTime;
@@ -56,22 +51,13 @@ namespace core
     {
         while (m_Running && !m_Window->ShouldClose())
         {
-            // Poll for events
             Window::PollEvents();
 
-            // Calculate delta time
-            const float deltaTime = CalculateDeltaTime();
+            m_SceneManager.UpdateActiveScene(GetDeltaTime());
 
-            // Update scene (includes aspect ratio update)
-            m_SceneManager.UpdateActiveScene(deltaTime);
-
-            // Clear screen
             Renderer::Clear();
 
-            // Render scene
             m_SceneManager.RenderActiveScene();
-
-            // Swap buffers
             m_Window->SwapBuffers();
         }
     }

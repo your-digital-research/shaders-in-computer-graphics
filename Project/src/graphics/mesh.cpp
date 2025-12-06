@@ -5,7 +5,6 @@ namespace graphics
     using namespace std;
     using namespace glm;
 
-    // Constructor with a Vertex array
     Mesh::Mesh(const Vertices& vertices, const VertexIndices& indices)
         : m_VAO(0),
           m_VBO(0),

@@ -3,9 +3,10 @@
 #include <sstream>
 #include <filesystem>
 
+#include <glm/gtc/type_ptr.hpp>
+
 #include "utils/file_utils.hpp"
 
-#include <glm/gtc/type_ptr.hpp>
 #include "graphics/shader.hpp"
 
 namespace graphics

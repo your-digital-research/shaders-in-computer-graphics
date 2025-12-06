@@ -1,10 +1,6 @@
 #include <vector>
 #include <string>
 
-#ifdef __APPLE__
-#include <mach-o/dyld.h>
-#endif
-
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/paths.hpp"
@@ -34,9 +30,8 @@ namespace examples
         CubeScene::OnDestroy();
     }
 
-    void CubeScene::OnCreate()
+    void CubeScene::CreateCube()
     {
-        // Define soft pastel colors for each face
         constexpr Color softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
         constexpr Color softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
         constexpr Color softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
@@ -44,46 +39,44 @@ namespace examples
         constexpr Color softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
         constexpr Color softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
 
-        // Create cube vertices with soft pastel colors for each face
         const Vertices vertices = {
-            // Front face (Soft Coral)
+            // Front face
             Vertex(vec3(-0.5f, -0.5f, 0.5f), softCoral),
             Vertex(vec3(0.5f, -0.5f, 0.5f), softCoral),
             Vertex(vec3(0.5f, 0.5f, 0.5f), softCoral),
             Vertex(vec3(-0.5f, 0.5f, 0.5f), softCoral),
 
-            // Back face (Soft Mint)
+            // Back face
             Vertex(vec3(-0.5f, -0.5f, -0.5f), softMint),
             Vertex(vec3(-0.5f, 0.5f, -0.5f), softMint),
             Vertex(vec3(0.5f, 0.5f, -0.5f), softMint),
             Vertex(vec3(0.5f, -0.5f, -0.5f), softMint),
 
-            // Right face (Soft Lavender)
+            // Right face
             Vertex(vec3(0.5f, -0.5f, 0.5f), softLavender),
             Vertex(vec3(0.5f, -0.5f, -0.5f), softLavender),
             Vertex(vec3(0.5f, 0.5f, -0.5f), softLavender),
             Vertex(vec3(0.5f, 0.5f, 0.5f), softLavender),
 
-            // Left face (Soft Peach)
+            // Left face
             Vertex(vec3(-0.5f, -0.5f, -0.5f), softPeach),
             Vertex(vec3(-0.5f, -0.5f, 0.5f), softPeach),
             Vertex(vec3(-0.5f, 0.5f, 0.5f), softPeach),
             Vertex(vec3(-0.5f, 0.5f, -0.5f), softPeach),
 
-            // Top face (Soft Sky Blue)
+            // Top face
             Vertex(vec3(-0.5f, 0.5f, 0.5f), softSkyBlue),
             Vertex(vec3(0.5f, 0.5f, 0.5f), softSkyBlue),
             Vertex(vec3(0.5f, 0.5f, -0.5f), softSkyBlue),
             Vertex(vec3(-0.5f, 0.5f, -0.5f), softSkyBlue),
 
-            // Bottom face (Soft Rose)
+            // Bottom face
             Vertex(vec3(-0.5f, -0.5f, -0.5f), softRose),
             Vertex(vec3(0.5f, -0.5f, -0.5f), softRose),
             Vertex(vec3(0.5f, -0.5f, 0.5f), softRose),
             Vertex(vec3(-0.5f, -0.5f, 0.5f), softRose)
         };
 
-        // Create cube indices
         const VertexIndices indices = {
             // Front face
             0, 1, 2,
@@ -110,14 +103,18 @@ namespace examples
             22, 23, 20
         };
 
-        // Create mesh and shader
         m_CubeMesh = new Mesh(vertices, indices);
+    }
+
+    void CubeScene::OnCreate()
+    {
+        CreateCube();
+
+        // Create Shader
         m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER, constants::paths::COLORED_FRAGMENT_SHADER);
 
-        // Setup camera
+        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 4.0f));
-        // m_Camera->SetRotationEuler(vec3(0.0f, 0.0f, 0.0f));
-        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void CubeScene::OnUpdate(const float deltaTime)
@@ -141,7 +138,7 @@ namespace examples
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
         // Set a uniform color when using a basic shader (not used in colored shader)
-        constexpr Color color = Color::GrayAlpha(0.7f, 1.0f);
+        // constexpr Color color = Color::GrayAlpha(0.7f, 1.0f);
         // m_Shader->SetVec4("uColor", color.ToVec4());
 
         // Render cube

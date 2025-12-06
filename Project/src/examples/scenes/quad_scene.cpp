@@ -23,7 +23,7 @@ namespace examples
         QuadScene::OnDestroy();
     }
 
-    void QuadScene::OnCreate()
+    void QuadScene::CreateQuad()
     {
         const Vertices vertices = {
             Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::White, vec2(0.0f, 0.0f)),
@@ -38,11 +38,17 @@ namespace examples
         };
 
         m_QuadMesh = new Mesh(vertices, indices);
+    }
+
+    void QuadScene::OnCreate()
+    {
+        CreateQuad();
+
+        // Create Shader
         m_Shader = new Shader(constants::paths::UV_VERTEX_SHADER, constants::paths::UV_FRAGMENT_SHADER);
 
+        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
-        // m_Camera->SetRotationEuler(vec3(0.0f, 0.0f, 0.0f));
-        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void QuadScene::OnUpdate(float deltaTime)

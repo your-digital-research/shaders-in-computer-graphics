@@ -26,6 +26,9 @@ namespace examples
         // Scene resources
         Mesh* m_QuadMesh;
         Shader* m_Shader;
+
+        // Mesh generation
+        void CreateQuad();
     };
 }
 

@@ -58,7 +58,7 @@ namespace examples
 
                 // Calculate distance from a center for color variation
                 const float distFromCenter = sqrt(xPos * xPos + zPos * zPos);
-                const float normalizedDist = distFromCenter / (halfSize * 1.414f); // Normalize to [0, 1]
+                const float normalizedDist = distFromCenter / (halfSize * 1.414f);  // Normalize to [0, 1]
 
                 // Create a color based on distance (will be used for interpolation)
                 const auto color = Color(normalizedDist, 0.5f, 1.0f - normalizedDist, 1.0f);
@@ -94,15 +94,18 @@ namespace examples
 
     void PlaneScene::OnCreate()
     {
-        // Create a highly tessellated plane for very smooth water ripples
         CreateTessellatedPlane(m_GridSize, m_PlaneSize);
+
+        // Create Shader
+        m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER, constants::paths::WAVE_FRAGMENT_SHADER);
+
+        // Setup Camera
+        m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
+        m_Camera->SetRotationEuler(vec3(-45.0f, 0.0f, 0.0f));
 
         // Calculate plane radius (half diagonal from center to corner)
         // For a square plane of size S, diagonal = S * sqrt(2), half diagonal = S * sqrt(2) / 2
         m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
-
-        // Create a shader for wave effect
-        m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER, constants::paths::WAVE_FRAGMENT_SHADER);
 
         // Calculate initial frequency based on wave count and plane size
         // We want m_WaveCount full wavelengths to fit in the radius
@@ -111,16 +114,10 @@ namespace examples
         {
             m_WaveFrequency = (static_cast<float>(m_WaveCount) * constants::math::TWO_PI) / m_PlaneRadius;
         }
-
-        // Setup camera - position it at an angle for better wave visibility
-        m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
-        m_Camera->SetRotationEuler(vec3(-45.0f, 0.0f, 0.0f));
-        // m_Camera->SetProjection(45.0f, 1.0f, 0.1f, 100.0f);
     }
 
     void PlaneScene::OnUpdate(const float deltaTime)
     {
-        // Update time for wave animation
         m_Time += deltaTime * m_WaveSpeed;
     }
 
@@ -205,7 +202,7 @@ namespace examples
             case GradientTheme::FireLava:
                 m_CenterColor = Color::RGB(0.8f, 0.1f, 0.0f);           // Deep red
                 m_EdgeColor = Color::RGB(1.0f, 0.8f, 0.0f);             // Bright yellow
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f);         // White hot
+                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f);         // White-hot
                 m_WaveTroughColor = Color::RGB(0.5f, 0.0f, 0.0f);       // Dark crimson
                 break;
 
