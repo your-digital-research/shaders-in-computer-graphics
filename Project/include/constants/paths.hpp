@@ -12,6 +12,8 @@ namespace constants::paths
     constexpr char COLORED_FRAGMENT_SHADER[] = "shaders/colored/fragment.glsl";
     constexpr char WAVE_VERTEX_SHADER[] = "shaders/wave/vertex.glsl";
     constexpr char WAVE_FRAGMENT_SHADER[] = "shaders/wave/fragment.glsl";
+    constexpr char UV_VERTEX_SHADER[] = "shaders/uv/vertex.glsl";
+    constexpr char UV_FRAGMENT_SHADER[] = "shaders/uv/fragment.glsl";
 
     // Asset paths
     constexpr char ASSETS_DIR[] = "assets/";
