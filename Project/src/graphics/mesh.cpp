@@ -44,44 +44,23 @@ namespace graphics
         glGenBuffers(1, &m_VBO);
         glGenBuffers(1, &m_IBO);
 
-        // Bind VAO first
+        // Bind all buffers and load data
         glBindVertexArray(m_VAO);
-
-        // Interleave position and color data
-        vector<float> vertexData;
-        vertexData.reserve(vertices.size() * 7); // 3 floats for position + 4 for RGBA color
-
-        for (const auto& vertex : vertices)
-        {
-            // Position (vec3)
-            vertexData.push_back(vertex.position.x);
-            vertexData.push_back(vertex.position.y);
-            vertexData.push_back(vertex.position.z);
-
-            // Color (vec4 - RGBA)
-            vertexData.push_back(vertex.color.r);
-            vertexData.push_back(vertex.color.g);
-            vertexData.push_back(vertex.color.b);
-            vertexData.push_back(vertex.color.a);
-        }
-
-        // Load interleaved data
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertexData.size() * sizeof(float), vertexData.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
-        // Load index data
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-        constexpr size_t stride = sizeof(vec3) + sizeof(vec4); // position (vec3) + color (vec4)
+        // Set up vertex attribute pointers for position, color, and UVs
+        glEnableVertexAttribArray(0); // Position
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 
-        // Position attribute
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, static_cast<void*>(nullptr));
+        glEnableVertexAttribArray(1); // Color
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
-        // Color attribute
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(sizeof(vec3)));
+        glEnableVertexAttribArray(2); // UVs
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
         // Unbind VAO
         glBindVertexArray(0);
