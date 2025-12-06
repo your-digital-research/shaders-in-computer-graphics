@@ -1,17 +1,15 @@
-// Basic Fragment Shader
-// Renders all fragments with a single uniform color
-// Used for simple solid-colored geometry
+// Basic Fragment Shader - Renders with uniform color
 
 #version 330 core
 
-// Output color for this fragment
+// Output
 out vec4 FragColor;
 
-// Uniform color
+// Uniforms
 uniform vec4 uColor;
 
 void main()
 {
-    // Output the uniform color for all fragments
+    // Output uniform color
     FragColor = uColor;
 }

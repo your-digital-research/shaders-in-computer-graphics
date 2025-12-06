@@ -1,19 +1,17 @@
-// Basic Vertex Shader
-// Transforms vertex positions using Model-View-Projection matrices
-// Used for rendering simple geometry with uniform colors
+// Basic Vertex Shader - Transforms vertices using MVP matrices
 
 #version 330 core
 
-// Input vertex attributes
-layout(location = 0) in vec3 aPosition;  // Vertex position in model space
+// Vertex attributes
+layout(location = 0) in vec3 aPosition;
 
-// Uniform matrices for transformations
-uniform mat4 uModel;       // Model matrix (local to world space)
-uniform mat4 uView;        // View matrix (world to camera space)
-uniform mat4 uProjection;  // Projection matrix (camera to clip space)
+// Transformation matrices
+uniform mat4 uModel;
+uniform mat4 uView;
+uniform mat4 uProjection;
 
 void main()
 {
-    // Transform vertex position: Model -> View -> Projection
+    // Transform position to clip space
     gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
 }
