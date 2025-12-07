@@ -40,42 +40,46 @@ namespace examples
     {
         const float halfSize = m_CubeSize * 0.5f;
 
+        // UV Atlas Layout (horizontal strip): [Left][Front][Right][Back][Top][Bottom]
+        // Each face occupies 1/6th of the texture width (0.1667 units)
+        constexpr float faceWidth = 1.0f / 6.0f;
+
         const Vertices vertices = {
-            // Front face
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_FrontColor),
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_FrontColor),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_FrontColor),
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_FrontColor),
+            // Front face - UV range [1/6, 2/6]
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_FrontColor, vec2(faceWidth * 1, 0.0f)),
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_FrontColor, vec2(faceWidth * 2, 0.0f)),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_FrontColor, vec2(faceWidth * 2, 1.0f)),
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_FrontColor, vec2(faceWidth * 1, 1.0f)),
 
-            // Back face
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BackColor),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_BackColor),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_BackColor),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BackColor),
+            // Back face - UV range [3/6, 4/6]
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BackColor, vec2(faceWidth * 4, 0.0f)),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_BackColor, vec2(faceWidth * 4, 1.0f)),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_BackColor, vec2(faceWidth * 3, 1.0f)),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BackColor, vec2(faceWidth * 3, 0.0f)),
 
-            // Right face
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_RightColor),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_RightColor),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_RightColor),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_RightColor),
+            // Right face - UV range [2/6, 3/6]
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_RightColor, vec2(faceWidth * 2, 0.0f)),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_RightColor, vec2(faceWidth * 3, 0.0f)),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_RightColor, vec2(faceWidth * 3, 1.0f)),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_RightColor, vec2(faceWidth * 2, 1.0f)),
 
-            // Left face
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_LeftColor),
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_LeftColor),
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_LeftColor),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_LeftColor),
+            // Left face - UV range [0/6, 1/6]
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_LeftColor, vec2(faceWidth * 0, 0.0f)),
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_LeftColor, vec2(faceWidth * 1, 0.0f)),
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_LeftColor, vec2(faceWidth * 1, 1.0f)),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_LeftColor, vec2(faceWidth * 0, 1.0f)),
 
-            // Top face
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_TopColor),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_TopColor),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_TopColor),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_TopColor),
+            // Top face - UV range [4/6, 5/6]
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_TopColor, vec2(faceWidth * 4, 0.0f)),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_TopColor, vec2(faceWidth * 5, 0.0f)),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_TopColor, vec2(faceWidth * 5, 1.0f)),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_TopColor, vec2(faceWidth * 4, 1.0f)),
 
-            // Bottom face
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BottomColor),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BottomColor),
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_BottomColor),
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_BottomColor)
+            // Bottom face - UV range [5/6, 6/6]
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BottomColor, vec2(faceWidth * 5, 1.0f)),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BottomColor, vec2(faceWidth * 6, 1.0f)),
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_BottomColor, vec2(faceWidth * 6, 0.0f)),
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_BottomColor, vec2(faceWidth * 5, 0.0f))
         };
 
         const VertexIndices indices = {

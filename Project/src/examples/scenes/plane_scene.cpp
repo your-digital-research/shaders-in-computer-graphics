@@ -57,7 +57,10 @@ namespace examples
                 const float xPos = static_cast<float>(x) * stepSize - halfSize;
                 const float zPos = static_cast<float>(z) * stepSize - halfSize;
 
-                vertices.emplace_back(vec3(xPos, 0.0f, zPos), Color::White);
+                const float u = static_cast<float>(x) / static_cast<float>(gridSize);
+                const float v = static_cast<float>(z) / static_cast<float>(gridSize);
+
+                vertices.emplace_back(vec3(xPos, 0.0f, zPos), Color::White, vec2(u, v));
             }
         }
 

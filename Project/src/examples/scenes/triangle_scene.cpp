@@ -33,9 +33,9 @@ namespace examples
         const float halfSize = m_TriangleSize * 0.5f;
 
         const Vertices vertices = {
-            Vertex(vec3(0.0f, halfSize, 0.0f), m_TopColor),
-            Vertex(vec3(-halfSize, -halfSize, 0.0f), m_BottomLeftColor),
-            Vertex(vec3(halfSize, -halfSize, 0.0f), m_BottomRightColor)
+            Vertex(vec3(0.0f, halfSize, 0.0f), m_TopColor, vec2(0.5f, 1.0f)),
+            Vertex(vec3(-halfSize, -halfSize, 0.0f), m_BottomLeftColor, vec2(0.0f, 0.0f)),
+            Vertex(vec3(halfSize, -halfSize, 0.0f), m_BottomRightColor, vec2(1.0f, 0.0f))
         };
 
         const VertexIndices indices = {0, 1, 2};
