@@ -10,8 +10,8 @@ namespace examples
     using namespace scene;
     using namespace graphics;
 
-    // Gradient theme options for wave plane
-    enum class GradientTheme
+    // Color theme options for wave plane
+    enum class PlaneColorTheme
     {
         Unknown,
         AuroraSunset,      // Purple to orange (warm, magical)
@@ -45,6 +45,9 @@ namespace examples
         Mesh* m_PlaneMesh;
         Shader* m_Shader;
 
+        // Transform matrices
+        mat4 m_ModelMatrix;
+
         // Wave parameters
         int m_WaveCount;
         float m_Time;
@@ -65,12 +68,12 @@ namespace examples
         Color m_EdgeColor = Color::White;
         Color m_WavePeakColor = Color::White;
         Color m_WaveTroughColor = Color::White;
-        GradientTheme m_CurrentGradient = GradientTheme::Unknown;
+        PlaneColorTheme m_CurrentColorTheme = PlaneColorTheme::Unknown;
 
         // Mesh generation
-        void CreateTessellatedPlane(int gridSize, float planeSize);
+        void CreatePlane(int gridSize, float planeSize);
 
-        // Gradient management
-        void SetGradientTheme(GradientTheme theme);
+        // Color management
+        void SetColorTheme(PlaneColorTheme theme);
     };
 }
