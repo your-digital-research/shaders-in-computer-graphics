@@ -13,7 +13,11 @@ namespace examples
 
     QuadScene::QuadScene()
         : m_QuadMesh(nullptr),
-          m_Shader(nullptr)
+          m_Shader(nullptr),
+          m_ModelMatrix(1.0f),
+          m_QuadWidth(1.0f),
+          m_QuadHeight(1.0f),
+          m_QuadColor(Color::White)
     {
         QuadScene::OnCreate();
     }
@@ -25,11 +29,14 @@ namespace examples
 
     void QuadScene::CreateQuad()
     {
+        const float halfWidth = m_QuadWidth * 0.5f;
+        const float halfHeight = m_QuadHeight * 0.5f;
+
         const Vertices vertices = {
-            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::White, vec2(0.0f, 0.0f)),
-            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::White, vec2(1.0f, 0.0f)),
-            Vertex(vec3(0.5f, 0.5f, 0.0f), Color::White, vec2(1.0f, 1.0f)),
-            Vertex(vec3(-0.5f, 0.5f, 0.0f), Color::White, vec2(0.0f, 1.0f)),
+            Vertex(vec3(-halfWidth, -halfHeight, 0.0f), m_QuadColor, vec2(0.0f, 0.0f)),
+            Vertex(vec3(halfWidth, -halfHeight, 0.0f), m_QuadColor, vec2(1.0f, 0.0f)),
+            Vertex(vec3(halfWidth, halfHeight, 0.0f), m_QuadColor, vec2(1.0f, 1.0f)),
+            Vertex(vec3(-halfWidth, halfHeight, 0.0f), m_QuadColor, vec2(0.0f, 1.0f)),
         };
 
         const VertexIndices indices = {
@@ -60,7 +67,7 @@ namespace examples
     {
         // Bind shader and set uniforms
         m_Shader->Bind();
-        m_Shader->SetMat4("uModel", mat4(1.0f));
+        m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 

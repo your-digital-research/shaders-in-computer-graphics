@@ -27,6 +27,16 @@ namespace examples
         Mesh* m_QuadMesh;
         Shader* m_Shader;
 
+        // Transform matrices
+        mat4 m_ModelMatrix;
+
+        // Quad properties
+        float m_QuadWidth;
+        float m_QuadHeight;
+
+        // Quad color
+        Color m_QuadColor;
+
         // Mesh generation
         void CreateQuad();
     };
