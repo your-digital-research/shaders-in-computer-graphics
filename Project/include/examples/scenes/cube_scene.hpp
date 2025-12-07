@@ -10,6 +10,22 @@ namespace examples
     using namespace scene;
     using namespace graphics;
 
+    // Color theme options for cube faces
+    enum class CubeColorTheme
+    {
+        Unknown,
+        PastelDream,       // Soft pastel colors
+        NeonCyberpunk,     // Bright neon colors
+        OceanDepth,        // Blues and teals
+        SunsetVibes,       // Warm oranges and pinks
+        ForestNature,      // Greens and browns
+        RoyalLuxury,       // Purples and golds
+        FireAndIce,        // Reds and blues contrast
+        CandyPop,          // Bright candy colors
+        MonochromeGray,    // Grayscale gradient
+        RainbowSpectrum    // Full rainbow colors
+    };
+
     class CubeScene final : public Scene
     {
     public:
@@ -30,9 +46,28 @@ namespace examples
 
         // Transform matrices
         mat4 m_ModelMatrix;
+
+        // Animation parameters
         float m_RotationAngle;
+        float m_RotationSpeed;
+        vec3 m_RotationAxis;
+
+        // Cube properties
+        float m_CubeSize;
+
+        // Face colors
+        Color m_FrontColor = Color::White;
+        Color m_BackColor = Color::White;
+        Color m_RightColor = Color::White;
+        Color m_LeftColor = Color::White;
+        Color m_TopColor = Color::White;
+        Color m_BottomColor = Color::White;
+        CubeColorTheme m_CurrentColorTheme = CubeColorTheme::Unknown;
 
         // Mesh generation
         void CreateCube();
+
+        // Color management
+        void SetColorTheme(CubeColorTheme theme);
     };
 }

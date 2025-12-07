@@ -20,8 +20,14 @@ namespace examples
         : m_CubeMesh(nullptr),
           m_Shader(nullptr),
           m_ModelMatrix(1.0f),
-          m_RotationAngle(0.0f)
+          m_RotationAngle(0.0f),
+          m_RotationSpeed(25.0f),
+          m_RotationAxis(0.5f, 1.0f, 0.25f),
+          m_CubeSize(1.0f),
+          m_CurrentColorTheme(CubeColorTheme::MonochromeGray)
     {
+        SetColorTheme(m_CurrentColorTheme);
+
         CubeScene::OnCreate();
     }
 
@@ -32,49 +38,44 @@ namespace examples
 
     void CubeScene::CreateCube()
     {
-        constexpr Color softCoral = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);
-        constexpr Color softMint = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);
-        constexpr Color softLavender = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);
-        constexpr Color softPeach = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);
-        constexpr Color softSkyBlue = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);
-        constexpr Color softRose = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);
+        const float halfSize = m_CubeSize * 0.5f;
 
         const Vertices vertices = {
             // Front face
-            Vertex(vec3(-0.5f, -0.5f, 0.5f), softCoral),
-            Vertex(vec3(0.5f, -0.5f, 0.5f), softCoral),
-            Vertex(vec3(0.5f, 0.5f, 0.5f), softCoral),
-            Vertex(vec3(-0.5f, 0.5f, 0.5f), softCoral),
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_FrontColor),
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_FrontColor),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_FrontColor),
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_FrontColor),
 
             // Back face
-            Vertex(vec3(-0.5f, -0.5f, -0.5f), softMint),
-            Vertex(vec3(-0.5f, 0.5f, -0.5f), softMint),
-            Vertex(vec3(0.5f, 0.5f, -0.5f), softMint),
-            Vertex(vec3(0.5f, -0.5f, -0.5f), softMint),
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BackColor),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_BackColor),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_BackColor),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BackColor),
 
             // Right face
-            Vertex(vec3(0.5f, -0.5f, 0.5f), softLavender),
-            Vertex(vec3(0.5f, -0.5f, -0.5f), softLavender),
-            Vertex(vec3(0.5f, 0.5f, -0.5f), softLavender),
-            Vertex(vec3(0.5f, 0.5f, 0.5f), softLavender),
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_RightColor),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_RightColor),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_RightColor),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_RightColor),
 
             // Left face
-            Vertex(vec3(-0.5f, -0.5f, -0.5f), softPeach),
-            Vertex(vec3(-0.5f, -0.5f, 0.5f), softPeach),
-            Vertex(vec3(-0.5f, 0.5f, 0.5f), softPeach),
-            Vertex(vec3(-0.5f, 0.5f, -0.5f), softPeach),
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_LeftColor),
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_LeftColor),
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_LeftColor),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_LeftColor),
 
             // Top face
-            Vertex(vec3(-0.5f, 0.5f, 0.5f), softSkyBlue),
-            Vertex(vec3(0.5f, 0.5f, 0.5f), softSkyBlue),
-            Vertex(vec3(0.5f, 0.5f, -0.5f), softSkyBlue),
-            Vertex(vec3(-0.5f, 0.5f, -0.5f), softSkyBlue),
+            Vertex(vec3(-halfSize, halfSize, halfSize), m_TopColor),
+            Vertex(vec3(halfSize, halfSize, halfSize), m_TopColor),
+            Vertex(vec3(halfSize, halfSize, -halfSize), m_TopColor),
+            Vertex(vec3(-halfSize, halfSize, -halfSize), m_TopColor),
 
             // Bottom face
-            Vertex(vec3(-0.5f, -0.5f, -0.5f), softRose),
-            Vertex(vec3(0.5f, -0.5f, -0.5f), softRose),
-            Vertex(vec3(0.5f, -0.5f, 0.5f), softRose),
-            Vertex(vec3(-0.5f, -0.5f, 0.5f), softRose)
+            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BottomColor),
+            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BottomColor),
+            Vertex(vec3(halfSize, -halfSize, halfSize), m_BottomColor),
+            Vertex(vec3(-halfSize, -halfSize, halfSize), m_BottomColor)
         };
 
         const VertexIndices indices = {
@@ -120,13 +121,13 @@ namespace examples
     void CubeScene::OnUpdate(const float deltaTime)
     {
         // Update rotation angle
-        m_RotationAngle += deltaTime * 50.0f;
+        m_RotationAngle += deltaTime * m_RotationSpeed;
 
         // Use utility to wrap an angle to [0, 360]
         m_RotationAngle = utils::math::WrapAngle360(m_RotationAngle);
 
         // Update model matrix using math utility for conversion
-        m_ModelMatrix = rotate(mat4(1.0f), utils::math::ToRadians(m_RotationAngle), vec3(0.5f, 1.0f, 0.0f));
+        m_ModelMatrix = rotate(mat4(1.0f), utils::math::ToRadians(m_RotationAngle), m_RotationAxis);
     }
 
     void CubeScene::OnRender()
@@ -156,5 +157,112 @@ namespace examples
 
         m_CubeMesh = nullptr;
         m_Shader = nullptr;
+    }
+
+    void CubeScene::SetColorTheme(const CubeColorTheme theme)
+    {
+        m_CurrentColorTheme = theme;
+
+        switch (theme)
+        {
+            case CubeColorTheme::Unknown:
+                m_FrontColor = Color::White;
+                m_BackColor = Color::White;
+                m_RightColor = Color::White;
+                m_LeftColor = Color::White;
+                m_TopColor = Color::White;
+                m_BottomColor = Color::White;
+                break;
+
+            case CubeColorTheme::PastelDream:
+                m_FrontColor = Color::RGBA(1.0f, 0.7f, 0.7f, 1.0f);     // Soft coral
+                m_BackColor = Color::RGBA(0.7f, 1.0f, 0.8f, 1.0f);      // Soft mint
+                m_RightColor = Color::RGBA(0.8f, 0.7f, 1.0f, 1.0f);     // Soft lavender
+                m_LeftColor = Color::RGBA(1.0f, 0.85f, 0.7f, 1.0f);     // Soft peach
+                m_TopColor = Color::RGBA(0.7f, 0.85f, 1.0f, 1.0f);      // Soft sky blue
+                m_BottomColor = Color::RGBA(1.0f, 0.75f, 0.85f, 1.0f);  // Soft rose
+                break;
+
+            case CubeColorTheme::NeonCyberpunk:
+                m_FrontColor = Color::RGB(1.0f, 0.0f, 0.8f);             // Hot magenta
+                m_BackColor = Color::RGB(0.0f, 0.9f, 1.0f);              // Cyan
+                m_RightColor = Color::RGB(1.0f, 0.2f, 0.0f);             // Neon orange
+                m_LeftColor = Color::RGB(0.5f, 0.0f, 1.0f);              // Electric purple
+                m_TopColor = Color::RGB(0.0f, 1.0f, 0.3f);               // Neon green
+                m_BottomColor = Color::RGB(1.0f, 1.0f, 0.0f);            // Electric yellow
+                break;
+
+            case CubeColorTheme::OceanDepth:
+                m_FrontColor = Color::RGB(0.0f, 0.4f, 0.7f);             // Deep blue
+                m_BackColor = Color::RGB(0.1f, 0.6f, 0.8f);              // Ocean blue
+                m_RightColor = Color::RGB(0.2f, 0.8f, 0.9f);             // Turquoise
+                m_LeftColor = Color::RGB(0.0f, 0.5f, 0.6f);              // Teal
+                m_TopColor = Color::RGB(0.4f, 0.9f, 1.0f);               // Light cyan
+                m_BottomColor = Color::RGB(0.0f, 0.2f, 0.4f);            // Dark navy
+                break;
+
+            case CubeColorTheme::SunsetVibes:
+                m_FrontColor = Color::RGB(1.0f, 0.5f, 0.2f);             // Orange
+                m_BackColor = Color::RGB(1.0f, 0.3f, 0.4f);              // Coral pink
+                m_RightColor = Color::RGB(1.0f, 0.7f, 0.3f);             // Golden
+                m_LeftColor = Color::RGB(0.9f, 0.4f, 0.5f);              // Rose
+                m_TopColor = Color::RGB(1.0f, 0.9f, 0.5f);               // Light yellow
+                m_BottomColor = Color::RGB(0.6f, 0.2f, 0.3f);            // Deep red
+                break;
+
+            case CubeColorTheme::ForestNature:
+                m_FrontColor = Color::RGB(0.2f, 0.6f, 0.2f);             // Forest green
+                m_BackColor = Color::RGB(0.4f, 0.7f, 0.3f);              // Lime green
+                m_RightColor = Color::RGB(0.5f, 0.4f, 0.2f);             // Brown
+                m_LeftColor = Color::RGB(0.3f, 0.5f, 0.2f);              // Moss green
+                m_TopColor = Color::RGB(0.6f, 0.8f, 0.4f);               // Light green
+                m_BottomColor = Color::RGB(0.3f, 0.2f, 0.1f);            // Dark brown
+                break;
+
+            case CubeColorTheme::RoyalLuxury:
+                m_FrontColor = Color::RGB(0.5f, 0.1f, 0.8f);             // Royal purple
+                m_BackColor = Color::RGB(0.7f, 0.2f, 0.9f);              // Violet
+                m_RightColor = Color::RGB(1.0f, 0.8f, 0.2f);             // Gold
+                m_LeftColor = Color::RGB(0.6f, 0.0f, 0.6f);              // Magenta
+                m_TopColor = Color::RGB(1.0f, 0.9f, 0.5f);               // Light gold
+                m_BottomColor = Color::RGB(0.3f, 0.0f, 0.5f);            // Deep purple
+                break;
+
+            case CubeColorTheme::FireAndIce:
+                m_FrontColor = Color::RGB(1.0f, 0.2f, 0.0f);             // Fire red
+                m_BackColor = Color::RGB(0.3f, 0.7f, 1.0f);              // Ice blue
+                m_RightColor = Color::RGB(1.0f, 0.5f, 0.0f);             // Orange flame
+                m_LeftColor = Color::RGB(0.5f, 0.9f, 1.0f);              // Light ice
+                m_TopColor = Color::RGB(1.0f, 0.8f, 0.3f);               // Yellow flame
+                m_BottomColor = Color::RGB(0.1f, 0.3f, 0.6f);            // Deep ice
+                break;
+
+            case CubeColorTheme::CandyPop:
+                m_FrontColor = Color::RGB(1.0f, 0.4f, 0.7f);             // Bubble gum pink
+                m_BackColor = Color::RGB(0.5f, 0.9f, 1.0f);              // Cotton candy blue
+                m_RightColor = Color::RGB(1.0f, 0.6f, 0.9f);             // Pink lemonade
+                m_LeftColor = Color::RGB(0.7f, 1.0f, 0.5f);              // Lime candy
+                m_TopColor = Color::RGB(1.0f, 0.9f, 0.4f);               // Lemon yellow
+                m_BottomColor = Color::RGB(0.9f, 0.5f, 1.0f);            // Grape purple
+                break;
+
+            case CubeColorTheme::MonochromeGray:
+                m_FrontColor = Color::RGB(0.9f, 0.9f, 0.9f);             // Light gray
+                m_BackColor = Color::RGB(0.7f, 0.7f, 0.7f);              // Medium gray
+                m_RightColor = Color::RGB(0.5f, 0.5f, 0.5f);             // Gray
+                m_LeftColor = Color::RGB(0.6f, 0.6f, 0.6f);              // Medium-light gray
+                m_TopColor = Color::RGB(1.0f, 1.0f, 1.0f);               // White
+                m_BottomColor = Color::RGB(0.3f, 0.3f, 0.3f);            // Dark gray
+                break;
+
+            case CubeColorTheme::RainbowSpectrum:
+                m_FrontColor = Color::RGB(1.0f, 0.0f, 0.0f);             // Red
+                m_BackColor = Color::RGB(1.0f, 0.5f, 0.0f);              // Orange
+                m_RightColor = Color::RGB(1.0f, 1.0f, 0.0f);             // Yellow
+                m_LeftColor = Color::RGB(0.0f, 1.0f, 0.0f);              // Green
+                m_TopColor = Color::RGB(0.0f, 0.5f, 1.0f);               // Blue
+                m_BottomColor = Color::RGB(0.5f, 0.0f, 1.0f);            // Purple
+                break;
+        }
     }
 }
