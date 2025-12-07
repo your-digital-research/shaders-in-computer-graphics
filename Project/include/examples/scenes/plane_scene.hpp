@@ -24,7 +24,7 @@ namespace examples
         CottonCandy,       // Pink to baby blue (sweet, dreamy)
         ElectricStorm,     // Electric blue to white (dramatic)
         PeachSunset,       // Coral to yellow (warm, cozy)
-        MatrixGreen        // Matrix green gradient (digital)
+        MatrixGreen        // Matrix green (digital)
     };
 
     class PlaneScene final : public Scene
@@ -63,7 +63,7 @@ namespace examples
         float m_PlaneSize;
         float m_PlaneRadius;
 
-        // Gradient colors
+        // Colors
         Color m_CenterColor = Color::White;
         Color m_EdgeColor = Color::White;
         Color m_WavePeakColor = Color::White;

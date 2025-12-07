@@ -22,7 +22,7 @@ namespace examples
         RoyalLuxury,       // Purples and golds
         FireAndIce,        // Reds and blues contrast
         CandyPop,          // Bright candy colors
-        MonochromeGray,    // Grayscale gradient
+        MonochromeGray,    // Grayscale
         RainbowSpectrum    // Full rainbow colors
     };
 
@@ -55,7 +55,7 @@ namespace examples
         // Cube properties
         float m_CubeSize;
 
-        // Face colors
+        // Colors
         Color m_FrontColor = Color::White;
         Color m_BackColor = Color::White;
         Color m_RightColor = Color::White;
