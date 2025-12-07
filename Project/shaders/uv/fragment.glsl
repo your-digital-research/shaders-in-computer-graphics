@@ -15,4 +15,3 @@ void main()
     // Map UV coordinates to RGB (U → Red, V → Green)
     FragColor = vec4(vUV.x, vUV.y, 0.0, 1.0);
 }
-

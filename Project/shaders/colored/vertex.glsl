@@ -22,4 +22,3 @@ void main()
     // Transform position to clip space
     gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
 }
-

@@ -41,4 +41,3 @@ namespace examples
         void CreateQuad();
     };
 }
-

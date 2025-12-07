@@ -13,4 +13,3 @@ void main()
     // Output interpolated color from vertices
     FragColor = vColor;
 }
-
