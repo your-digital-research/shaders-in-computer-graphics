@@ -27,6 +27,17 @@ namespace examples
         Mesh* m_TriangleMesh;
         Shader* m_Shader;
 
+        // Transform matrices
+        mat4 m_ModelMatrix;
+
+        // Triangle properties
+        float m_TriangleSize;
+
+        // Vertex colors
+        Color m_TopColor;
+        Color m_BottomLeftColor;
+        Color m_BottomRightColor;
+
         // Mesh generation
         void CreateTriangle();
     };

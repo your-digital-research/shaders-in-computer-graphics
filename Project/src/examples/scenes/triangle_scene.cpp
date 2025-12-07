@@ -13,7 +13,12 @@ namespace examples
 
     TriangleScene::TriangleScene()
         : m_TriangleMesh(nullptr),
-          m_Shader(nullptr)
+          m_Shader(nullptr),
+          m_ModelMatrix(1.0f),
+          m_TriangleSize(1.0f),
+          m_TopColor(Color::Red),
+          m_BottomLeftColor(Color::Green),
+          m_BottomRightColor(Color::Blue)
     {
         TriangleScene::OnCreate();
     }
@@ -25,10 +30,12 @@ namespace examples
 
     void TriangleScene::CreateTriangle()
     {
+        const float halfSize = m_TriangleSize * 0.5f;
+
         const Vertices vertices = {
-            Vertex(vec3(0.0f, 0.5f, 0.0f), Color::Red),
-            Vertex(vec3(-0.5f, -0.5f, 0.0f), Color::Green),
-            Vertex(vec3(0.5f, -0.5f, 0.0f), Color::Blue)
+            Vertex(vec3(0.0f, halfSize, 0.0f), m_TopColor),
+            Vertex(vec3(-halfSize, -halfSize, 0.0f), m_BottomLeftColor),
+            Vertex(vec3(halfSize, -halfSize, 0.0f), m_BottomRightColor)
         };
 
         const VertexIndices indices = {0, 1, 2};
@@ -56,7 +63,7 @@ namespace examples
     {
         // Bind shader and set uniforms
         m_Shader->Bind();
-        m_Shader->SetMat4("uModel", mat4(1.0f));
+        m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
