@@ -5,6 +5,7 @@
 #include "examples/scenes/cube_scene.hpp"
 #include "examples/scenes/plane_scene.hpp"
 #include "examples/scenes/quad_scene.hpp"
+#include "examples/scenes/sphere_scene.hpp"
 
 namespace scene
 {
@@ -26,6 +27,7 @@ namespace scene
         auto cubeScene = make_unique<CubeScene>();
         auto planeScene = make_unique<PlaneScene>();
         auto quadScene = make_unique<QuadScene>();
+        auto sphereScene = make_unique<SphereScene>();
 
         // Add scenes to the manager
         // NOTE: std::move explicitly qualified (best practice for move semantics)
@@ -33,9 +35,10 @@ namespace scene
         AddScene("cube", std::move(cubeScene));
         AddScene("plane", std::move(planeScene));
         AddScene("quad", std::move(quadScene));
+        AddScene("sphere", std::move(sphereScene));
 
         // Set the default active scene
-        SetActiveScene("quad");
+        SetActiveScene("sphere");
     }
 
     SceneManager::~SceneManager()
