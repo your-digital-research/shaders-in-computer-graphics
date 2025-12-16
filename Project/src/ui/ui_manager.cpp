@@ -68,5 +68,6 @@ namespace ui
         if (!m_Enabled) return;
 
         m_PerformancePanel.Render();
+        m_EngineSettingsPanel.Render();
     }
 }
