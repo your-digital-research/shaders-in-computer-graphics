@@ -31,14 +31,14 @@ namespace scene
 
         // Add scenes to the manager
         // NOTE: std::move explicitly qualified (best practice for move semantics)
-        AddScene("triangle", std::move(triangleScene));
-        AddScene("cube", std::move(cubeScene));
-        AddScene("plane", std::move(planeScene));
-        AddScene("quad", std::move(quadScene));
-        AddScene("sphere", std::move(sphereScene));
+        AddScene("rainbow-triangle", std::move(triangleScene));
+        AddScene("rotating-cube", std::move(cubeScene));
+        AddScene("wavy-plane", std::move(planeScene));
+        AddScene("uv-quad", std::move(quadScene));
+        AddScene("fresnel-sphere", std::move(sphereScene));
 
         // Set the default active scene
-        SetActiveScene("sphere");
+        SetActiveScene("rainbow-triangle");
     }
 
     SceneManager::~SceneManager()
@@ -49,6 +49,8 @@ namespace scene
 
     void SceneManager::AddScene(const string& name, unique_ptr<Scene> scene)
     {
+        scene->SetName(name);
+
         if (m_Scenes.find(name) != m_Scenes.end())
         {
             // Scene already exists, replace it
@@ -95,6 +97,13 @@ namespace scene
         {
             m_ActiveScene = it->second.get();
         }
+    }
+
+    string SceneManager::GetActiveSceneName() const
+    {
+        if (!m_ActiveScene) return "None";
+
+        return m_ActiveScene->GetName();
     }
 
     void SceneManager::UpdateActiveScene(const float deltaTime) const

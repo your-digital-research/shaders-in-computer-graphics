@@ -1,11 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include "graphics/shader.hpp"
 #include "graphics/mesh.hpp"
 #include "view/camera.hpp"
 
 namespace scene
 {
+    using namespace std;
     using namespace view;
 
     class Scene
@@ -27,7 +30,14 @@ namespace scene
             if (m_Camera) m_Camera->UpdateAspectRatio(aspect);
         }
 
+        // Name
+        [[nodiscard]] const string& GetName() const { return m_Name; }
+        void SetName(const string& name) { m_Name = name; }
+
     protected:
+        // Member variables
+        string m_Name;
+
         // Scene components
         Camera* m_Camera;
     };

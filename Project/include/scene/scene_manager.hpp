@@ -29,6 +29,8 @@ namespace scene
 
         // Get the active scene
         [[nodiscard]] Scene* GetActiveScene() const { return m_ActiveScene; }
+        [[nodiscard]] string GetActiveSceneName() const;
+        [[nodiscard]] const unordered_map<string, unique_ptr<Scene>>& GetAllScenes() const { return m_Scenes; }
 
         // Update and render the active scene
         void UpdateActiveScene(float deltaTime) const;
