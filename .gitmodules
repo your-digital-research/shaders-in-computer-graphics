@@ -1,9 +1,9 @@
-[submodule "Project/external/glfw"]
+[submodule "GLFW"]
 	path = Project/external/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "Project/external/glm"]
+[submodule "GLM"]
 	path = Project/external/glm
 	url = https://github.com/g-truc/glm.git
-[submodule "Project/external/imgui"]
+[submodule "ImGui"]
 	path = Project/external/imgui
 	url = https://github.com/ocornut/imgui.git
