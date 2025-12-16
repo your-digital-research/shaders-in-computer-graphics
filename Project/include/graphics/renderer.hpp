@@ -26,6 +26,16 @@ namespace graphics
         static void EnableBlending();
         static void DisableBlending();
 
+        // Blend mode management
+        static void SetBlendModeAlpha();
+        static void SetBlendModeAdditive();
+        static void SetBlendModeMultiply();
+
+        // Polygon mode management
+        static void SetPolygonModeFill();
+        static void SetPolygonModeWireframe();
+        static void SetPolygonModePoint();
+
         // Viewport management
         static void SetViewport(int x, int y, int width, int height);
 

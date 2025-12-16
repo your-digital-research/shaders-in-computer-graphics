@@ -73,6 +73,36 @@ namespace graphics
         glDisable(GL_BLEND);
     }
 
+    void Renderer::SetBlendModeAlpha()
+    {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
+    void Renderer::SetBlendModeAdditive()
+    {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    }
+
+    void Renderer::SetBlendModeMultiply()
+    {
+        glBlendFunc(GL_DST_COLOR, GL_ZERO);
+    }
+
+    void Renderer::SetPolygonModeFill()
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
+    void Renderer::SetPolygonModeWireframe()
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+
+    void Renderer::SetPolygonModePoint()
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
+    }
+
     void Renderer::SetViewport(const int x, const int y, const int width, const int height)
     {
         glViewport(x, y, width, height);
