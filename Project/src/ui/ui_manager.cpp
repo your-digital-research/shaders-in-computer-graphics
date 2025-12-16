@@ -15,16 +15,18 @@ namespace ui
     {
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
+
         ImGui::CreateContext();
         ImGuiIO& io = ImGui::GetIO();
+
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
         // Setup Dear ImGui style
-        ImGui::StyleColorsDark();
+        ImGui::StyleColorsClassic();
 
         // Setup Platform / Renderer backends
-        ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
         ImGui_ImplOpenGL3_Init("#version 330");
+        ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
 
         // cout << "UIManager initialized successfully!" << endl;
     }
