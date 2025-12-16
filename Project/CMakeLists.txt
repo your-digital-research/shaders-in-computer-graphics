@@ -59,10 +59,10 @@ target_include_directories(${PROJECT_NAME}
 # ---------------------------------------------------------------------------
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
-        glad       # Must come before glfw
-        glfw
-        glm
+        # imgui brings in glad and glfw transitively
         imgui
+
+        glm
 )
 
 # ---------------------------------------------------------------------------
