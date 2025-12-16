@@ -12,33 +12,26 @@ namespace examples
     class TriangleScene final : public Scene
     {
     public:
-        // Constructor and Destructor
         TriangleScene();
         ~TriangleScene() override;
 
-        // Scene lifecycle
         void OnCreate() override;
         void OnUpdate(float deltaTime) override;
         void OnRender() override;
         void OnDestroy() override;
 
     private:
-        // Scene resources
         Mesh* m_TriangleMesh;
         Shader* m_Shader;
 
-        // Transform matrices
         mat4 m_ModelMatrix;
 
-        // Triangle properties
         float m_TriangleSize;
 
-        // Vertex colors
         Color m_TopColor;
         Color m_BottomLeftColor;
         Color m_BottomRightColor;
 
-        // Mesh generation
         void CreateTriangle();
     };
 }

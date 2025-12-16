@@ -1,15 +1,14 @@
-#include <vector>
 #include <cmath>
+#include <vector>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/math_constants.hpp"
 #include "constants/paths.hpp"
-#include "utils/math_utils.hpp"
-
-#include "view/camera.hpp"
-#include "graphics/types.hpp"
 #include "examples/scenes/plane_scene.hpp"
+#include "graphics/types.hpp"
+#include "utils/math_utils.hpp"
+#include "view/camera.hpp"
 
 namespace examples
 {
@@ -49,14 +48,13 @@ namespace examples
         const float stepSize = planeSize / static_cast<float>(gridSize);
         const float halfSize = planeSize * 0.5f;
 
-        // Generate vertices
+        // Generate grid vertices
         for (int z = 0; z <= gridSize; ++z)
         {
             for (int x = 0; x <= gridSize; ++x)
             {
                 const float xPos = static_cast<float>(x) * stepSize - halfSize;
                 const float zPos = static_cast<float>(z) * stepSize - halfSize;
-
                 const float u = static_cast<float>(x) / static_cast<float>(gridSize);
                 const float v = static_cast<float>(z) / static_cast<float>(gridSize);
 
@@ -64,7 +62,7 @@ namespace examples
             }
         }
 
-        // Generate indices for triangles
+        // Generate triangle indices
         for (int z = 0; z < gridSize; ++z)
         {
             for (int x = 0; x < gridSize; ++x)
@@ -74,7 +72,6 @@ namespace examples
                 const int bottomLeft = (z + 1) * (gridSize + 1) + x;
                 const int bottomRight = bottomLeft + 1;
 
-                // First triangle
                 indices.push_back(topLeft);
                 indices.push_back(bottomLeft);
                 indices.push_back(topRight);
@@ -93,20 +90,16 @@ namespace examples
     {
         CreatePlane(m_GridSize, m_PlaneSize);
 
-        // Create Shader
-        m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER, constants::paths::WAVE_FRAGMENT_SHADER);
+        m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER,
+                              constants::paths::WAVE_FRAGMENT_SHADER);
 
-        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
         m_Camera->SetRotationEuler(vec3(-45.0f, 0.0f, 0.0f));
 
-        // Calculate plane radius (half diagonal from center to corner)
-        // For a square plane of size S, diagonal = S * sqrt(2), half diagonal = S * sqrt(2) / 2
+        // Calculate plane radius: half diagonal from center to corner
         m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
 
-        // Calculate initial frequency based on wave count and plane size
-        // We want m_WaveCount full wavelengths to fit in the radius
-        // Check if it's a default value
+        // Calculate wave frequency to fit m_WaveCount wavelengths in the radius
         if (utils::math::FloatEqual(m_WaveFrequency, constants::math::PI))
         {
             m_WaveFrequency = (static_cast<float>(m_WaveCount) * constants::math::TWO_PI) / m_PlaneRadius;
@@ -115,19 +108,17 @@ namespace examples
 
     void PlaneScene::OnUpdate(const float deltaTime)
     {
-        // Update time for wave animations
         m_Time += deltaTime * m_WaveSpeed;
     }
 
     void PlaneScene::OnRender()
     {
-        // Bind shader and set uniforms
         m_Shader->Bind();
+
         m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
-        // Set wave parameters
         m_Shader->SetFloat("uTime", m_Time);
         m_Shader->SetFloat("uWaveAmplitude", m_WaveAmplitude);
         m_Shader->SetFloat("uWaveFrequency", m_WaveFrequency);
@@ -139,7 +130,6 @@ namespace examples
         m_Shader->SetVec4("uWavePeakColor", m_WavePeakColor.ToVec4());
         m_Shader->SetVec4("uWaveTroughColor", m_WaveTroughColor.ToVec4());
 
-        // Render plane
         m_PlaneMesh->Bind();
         m_PlaneMesh->Draw();
 
@@ -162,89 +152,89 @@ namespace examples
 
         switch (theme)
         {
-            case PlaneColorTheme::Unknown:
-                m_CenterColor = Color::White;
-                m_EdgeColor = Color::White;
-                m_WavePeakColor = Color::White;
-                m_WaveTroughColor = Color::White;
-                break;
+        case PlaneColorTheme::Unknown:
+            m_CenterColor = Color::White;
+            m_EdgeColor = Color::White;
+            m_WavePeakColor = Color::White;
+            m_WaveTroughColor = Color::White;
+            break;
 
-            case PlaneColorTheme::AuroraSunset:
-                m_CenterColor = Color::RGB(0.6f, 0.2f, 0.8f);           // Deep purple
-                m_EdgeColor = Color::RGB(1.0f, 0.6f, 0.3f);             // Warm orange
-                m_WavePeakColor = Color::RGB(1.0f, 0.9f, 0.4f);         // Golden yellow
-                m_WaveTroughColor = Color::RGB(0.4f, 0.15f, 0.6f);      // Dark purple
-                break;
+        case PlaneColorTheme::AuroraSunset:
+            m_CenterColor = Color::RGB(0.6f, 0.2f, 0.8f); // Deep purple
+            m_EdgeColor = Color::RGB(1.0f, 0.6f, 0.3f); // Warm orange
+            m_WavePeakColor = Color::RGB(1.0f, 0.9f, 0.4f); // Golden yellow
+            m_WaveTroughColor = Color::RGB(0.4f, 0.15f, 0.6f); // Dark purple
+            break;
 
-            case PlaneColorTheme::NeonCyberpunk:
-                m_CenterColor = Color::RGB(1.0f, 0.0f, 0.8f);           // Hot magenta
-                m_EdgeColor = Color::RGB(0.0f, 0.9f, 1.0f);             // Bright cyan
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 1.0f);         // Pure white
-                m_WaveTroughColor = Color::RGB(0.4f, 0.0f, 0.6f);       // Deep magenta
-                break;
+        case PlaneColorTheme::NeonCyberpunk:
+            m_CenterColor = Color::RGB(1.0f, 0.0f, 0.8f); // Hot magenta
+            m_EdgeColor = Color::RGB(0.0f, 0.9f, 1.0f); // Bright cyan
+            m_WavePeakColor = Color::RGB(1.0f, 1.0f, 1.0f); // Pure white
+            m_WaveTroughColor = Color::RGB(0.4f, 0.0f, 0.6f); // Deep magenta
+            break;
 
-            case PlaneColorTheme::OceanDepth:
-                m_CenterColor = Color::RGB(0.0f, 0.3f, 0.6f);           // Deep ocean blue
-                m_EdgeColor = Color::RGB(0.2f, 0.9f, 0.9f);             // Bright turquoise
-                m_WavePeakColor = Color::RGB(0.7f, 1.0f, 1.0f);         // Light aqua foam
-                m_WaveTroughColor = Color::RGB(0.0f, 0.2f, 0.4f);       // Dark navy
-                break;
+        case PlaneColorTheme::OceanDepth:
+            m_CenterColor = Color::RGB(0.0f, 0.3f, 0.6f); // Deep ocean blue
+            m_EdgeColor = Color::RGB(0.2f, 0.9f, 0.9f); // Bright turquoise
+            m_WavePeakColor = Color::RGB(0.7f, 1.0f, 1.0f); // Light aqua foam
+            m_WaveTroughColor = Color::RGB(0.0f, 0.2f, 0.4f); // Dark navy
+            break;
 
-            case PlaneColorTheme::FireLava:
-                m_CenterColor = Color::RGB(0.8f, 0.1f, 0.0f);           // Deep red
-                m_EdgeColor = Color::RGB(1.0f, 0.8f, 0.0f);             // Bright yellow
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f);         // White-hot
-                m_WaveTroughColor = Color::RGB(0.5f, 0.0f, 0.0f);       // Dark crimson
-                break;
+        case PlaneColorTheme::FireLava:
+            m_CenterColor = Color::RGB(0.8f, 0.1f, 0.0f); // Deep red
+            m_EdgeColor = Color::RGB(1.0f, 0.8f, 0.0f); // Bright yellow
+            m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.8f); // White-hot
+            m_WaveTroughColor = Color::RGB(0.5f, 0.0f, 0.0f); // Dark crimson
+            break;
 
-            case PlaneColorTheme::MintRose:
-                m_CenterColor = Color::RGB(1.0f, 0.4f, 0.7f);           // Soft rose pink
-                m_EdgeColor = Color::RGB(0.4f, 1.0f, 0.8f);             // Mint green
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.85f);       // Cream white
-                m_WaveTroughColor = Color::RGB(0.7f, 0.2f, 0.5f);       // Deep rose
-                break;
+        case PlaneColorTheme::MintRose:
+            m_CenterColor = Color::RGB(1.0f, 0.4f, 0.7f); // Soft rose pink
+            m_EdgeColor = Color::RGB(0.4f, 1.0f, 0.8f); // Mint green
+            m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.85f); // Cream white
+            m_WaveTroughColor = Color::RGB(0.7f, 0.2f, 0.5f); // Deep rose
+            break;
 
-            case PlaneColorTheme::ToxicGreen:
-                m_CenterColor = Color::RGB(0.2f, 0.8f, 0.1f);           // Bright lime
-                m_EdgeColor = Color::RGB(0.8f, 1.0f, 0.0f);             // Neon yellow-green
-                m_WavePeakColor = Color::RGB(0.9f, 1.0f, 0.7f);         // Light lime
-                m_WaveTroughColor = Color::RGB(0.1f, 0.4f, 0.0f);       // Dark forest green
-                break;
+        case PlaneColorTheme::ToxicGreen:
+            m_CenterColor = Color::RGB(0.2f, 0.8f, 0.1f); // Bright lime
+            m_EdgeColor = Color::RGB(0.8f, 1.0f, 0.0f); // Neon yellow-green
+            m_WavePeakColor = Color::RGB(0.9f, 1.0f, 0.7f); // Light lime
+            m_WaveTroughColor = Color::RGB(0.1f, 0.4f, 0.0f); // Dark forest green
+            break;
 
-            case PlaneColorTheme::RoyalPurpleGold:
-                m_CenterColor = Color::RGB(0.5f, 0.1f, 0.8f);           // Royal purple
-                m_EdgeColor = Color::RGB(1.0f, 0.85f, 0.2f);            // Rich gold
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.6f);        // Light gold
-                m_WaveTroughColor = Color::RGB(0.3f, 0.05f, 0.5f);      // Deep violet
-                break;
+        case PlaneColorTheme::RoyalPurpleGold:
+            m_CenterColor = Color::RGB(0.5f, 0.1f, 0.8f); // Royal purple
+            m_EdgeColor = Color::RGB(1.0f, 0.85f, 0.2f); // Rich gold
+            m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.6f); // Light gold
+            m_WaveTroughColor = Color::RGB(0.3f, 0.05f, 0.5f); // Deep violet
+            break;
 
-            case PlaneColorTheme::CottonCandy:
-                m_CenterColor = Color::RGB(1.0f, 0.6f, 0.9f);           // Pink
-                m_EdgeColor = Color::RGB(0.6f, 0.8f, 1.0f);             // Baby blue
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 1.0f);        // Almost white
-                m_WaveTroughColor = Color::RGB(0.8f, 0.4f, 0.7f);       // Mauve
-                break;
+        case PlaneColorTheme::CottonCandy:
+            m_CenterColor = Color::RGB(1.0f, 0.6f, 0.9f); // Pink
+            m_EdgeColor = Color::RGB(0.6f, 0.8f, 1.0f); // Baby blue
+            m_WavePeakColor = Color::RGB(1.0f, 0.95f, 1.0f); // Almost white
+            m_WaveTroughColor = Color::RGB(0.8f, 0.4f, 0.7f); // Mauve
+            break;
 
-            case PlaneColorTheme::ElectricStorm:
-                m_CenterColor = Color::RGB(0.1f, 0.1f, 0.9f);           // Electric blue
-                m_EdgeColor = Color::RGB(0.9f, 0.9f, 1.0f);             // Bright white-blue
-                m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.7f);         // Lightning yellow
-                m_WaveTroughColor = Color::RGB(0.05f, 0.0f, 0.5f);      // Deep indigo
-                break;
+        case PlaneColorTheme::ElectricStorm:
+            m_CenterColor = Color::RGB(0.1f, 0.1f, 0.9f); // Electric blue
+            m_EdgeColor = Color::RGB(0.9f, 0.9f, 1.0f); // Bright white-blue
+            m_WavePeakColor = Color::RGB(1.0f, 1.0f, 0.7f); // Lightning yellow
+            m_WaveTroughColor = Color::RGB(0.05f, 0.0f, 0.5f); // Deep indigo
+            break;
 
-            case PlaneColorTheme::PeachSunset:
-                m_CenterColor = Color::RGB(1.0f, 0.5f, 0.3f);           // Coral peach
-                m_EdgeColor = Color::RGB(1.0f, 0.9f, 0.5f);             // Soft yellow
-                m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.8f);        // Cream
-                m_WaveTroughColor = Color::RGB(0.8f, 0.3f, 0.2f);       // Deep orange
-                break;
+        case PlaneColorTheme::PeachSunset:
+            m_CenterColor = Color::RGB(1.0f, 0.5f, 0.3f); // Coral peach
+            m_EdgeColor = Color::RGB(1.0f, 0.9f, 0.5f); // Soft yellow
+            m_WavePeakColor = Color::RGB(1.0f, 0.95f, 0.8f); // Cream
+            m_WaveTroughColor = Color::RGB(0.8f, 0.3f, 0.2f); // Deep orange
+            break;
 
-            case PlaneColorTheme::MatrixGreen:
-                m_CenterColor = Color::RGB(0.0f, 0.8f, 0.3f);           // Matrix green
-                m_EdgeColor = Color::RGB(0.5f, 1.0f, 0.6f);             // Light green
-                m_WavePeakColor = Color::RGB(0.8f, 1.0f, 0.9f);         // Mint white
-                m_WaveTroughColor = Color::RGB(0.0f, 0.4f, 0.1f);       // Dark emerald
-                break;
+        case PlaneColorTheme::MatrixGreen:
+            m_CenterColor = Color::RGB(0.0f, 0.8f, 0.3f); // Matrix green
+            m_EdgeColor = Color::RGB(0.5f, 1.0f, 0.6f); // Light green
+            m_WavePeakColor = Color::RGB(0.8f, 1.0f, 0.9f); // Mint white
+            m_WaveTroughColor = Color::RGB(0.0f, 0.4f, 0.1f); // Dark emerald
+            break;
         }
     }
 }

@@ -1,9 +1,8 @@
 #include <iostream>
 
 #include "constants/graphics_constants.hpp"
-
-#include "platform/window.hpp"
 #include "graphics/renderer.hpp"
+#include "platform/window.hpp"
 
 namespace platform
 {
@@ -69,8 +68,6 @@ namespace platform
 
         // Enable V-Sync
         glfwSwapInterval(1);
-
-        // cout << "Window created successfully!" << endl;
     }
 
     Window::~Window()
@@ -123,7 +120,7 @@ namespace platform
         Renderer::SetViewport(0, 0, m_Width, m_Height);
     }
 
-    void Window::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+    void Window::FramebufferSizeCallback(GLFWwindow* window, const int width, const int height)
     {
         if (auto* windowInstance = static_cast<Window*>(glfwGetWindowUserPointer(window)))
         {
@@ -133,7 +130,7 @@ namespace platform
         }
     }
 
-    void Window::WindowFocusCallback(GLFWwindow* window, int focused)
+    void Window::WindowFocusCallback(GLFWwindow* window, const int focused)
     {
         if (!focused) return;
 
@@ -143,7 +140,7 @@ namespace platform
         }
     }
 
-    void Window::WindowSizeCallback(GLFWwindow* window, int width, int height)
+    void Window::WindowSizeCallback(GLFWwindow* window, const int width, const int height)
     {
         if (auto* windowInstance = static_cast<Window*>(glfwGetWindowUserPointer(window)))
         {

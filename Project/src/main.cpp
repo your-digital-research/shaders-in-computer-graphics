@@ -7,7 +7,7 @@ using namespace core;
 
 int main()
 {
-    cout << "Welcome to \"Shaders In Computer Graphics\" ^_^" << endl;
+    // cout << "Welcome to \"Shaders In Computer Graphics\" ^_^" << endl;
 
     const Application application;
 

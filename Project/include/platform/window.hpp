@@ -11,21 +11,15 @@ namespace platform
     class Window
     {
     public:
-        // Constructor and Destructor
         Window(int width, int height, const string& title);
         ~Window();
 
-        // Getters
         [[nodiscard]] GLFWwindow* GetNativeWindow() const;
-
-        // Window state
         [[nodiscard]] bool ShouldClose() const;
 
-        // Window management
         void PollEvents();
         void SwapBuffers();
 
-        // Window properties
         [[nodiscard]] int GetWidth() const { return m_Width; }
         [[nodiscard]] int GetHeight() const { return m_Height; }
 
@@ -34,23 +28,16 @@ namespace platform
             return static_cast<float>(m_Width) / static_cast<float>(m_Height);
         }
 
-        // Update notification
         void OnFramebufferResize();
         void OnWindowFocus();
-
-        // Renderer initialization
         void InitializeRenderer() const;
 
     private:
-        // Callback handling
         static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
         static void WindowFocusCallback(GLFWwindow* window, int focused);
         static void WindowSizeCallback(GLFWwindow* window, int width, int height);
 
-        // Member variables
         GLFWwindow* m_Window;
-
-        // Window size
         int m_Width;
         int m_Height;
     };

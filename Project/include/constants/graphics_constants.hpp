@@ -28,7 +28,7 @@ namespace constants::graphics
     constexpr bool DEFAULT_DEPTH_TEST = true;
     constexpr bool DEFAULT_BLENDING = false;
 
-    // Background color (dark blue-gray)
+    // Background color
     constexpr Color DEFAULT_BACKGROUND_COLOR = Color::RGB(0.15f, 0.18f, 0.22f);
 
     // Mesh defaults

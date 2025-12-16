@@ -1,10 +1,9 @@
 #include <vector>
 
 #include "constants/paths.hpp"
-
-#include "view/camera.hpp"
-#include "graphics/types.hpp"
 #include "examples/scenes/triangle_scene.hpp"
+#include "graphics/types.hpp"
+#include "view/camera.hpp"
 
 namespace examples
 {
@@ -47,10 +46,9 @@ namespace examples
     {
         CreateTriangle();
 
-        // Create Shader
-        m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER, constants::paths::COLORED_FRAGMENT_SHADER);
+        m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER,
+                              constants::paths::COLORED_FRAGMENT_SHADER);
 
-        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
     }
 
@@ -61,13 +59,12 @@ namespace examples
 
     void TriangleScene::OnRender()
     {
-        // Bind shader and set uniforms
         m_Shader->Bind();
+
         m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
-        // Render triangle
         m_TriangleMesh->Bind();
         m_TriangleMesh->Draw();
 

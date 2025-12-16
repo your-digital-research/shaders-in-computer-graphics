@@ -1,10 +1,9 @@
 #include <vector>
 
 #include "constants/paths.hpp"
-
-#include "view/camera.hpp"
-#include "graphics/types.hpp"
 #include "examples/scenes/quad_scene.hpp"
+#include "graphics/types.hpp"
+#include "view/camera.hpp"
 
 namespace examples
 {
@@ -51,27 +50,24 @@ namespace examples
     {
         CreateQuad();
 
-        // Create Shader
-        m_Shader = new Shader(constants::paths::UV_VERTEX_SHADER, constants::paths::UV_FRAGMENT_SHADER);
+        m_Shader = new Shader(constants::paths::UV_VERTEX_SHADER,
+                              constants::paths::UV_FRAGMENT_SHADER);
 
-        // Setup Camera
         m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
     }
 
     void QuadScene::OnUpdate(float deltaTime)
     {
-        //
     }
 
     void QuadScene::OnRender()
     {
-        // Bind shader and set uniforms
         m_Shader->Bind();
+
         m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
-        // Render quad
         m_QuadMesh->Bind();
         m_QuadMesh->Draw();
 

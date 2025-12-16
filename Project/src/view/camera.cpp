@@ -1,5 +1,8 @@
-#include "constants/graphics_constants.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
 
+#include "constants/graphics_constants.hpp"
 #include "view/camera.hpp"
 
 namespace view
@@ -88,11 +91,9 @@ namespace view
         // Clamp pitch to prevent gimbal lock
         m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
 
-        // Normalize yaw to [-180, 180]
+        // Normalize yaw and roll to [-180, 180]
         while (m_Yaw > 180.0f) m_Yaw -= 360.0f;
         while (m_Yaw < -180.0f) m_Yaw += 360.0f;
-
-        // Normalize roll to [-180, 180]
         while (m_Roll > 180.0f) m_Roll -= 360.0f;
         while (m_Roll < -180.0f) m_Roll += 360.0f;
 

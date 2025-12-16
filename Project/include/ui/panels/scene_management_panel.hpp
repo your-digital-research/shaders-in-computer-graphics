@@ -21,7 +21,6 @@ namespace ui::panels
 
         void Render() override;
 
-        // Setter for scene manager reference
         void SetSceneManager(SceneManager* sceneManager) { m_SceneManager = sceneManager; }
 
     private:

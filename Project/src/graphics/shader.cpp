@@ -5,9 +5,8 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
-#include "utils/file_utils.hpp"
-
 #include "graphics/shader.hpp"
+#include "utils/file_utils.hpp"
 
 namespace graphics
 {

@@ -31,8 +31,6 @@ namespace core
                               constants::graphics::DEFAULT_WINDOW_HEIGHT,
                               constants::graphics::DEFAULT_WINDOW_TITLE);
         m_Engine = new Engine(m_Window);
-
-        cout << "Application initialized successfully!" << endl;
     }
 
     void Application::Shutdown()
@@ -42,7 +40,5 @@ namespace core
 
         m_Window = nullptr;
         m_Engine = nullptr;
-
-        cout << "Application shutdown successfully!" << endl;
     }
 }

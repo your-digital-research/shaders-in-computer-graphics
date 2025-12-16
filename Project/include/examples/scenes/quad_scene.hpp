@@ -12,32 +12,24 @@ namespace examples
     class QuadScene final : public Scene
     {
     public:
-        // Constructor and Destructor
         QuadScene();
         ~QuadScene() override;
 
-        // Scene lifecycle
         void OnCreate() override;
         void OnUpdate(float deltaTime) override;
         void OnRender() override;
         void OnDestroy() override;
 
     private:
-        // Scene resources
         Mesh* m_QuadMesh;
         Shader* m_Shader;
 
-        // Transform matrices
         mat4 m_ModelMatrix;
 
-        // Quad properties
         float m_QuadWidth;
         float m_QuadHeight;
-
-        // Quad color
         Color m_QuadColor;
 
-        // Mesh generation
         void CreateQuad();
     };
 }

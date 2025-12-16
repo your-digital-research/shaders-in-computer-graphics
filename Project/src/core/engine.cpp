@@ -29,7 +29,7 @@ namespace core
 
         m_Window->InitializeRenderer();
         m_SceneManager.InitializeDefaultScenes();
-        m_UIManager->SetupPanels(this);
+        m_UIManager->InitializePanels(this);
     }
 
     void Engine::Shutdown()

@@ -165,31 +165,34 @@ namespace ui::panels
 
     void EngineSettingsPanel::Initialize()
     {
+        // Query current OpenGL depth test state
         m_DepthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
 
+        // Query current OpenGL blending state
         if (const bool isBlendingEnabled = glIsEnabled(GL_BLEND); !isBlendingEnabled)
         {
-            m_BlendMode = 0;
+            m_BlendMode = 0; // None
         }
         else
         {
-            m_BlendMode = 1;
+            m_BlendMode = 1; // Alpha (default)
         }
 
+        // Query current OpenGL polygon mode
         GLint modes[2];
         glGetIntegerv(GL_POLYGON_MODE, modes);
 
         if (modes[0] == GL_FILL)
         {
-            m_PolygonMode = 0;
+            m_PolygonMode = 0; // Fill
         }
         else if (modes[0] == GL_LINE)
         {
-            m_PolygonMode = 1;
+            m_PolygonMode = 1; // Wireframe
         }
         else if (modes[0] == GL_POINT)
         {
-            m_PolygonMode = 2;
+            m_PolygonMode = 2; // Point
         }
 
         m_Initialized = true;

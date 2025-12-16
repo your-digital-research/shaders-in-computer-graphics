@@ -1,8 +1,8 @@
 #include <iostream>
 
 #include "core/engine.hpp"
-#include "ui/ui_manager.hpp"
 #include "scene/scene_manager.hpp"
+#include "ui/ui_manager.hpp"
 
 namespace ui
 {
@@ -27,8 +27,6 @@ namespace ui
         // Setup Platform / Renderer backends
         ImGui_ImplOpenGL3_Init("#version 330");
         ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
-
-        // cout << "UIManager initialized successfully!" << endl;
     }
 
     UIManager::~UIManager()
@@ -37,8 +35,6 @@ namespace ui
         ImGui_ImplGlfw_Shutdown();
 
         ImGui::DestroyContext();
-
-        // cout << "UIManager shutdown successfully!" << endl;
     }
 
     void UIManager::BeginFrame() const
@@ -60,7 +56,7 @@ namespace ui
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void UIManager::SetupPanels(Engine* engine) const
+    void UIManager::InitializePanels(Engine* engine) const
     {
         const auto sceneManager = &engine->GetSceneManager();
 

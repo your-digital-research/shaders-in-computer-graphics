@@ -19,8 +19,10 @@ namespace ui::panels
     private:
         int m_BlendMode = 0;
         int m_PolygonMode = 0;
+
         bool m_Initialized = false;
         bool m_DepthTestEnabled = true;
+
         float m_ClearColor[3] = {
             constants::graphics::DEFAULT_BACKGROUND_COLOR.r,
             constants::graphics::DEFAULT_BACKGROUND_COLOR.g,

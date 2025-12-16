@@ -21,7 +21,6 @@ namespace ui::panels
 
         void Render() override;
 
-        // Setter for engine reference
         void SetEngine(const Engine* engine) { m_Engine = engine; }
 
     private:

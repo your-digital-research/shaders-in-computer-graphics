@@ -1,3 +1,4 @@
+#include "graphics/gl.hpp"
 #include "graphics/mesh.hpp"
 
 namespace graphics
@@ -51,14 +52,16 @@ namespace graphics
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
-        // Set up vertex attribute pointers for position, color, and UVs
-        glEnableVertexAttribArray(0); // Position
+        // Vertex attribute 0: Position (vec3)
+        glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 
-        glEnableVertexAttribArray(1); // Color
+        // Vertex attribute 1: Color (vec4)
+        glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
-        glEnableVertexAttribArray(2); // UVs
+        // Vertex attribute 2: UV coordinates (vec2)
+        glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
 
         // Unbind VAO
