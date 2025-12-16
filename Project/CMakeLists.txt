@@ -25,8 +25,7 @@ file(COPY ${CMAKE_SOURCE_DIR}/shaders DESTINATION ${CMAKE_BINARY_DIR}/bin)
 # ---------------------------------------------------------------------------
 # GLAD
 # ---------------------------------------------------------------------------
-add_library(glad STATIC external/glad/src/glad.c)
-target_include_directories(glad PUBLIC external/glad/include)
+include(cmake/glad.cmake)
 
 # ---------------------------------------------------------------------------
 # GLFW
@@ -34,23 +33,14 @@ target_include_directories(glad PUBLIC external/glad/include)
 add_subdirectory(external/glfw)
 
 # ---------------------------------------------------------------------------
+# GLM
+# ---------------------------------------------------------------------------
+add_subdirectory(external/glm)
+
+# ---------------------------------------------------------------------------
 # ImGui
 # ---------------------------------------------------------------------------
-set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/external/imgui)
-add_library(imgui STATIC
-    ${IMGUI_DIR}/imgui.cpp
-    ${IMGUI_DIR}/imgui_demo.cpp
-    ${IMGUI_DIR}/imgui_draw.cpp
-    ${IMGUI_DIR}/imgui_tables.cpp
-    ${IMGUI_DIR}/imgui_widgets.cpp
-    ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
-    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
-)
-target_include_directories(imgui PUBLIC
-    ${IMGUI_DIR}
-    ${IMGUI_DIR}/backends
-)
-target_link_libraries(imgui PUBLIC glad glfw)
+include(cmake/imgui.cmake)
 
 # ---------------------------------------------------------------------------
 # Executable and headers
@@ -62,7 +52,6 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/external
-        ${CMAKE_SOURCE_DIR}/external/glm
 )
 
 # ---------------------------------------------------------------------------
@@ -72,6 +61,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         glad       # Must come before glfw
         glfw
+        glm
         imgui
 )
 
