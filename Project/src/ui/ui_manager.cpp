@@ -2,6 +2,7 @@
 
 #include "core/engine.hpp"
 #include "ui/ui_manager.hpp"
+#include "scene/scene_manager.hpp"
 
 namespace ui
 {
@@ -57,8 +58,15 @@ namespace ui
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
+    void UIManager::SetupPanels(Engine* engine) const
+    {
+        m_PerformancePanel.SetEngine(engine);
+    }
+
     void UIManager::RenderUI() const
     {
         if (!m_Enabled) return;
+
+        m_PerformancePanel.Render();
     }
 }

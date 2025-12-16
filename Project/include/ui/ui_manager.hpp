@@ -6,6 +6,8 @@
 
 #include "platform/window.hpp"
 
+#include "ui/panels/performance_panel.hpp"
+
 namespace core
 {
     class Engine;
@@ -15,6 +17,7 @@ namespace ui
 {
     using namespace core;
     using namespace platform;
+    using namespace panels;
 
     class UIManager
     {
@@ -27,6 +30,9 @@ namespace ui
         void BeginFrame() const;
         void EndFrame() const;
 
+        // Panel setup
+        void SetupPanels(Engine* engine) const;
+
         // UI rendering
         void RenderUI() const;
 
@@ -37,5 +43,8 @@ namespace ui
     private:
         // Member variables
         bool m_Enabled;
+
+        // UI Panels (mutable to allow rendering in const methods)
+        mutable PerformancePanel m_PerformancePanel;
     };
 }
