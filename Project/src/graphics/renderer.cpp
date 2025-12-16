@@ -48,7 +48,7 @@ namespace graphics
         glClearDepth(1.0f);
     }
 
-    void Renderer::SetClearColor(const Color& color)
+    void Renderer::SetBackgroundColor(const Color& color)
     {
         glClearColor(color.r, color.g, color.b, color.a);
     }

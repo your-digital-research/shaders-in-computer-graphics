@@ -18,7 +18,7 @@ namespace graphics
 
         // Render state
         static void Clear();
-        static void SetClearColor(const Color& color);
+        static void SetBackgroundColor(const Color& color);
 
         // OpenGL state management
         static void EnableDepthTest();

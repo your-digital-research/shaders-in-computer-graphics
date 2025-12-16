@@ -1,7 +1,11 @@
 #pragma once
 
+#include "graphics/color.hpp"
+
 namespace constants::graphics
 {
+    using ::graphics::Color;
+
     // Default window settings
     constexpr int DEFAULT_WINDOW_WIDTH = 1280;
     constexpr int DEFAULT_WINDOW_HEIGHT = 720;
@@ -23,6 +27,9 @@ namespace constants::graphics
     constexpr bool DEFAULT_VSYNC = true;
     constexpr bool DEFAULT_DEPTH_TEST = true;
     constexpr bool DEFAULT_BLENDING = false;
+
+    // Background color (dark blue-gray)
+    constexpr Color DEFAULT_BACKGROUND_COLOR = Color::RGB(0.15f, 0.18f, 0.22f);
 
     // Mesh defaults
     constexpr int DEFAULT_VERTEX_BUFFER_SIZE = 1024;

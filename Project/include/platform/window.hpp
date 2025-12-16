@@ -22,8 +22,8 @@ namespace platform
         [[nodiscard]] bool ShouldClose() const;
 
         // Window management
-        static void PollEvents();
-        void SwapBuffers() const;
+        void PollEvents();
+        void SwapBuffers();
 
         // Window properties
         [[nodiscard]] int GetWidth() const { return m_Width; }
@@ -38,6 +38,9 @@ namespace platform
         void OnFramebufferResize();
         void OnWindowFocus();
 
+        // Renderer initialization
+        void InitializeRenderer() const;
+
     private:
         // Callback handling
         static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
@@ -46,6 +49,8 @@ namespace platform
 
         // Member variables
         GLFWwindow* m_Window;
+
+        // Window size
         int m_Width;
         int m_Height;
     };

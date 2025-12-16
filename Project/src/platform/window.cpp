@@ -95,7 +95,7 @@ namespace platform
         glfwPollEvents();
     }
 
-    void Window::SwapBuffers() const
+    void Window::SwapBuffers()
     {
         glfwSwapBuffers(m_Window);
     }
@@ -109,12 +109,18 @@ namespace platform
         m_Width = width;
         m_Height = height;
 
-        Renderer::SetViewport(0, 0, width, height);
+        Renderer::SetViewport(0, 0, m_Width, m_Height);
     }
 
     void Window::OnWindowFocus()
     {
         OnFramebufferResize();
+    }
+
+    void Window::InitializeRenderer() const
+    {
+        Renderer::SetBackgroundColor(constants::graphics::DEFAULT_BACKGROUND_COLOR);
+        Renderer::SetViewport(0, 0, m_Width, m_Height);
     }
 
     void Window::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
