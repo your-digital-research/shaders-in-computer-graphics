@@ -21,7 +21,7 @@ namespace ui::panels
 
         ImGui::Text("FPS: %.1f", io.Framerate);
         ImGui::Text("Frame Time: %.1f ms", 1000.0f / io.Framerate);
-        ImGui::Text("Delta Time: %.1f ms", m_Engine->GetCurrentDeltaTime() * 100.0f);
+        ImGui::Text("Delta Time: %.1f ms", m_Engine->GetCurrentDeltaTime() * 1000.0f);
 
         ImGui::End();
     }
