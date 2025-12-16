@@ -60,7 +60,10 @@ namespace ui
 
     void UIManager::SetupPanels(Engine* engine) const
     {
+        const auto sceneManager = &engine->GetSceneManager();
+
         m_PerformancePanel.SetEngine(engine);
+        m_SceneManagementPanel.SetSceneManager(sceneManager);
     }
 
     void UIManager::RenderUI() const
@@ -69,5 +72,6 @@ namespace ui
 
         m_PerformancePanel.Render();
         m_EngineSettingsPanel.Render();
+        m_SceneManagementPanel.Render();
     }
 }

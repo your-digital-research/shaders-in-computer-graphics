@@ -8,6 +8,7 @@
 
 #include "ui/panels/engine_settings_panel.hpp"
 #include "ui/panels/performance_panel.hpp"
+#include "ui/panels/scene_management_panel.hpp"
 
 namespace core
 {
@@ -48,5 +49,6 @@ namespace ui
         // UI Panels (mutable to allow rendering in const methods)
         mutable PerformancePanel m_PerformancePanel;
         mutable EngineSettingsPanel m_EngineSettingsPanel;
+        mutable SceneManagementPanel m_SceneManagementPanel;
     };
 }
