@@ -139,19 +139,12 @@ namespace examples
         m_Shader->SetVec4("uWavePeakColor", m_WavePeakColor.ToVec4());
         m_Shader->SetVec4("uWaveTroughColor", m_WaveTroughColor.ToVec4());
 
-        // Enable blending for transparency
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
         // Render plane
         m_PlaneMesh->Bind();
         m_PlaneMesh->Draw();
 
         Mesh::Unbind();
         Shader::Unbind();
-
-        // Disable blending
-        glDisable(GL_BLEND);
     }
 
     void PlaneScene::OnDestroy()
