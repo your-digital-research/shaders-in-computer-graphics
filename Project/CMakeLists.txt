@@ -31,7 +31,7 @@ target_include_directories(glad PUBLIC external/glad/include)
 # ---------------------------------------------------------------------------
 # GLFW
 # ---------------------------------------------------------------------------
-add_subdirectory(external/GLFW)
+add_subdirectory(external/glfw)
 
 # ---------------------------------------------------------------------------
 # Executable and headers
@@ -43,6 +43,7 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
         ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/external
+        ${CMAKE_SOURCE_DIR}/external/glm
 )
 
 # ---------------------------------------------------------------------------
