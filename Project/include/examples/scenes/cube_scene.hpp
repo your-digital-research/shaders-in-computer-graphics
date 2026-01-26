@@ -35,6 +35,12 @@ namespace examples
         void OnRender() override;
         void OnDestroy() override;
 
+        void RenderSettings() override;
+        void ResetToDefault() override;
+
+        [[nodiscard]] glm::vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
+        [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }
+
     private:
         Mesh* m_CubeMesh;
         Shader* m_Shader;
@@ -45,7 +51,11 @@ namespace examples
         float m_RotationSpeed;
         glm::vec3 m_RotationAxis;
 
+        float m_DefaultRotationSpeed;
+        glm::vec3 m_DefaultRotationAxis;
+
         float m_CubeSize;
+        float m_DefaultCubeSize;
 
         Color m_FrontColor = Color::White;
         Color m_BackColor = Color::White;
@@ -54,6 +64,10 @@ namespace examples
         Color m_TopColor = Color::White;
         Color m_BottomColor = Color::White;
         CubeColorTheme m_CurrentColorTheme = CubeColorTheme::Unknown;
+        CubeColorTheme m_DefaultColorTheme = CubeColorTheme::Unknown;
+
+        glm::vec3 m_DefaultCameraPosition;
+        glm::vec3 m_DefaultCameraRotation;
 
         void CreateCube();
         void SetColorTheme(CubeColorTheme theme);

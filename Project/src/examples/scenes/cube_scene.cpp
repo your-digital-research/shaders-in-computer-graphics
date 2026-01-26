@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "imgui.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/paths.hpp"
@@ -18,10 +20,16 @@ namespace examples
           m_Shader(nullptr),
           m_ModelMatrix(1.0f),
           m_RotationAngle(0.0f),
-          m_RotationSpeed(25.0f),
+          m_RotationSpeed(30.0f),
           m_RotationAxis(0.5f, 1.0f, 0.25f),
+          m_DefaultRotationSpeed(30.0f),
+          m_DefaultRotationAxis(0.5f, 1.0f, 0.25f),
           m_CubeSize(1.0f),
-          m_CurrentColorTheme(CubeColorTheme::MonochromeGray)
+          m_DefaultCubeSize(1.0f),
+          m_CurrentColorTheme(CubeColorTheme::MonochromeGray),
+          m_DefaultColorTheme(CubeColorTheme::MonochromeGray),
+          m_DefaultCameraPosition(0.0f, 0.0f, 4.0f),
+          m_DefaultCameraRotation(0.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -35,6 +43,13 @@ namespace examples
 
     void CubeScene::CreateCube()
     {
+        if (m_CubeMesh != nullptr)
+        {
+            delete m_CubeMesh;
+
+            m_CubeMesh = nullptr;
+        }
+
         const float halfSize = m_CubeSize * 0.5f;
 
         // UV Atlas Layout: [Left][Front][Right][Back][Top][Bottom]
@@ -122,7 +137,17 @@ namespace examples
         m_RotationAngle += deltaTime * m_RotationSpeed;
         m_RotationAngle = utils::math::WrapAngle360(m_RotationAngle);
 
-        m_ModelMatrix = glm::rotate(glm::mat4(1.0f), utils::math::ToRadians(m_RotationAngle), m_RotationAxis);
+        // Normalize the axis before using it for rotation
+        if (const float axisLength = glm::length(m_RotationAxis); axisLength > 0.001f)
+        {
+            const glm::vec3 normalizedAxis = m_RotationAxis / axisLength;
+
+            m_ModelMatrix = glm::rotate(glm::mat4(1.0f), utils::math::ToRadians(m_RotationAngle), normalizedAxis);
+        }
+        else
+        {
+            m_ModelMatrix = glm::mat4(1.0f);
+        }
     }
 
     void CubeScene::OnRender()
@@ -258,5 +283,132 @@ namespace examples
             m_BottomColor = Color::RGB(0.5f, 0.0f, 1.0f); // Purple
             break;
         }
+
+        CreateCube();
+    }
+
+    void CubeScene::RenderSettings()
+    {
+        constexpr float panelWidth = 340.0f;
+        constexpr float panelHeight = 250.0f;
+        constexpr float padding = 10.0f;
+
+        const ImGuiIO& io = ImGui::GetIO();
+        const float xPos = io.DisplaySize.x - panelWidth - padding;
+        const float yPos = io.DisplaySize.y - panelHeight - padding;
+
+        ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(panelWidth, panelHeight), ImGuiCond_Always);
+
+        ImGui::Begin("Scene Settings", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+        ImGui::Text("Cube Properties");
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Cube Size
+        if (ImGui::SliderFloat("Size", &m_CubeSize, 0.1f, 5.0f, "%.2f"))
+        {
+            CreateCube();
+        }
+
+        // Rotation Axis
+        ImGui::DragFloat3("Rotation Axis", &m_RotationAxis.x, 0.01f, -1.0f, 1.0f, "%.3f");
+
+        // Rotation Speed
+        ImGui::SliderFloat("Rotation Speed", &m_RotationSpeed, 0.0f, 360.0f, "%.1f°/s");
+
+        ImGui::Spacing();
+
+        // Show warning if the axis is near zero
+        if (glm::length(m_RotationAxis) < 0.001f)
+        {
+            ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.0f, 1.0f), "Warning: Zero axis detected!");
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Color Theme Selection
+        ImGui::Text("Color Theme");
+        ImGui::Spacing();
+
+        const char* themeNames[] = {
+            "Pastel Dream",
+            "Neon Cyberpunk",
+            "Ocean Depth",
+            "Sunset Vibes",
+            "Forest Nature",
+            "Royal Luxury",
+            "Fire and Ice",
+            "Candy Pop",
+            "Monochrome Gray",
+            "Rainbow Spectrum"
+        };
+
+        constexpr CubeColorTheme themes[] = {
+            CubeColorTheme::PastelDream,
+            CubeColorTheme::NeonCyberpunk,
+            CubeColorTheme::OceanDepth,
+            CubeColorTheme::SunsetVibes,
+            CubeColorTheme::ForestNature,
+            CubeColorTheme::RoyalLuxury,
+            CubeColorTheme::FireAndIce,
+            CubeColorTheme::CandyPop,
+            CubeColorTheme::MonochromeGray,
+            CubeColorTheme::RainbowSpectrum
+        };
+
+        int currentThemeIndex = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            if (m_CurrentColorTheme == themes[i])
+            {
+                currentThemeIndex = i;
+
+                break;
+            }
+        }
+
+        if (ImGui::Combo("##ColorTheme", &currentThemeIndex, themeNames, IM_ARRAYSIZE(themeNames)))
+        {
+            SetColorTheme(themes[currentThemeIndex]);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        constexpr float buttonHeight = 30.0f;
+        if (const float availableHeight = ImGui::GetContentRegionAvail().y; availableHeight > buttonHeight)
+        {
+            ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
+        }
+
+        // ImGui::Separator();
+
+        if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
+        {
+            ResetToDefault();
+        }
+
+        ImGui::End();
+    }
+
+    void CubeScene::ResetToDefault()
+    {
+        m_CubeSize = m_DefaultCubeSize;
+        m_RotationSpeed = m_DefaultRotationSpeed;
+        m_RotationAxis = m_DefaultRotationAxis;
+        m_RotationAngle = 0.0f;
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreateCube();
     }
 }
