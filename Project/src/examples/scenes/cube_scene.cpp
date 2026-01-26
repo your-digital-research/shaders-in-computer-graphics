@@ -332,9 +332,6 @@ namespace examples
         ImGui::Spacing();
 
         // Color Theme Selection
-        ImGui::Text("Color Theme");
-        ImGui::Spacing();
-
         const char* themeNames[] = {
             "Pastel Dream",
             "Neon Cyberpunk",
@@ -372,7 +369,7 @@ namespace examples
             }
         }
 
-        if (ImGui::Combo("##ColorTheme", &currentThemeIndex, themeNames, IM_ARRAYSIZE(themeNames)))
+        if (ImGui::Combo("Color Theme", &currentThemeIndex, themeNames, IM_ARRAYSIZE(themeNames)))
         {
             SetColorTheme(themes[currentThemeIndex]);
         }

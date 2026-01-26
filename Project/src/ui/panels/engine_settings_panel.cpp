@@ -174,7 +174,6 @@ namespace ui::panels
         ImGui::Spacing();
 
         constexpr float buttonHeight = 30.0f;
-
         if (const float availableHeight = ImGui::GetContentRegionAvail().y; availableHeight > buttonHeight)
         {
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
