@@ -1,17 +1,10 @@
 #pragma once
 
-#include <vector>
-
-#include <glm/glm.hpp>
-
 #include "graphics/gl.hpp"
 #include "graphics/types.hpp"
 
 namespace graphics
 {
-    using namespace std;
-    using namespace glm;
-
     class Mesh
     {
     public:

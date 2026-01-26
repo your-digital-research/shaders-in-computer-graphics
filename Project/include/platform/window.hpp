@@ -6,12 +6,10 @@
 
 namespace platform
 {
-    using namespace std;
-
     class Window
     {
     public:
-        Window(int width, int height, const string& title);
+        Window(int width, int height, const std::string& title);
         ~Window();
 
         [[nodiscard]] GLFWwindow* GetNativeWindow() const;

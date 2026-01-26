@@ -24,7 +24,7 @@ namespace examples
         Mesh* m_QuadMesh;
         Shader* m_Shader;
 
-        mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix;
 
         float m_QuadWidth;
         float m_QuadHeight;

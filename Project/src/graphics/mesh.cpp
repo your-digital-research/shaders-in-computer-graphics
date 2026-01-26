@@ -1,11 +1,7 @@
-#include "graphics/gl.hpp"
 #include "graphics/mesh.hpp"
 
 namespace graphics
 {
-    using namespace std;
-    using namespace glm;
-
     Mesh::Mesh(const Vertices& vertices, const VertexIndices& indices)
         : m_VAO(0),
           m_VBO(0),
@@ -54,15 +50,15 @@ namespace graphics
 
         // Vertex attribute 0: Position (vec3)
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, position)));
 
         // Vertex attribute 1: Color (vec4)
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, color)));
 
         // Vertex attribute 2: UV coordinates (vec2)
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>(offsetof(Vertex, uv)));
 
         // Unbind VAO
         glBindVertexArray(0);

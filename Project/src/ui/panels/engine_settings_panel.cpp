@@ -1,12 +1,10 @@
-#include "constants/graphics_constants.hpp"
-
 #include "ui/panels/engine_settings_panel.hpp"
 
-#include "graphics/renderer.hpp"
+#include "constants/graphics_constants.hpp"
 #include "graphics/color.hpp"
-
-#include "scene/scene_manager.hpp"
+#include "graphics/renderer.hpp"
 #include "scene/scene.hpp"
+#include "scene/scene_manager.hpp"
 
 namespace ui::panels
 {
@@ -159,7 +157,7 @@ namespace ui::panels
         {
             if (m_SceneManager && m_SceneManager->GetActiveScene())
             {
-                m_SceneManager->GetActiveScene()->SetCameraPosition(vec3(m_CameraPosition[0], m_CameraPosition[1], m_CameraPosition[2]));
+                m_SceneManager->GetActiveScene()->SetCameraPosition(glm::vec3(m_CameraPosition[0], m_CameraPosition[1], m_CameraPosition[2]));
             }
         }
 
@@ -167,7 +165,7 @@ namespace ui::panels
         {
             if (m_SceneManager && m_SceneManager->GetActiveScene())
             {
-                m_SceneManager->GetActiveScene()->SetCameraRotation(vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
+                m_SceneManager->GetActiveScene()->SetCameraRotation(glm::vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
             }
         }
 
@@ -248,13 +246,13 @@ namespace ui::panels
 
         if (m_SceneManager && m_SceneManager->GetActiveScene())
         {
-            const vec3 position = m_SceneManager->GetActiveScene()->GetDefaultCameraPosition();
+            const glm::vec3 position = m_SceneManager->GetActiveScene()->GetDefaultCameraPosition();
             m_SceneManager->GetActiveScene()->SetCameraPosition(position);
             m_CameraPosition[0] = position.x;
             m_CameraPosition[1] = position.y;
             m_CameraPosition[2] = position.z;
 
-            const vec3 rotation = m_SceneManager->GetActiveScene()->GetDefaultCameraRotation();
+            const glm::vec3 rotation = m_SceneManager->GetActiveScene()->GetDefaultCameraRotation();
             m_SceneManager->GetActiveScene()->SetCameraRotation(rotation);
             m_CameraRotation[0] = rotation.x;
             m_CameraRotation[1] = rotation.y;
@@ -266,12 +264,12 @@ namespace ui::panels
     {
         if (!m_SceneManager || !m_SceneManager->GetActiveScene()) return;
 
-        const vec3 position = m_SceneManager->GetActiveScene()->GetCameraPosition();
+        const glm::vec3 position = m_SceneManager->GetActiveScene()->GetCameraPosition();
         m_CameraPosition[0] = position.x;
         m_CameraPosition[1] = position.y;
         m_CameraPosition[2] = position.z;
 
-        const vec3 rotation = m_SceneManager->GetActiveScene()->GetCameraRotation();
+        const glm::vec3 rotation = m_SceneManager->GetActiveScene()->GetCameraRotation();
         m_CameraRotation[0] = rotation.x;
         m_CameraRotation[1] = rotation.y;
         m_CameraRotation[2] = rotation.z;

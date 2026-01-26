@@ -4,8 +4,6 @@
 
 namespace graphics
 {
-    using namespace glm;
-
     struct Color
     {
         float r, g, b, a;
@@ -46,11 +44,11 @@ namespace graphics
             };
         }
 
-        [[nodiscard]] vec3 ToVec3() const { return {r, g, b}; }
-        [[nodiscard]] vec4 ToVec4() const { return {r, g, b, a}; }
+        [[nodiscard]] glm::vec3 ToVec3() const { return {r, g, b}; }
+        [[nodiscard]] glm::vec4 ToVec4() const { return {r, g, b, a}; }
 
-        explicit operator vec3() const { return ToVec3(); }
-        explicit operator vec4() const { return ToVec4(); }
+        explicit operator glm::vec3() const { return ToVec3(); }
+        explicit operator glm::vec4() const { return ToVec4(); }
 
         static const Color White;
         static const Color Black;

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "imgui.h"
-
 #include "constants/graphics_constants.hpp"
 
 #include "ui/panels/panel.hpp"

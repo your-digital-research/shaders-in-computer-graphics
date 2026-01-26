@@ -1,20 +1,16 @@
-#include <cmath>
+#include "examples/scenes/plane_scene.hpp"
+
 #include <vector>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/math_constants.hpp"
 #include "constants/paths.hpp"
-#include "examples/scenes/plane_scene.hpp"
 #include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
-#include "view/camera.hpp"
 
 namespace examples
 {
-    using namespace std;
-    using namespace glm;
-
     PlaneScene::PlaneScene()
         : m_PlaneMesh(nullptr),
           m_Shader(nullptr),
@@ -58,7 +54,7 @@ namespace examples
                 const float u = static_cast<float>(x) / static_cast<float>(gridSize);
                 const float v = static_cast<float>(z) / static_cast<float>(gridSize);
 
-                vertices.emplace_back(vec3(xPos, 0.0f, zPos), Color::White, vec2(u, v));
+                vertices.emplace_back(glm::vec3(xPos, 0.0f, zPos), Color::White, glm::vec2(u, v));
             }
         }
 
@@ -93,8 +89,8 @@ namespace examples
         m_Shader = new Shader(constants::paths::WAVE_VERTEX_SHADER,
                               constants::paths::WAVE_FRAGMENT_SHADER);
 
-        m_Camera->SetPosition(vec3(0.0f, 7.5f, 8.25f));
-        m_Camera->SetRotationEuler(vec3(-45.0f, 0.0f, 0.0f));
+        m_Camera->SetPosition(glm::vec3(0.0f, 7.5f, 8.25f));
+        m_Camera->SetRotationEuler(glm::vec3(-45.0f, 0.0f, 0.0f));
 
         // Calculate plane radius: half diagonal from center to corner
         m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);

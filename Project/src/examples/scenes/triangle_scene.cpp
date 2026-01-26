@@ -1,17 +1,14 @@
+#include "examples/scenes/triangle_scene.hpp"
+
 #include <vector>
 
 #include "imgui.h"
 
 #include "constants/paths.hpp"
-#include "examples/scenes/triangle_scene.hpp"
 #include "graphics/types.hpp"
-#include "view/camera.hpp"
 
 namespace examples
 {
-    using namespace std;
-    using namespace glm;
-
     TriangleScene::TriangleScene()
         : m_TriangleMesh(nullptr),
           m_Shader(nullptr),
@@ -54,9 +51,9 @@ namespace examples
         }
 
         const Vertices vertices = {
-            Vertex(m_TopPosition, m_TopColor, vec2(0.5f, 1.0f)),
-            Vertex(m_BottomLeftPosition, m_BottomLeftColor, vec2(0.0f, 0.0f)),
-            Vertex(m_BottomRightPosition, m_BottomRightColor, vec2(1.0f, 0.0f))
+            Vertex(m_TopPosition, m_TopColor, glm::vec2(0.5f, 1.0f)),
+            Vertex(m_BottomLeftPosition, m_BottomLeftColor, glm::vec2(0.0f, 0.0f)),
+            Vertex(m_BottomRightPosition, m_BottomRightColor, glm::vec2(1.0f, 0.0f))
         };
 
         const VertexIndices indices = {0, 1, 2};
@@ -71,7 +68,7 @@ namespace examples
         m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER,
                               constants::paths::COLORED_FRAGMENT_SHADER);
 
-        m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 2.5f));
     }
 
     void TriangleScene::OnUpdate(float deltaTime)
@@ -136,7 +133,7 @@ namespace examples
         CreateTriangle();
     }
 
-    void TriangleScene::SetTopPosition(const vec3& position)
+    void TriangleScene::SetTopPosition(const glm::vec3& position)
     {
         m_TopPosition = position;
         m_BaseTopPosition = position / m_TriangleSize;
@@ -144,7 +141,7 @@ namespace examples
         CreateTriangle();
     }
 
-    void TriangleScene::SetBottomLeftPosition(const vec3& position)
+    void TriangleScene::SetBottomLeftPosition(const glm::vec3& position)
     {
         m_BottomLeftPosition = position;
         m_BaseBottomLeftPosition = position / m_TriangleSize;
@@ -152,7 +149,7 @@ namespace examples
         CreateTriangle();
     }
 
-    void TriangleScene::SetBottomRightPosition(const vec3& position)
+    void TriangleScene::SetBottomRightPosition(const glm::vec3& position)
     {
         m_BottomRightPosition = position;
         m_BaseBottomRightPosition = position / m_TriangleSize;
@@ -244,21 +241,21 @@ namespace examples
         ImGui::Spacing();
 
         // Top Vertex Position
-        vec3 topPos = m_TopPosition;
+        glm::vec3 topPos = m_TopPosition;
         if (ImGui::DragFloat3("Top", &topPos.x, 0.01f, -2.0f, 2.0f, "%.2f"))
         {
             SetTopPosition(topPos);
         }
 
         // Bottom Left Vertex Position
-        vec3 bottomLeftPos = m_BottomLeftPosition;
+        glm::vec3 bottomLeftPos = m_BottomLeftPosition;
         if (ImGui::DragFloat3("Bottom Left", &bottomLeftPos.x, 0.01f, -2.0f, 2.0f, "%.2f"))
         {
             SetBottomLeftPosition(bottomLeftPos);
         }
 
         // Bottom Right Vertex Position
-        vec3 bottomRightPos = m_BottomRightPosition;
+        glm::vec3 bottomRightPos = m_BottomRightPosition;
         if (ImGui::DragFloat3("Bottom Right", &bottomRightPos.x, 0.01f, -2.0f, 2.0f, "%.2f"))
         {
             SetBottomRightPosition(bottomRightPos);

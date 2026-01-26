@@ -1,12 +1,13 @@
 #pragma once
 
+#include <cmath>
+
 #include <glm/glm.hpp>
 
 #include "constants/math_constants.hpp"
 
 namespace utils::math
 {
-    using namespace glm;
     using namespace constants::math;
 
     // Angle conversions
@@ -52,7 +53,7 @@ namespace utils::math
     // Floating point comparison with epsilon
     constexpr bool FloatEqual(const float a, const float b, const float epsilon = EPSILON)
     {
-        return abs(a - b) < epsilon;
+        return glm::abs(a - b) < epsilon;
     }
 
     // Check if value is power of two
@@ -78,7 +79,7 @@ namespace utils::math
     // Wrap angle to [0, 360]
     inline float WrapAngle360(float angle)
     {
-        angle = fmod(angle, 360.0f);
+        angle = std::fmod(angle, 360.0f);
 
         if (angle < 0.0f) angle += 360.0f;
 
@@ -88,7 +89,7 @@ namespace utils::math
     // Wrap angle to [-180, 180]
     inline float WrapAngle180(float angle)
     {
-        angle = fmod(angle + 180.0f, 360.0f);
+        angle = std::fmod(angle + 180.0f, 360.0f);
 
         if (angle < 0.0f) angle += 360.0f;
 
@@ -103,22 +104,22 @@ namespace utils::math
     }
 
     // Distance between two 2D points
-    inline float Distance2D(const vec2& a, const vec2& b)
+    inline float Distance2D(const glm::vec2& a, const glm::vec2& b)
     {
-        return distance(a, b);
+        return glm::distance(a, b);
     }
 
     // Distance between two 3D points
-    inline float Distance3D(const vec3& a, const vec3& b)
+    inline float Distance3D(const glm::vec3& a, const glm::vec3& b)
     {
-        return distance(a, b);
+        return glm::distance(a, b);
     }
 
     // Square of distance (faster, no sqrt)
-    inline float DistanceSquared(const vec3& a, const vec3& b)
+    inline float DistanceSquared(const glm::vec3& a, const glm::vec3& b)
     {
-        const vec3 diff = b - a;
+        const glm::vec3 diff = b - a;
 
-        return dot(diff, diff);
+        return glm::dot(diff, diff);
     }
 }

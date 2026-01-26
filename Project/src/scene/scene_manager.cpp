@@ -1,16 +1,15 @@
 #include "scene/scene_manager.hpp"
 
-#include "platform/window.hpp"
-
 #include "examples/scenes/cube_scene.hpp"
 #include "examples/scenes/plane_scene.hpp"
 #include "examples/scenes/quad_scene.hpp"
 #include "examples/scenes/sphere_scene.hpp"
 #include "examples/scenes/triangle_scene.hpp"
 
+#include "platform/window.hpp"
+
 namespace scene
 {
-    using namespace std;
     using namespace platform;
     using namespace examples;
 
@@ -23,11 +22,11 @@ namespace scene
 
     void SceneManager::InitializeDefaultScenes()
     {
-        auto triangleScene = make_unique<TriangleScene>();
-        auto cubeScene = make_unique<CubeScene>();
-        auto planeScene = make_unique<PlaneScene>();
-        auto quadScene = make_unique<QuadScene>();
-        auto sphereScene = make_unique<SphereScene>();
+        auto triangleScene = std::make_unique<TriangleScene>();
+        auto cubeScene = std::make_unique<CubeScene>();
+        auto planeScene = std::make_unique<PlaneScene>();
+        auto quadScene = std::make_unique<QuadScene>();
+        auto sphereScene = std::make_unique<SphereScene>();
 
         AddScene("rainbow-triangle", std::move(triangleScene));
         AddScene("rotating-cube", std::move(cubeScene));
@@ -44,7 +43,7 @@ namespace scene
         m_Scenes.clear();
     }
 
-    void SceneManager::AddScene(const string& name, unique_ptr<Scene> scene)
+    void SceneManager::AddScene(const std::string& name, std::unique_ptr<Scene> scene)
     {
         scene->SetName(name);
 
@@ -68,7 +67,7 @@ namespace scene
         }
     }
 
-    void SceneManager::RemoveScene(const string& name)
+    void SceneManager::RemoveScene(const std::string& name)
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {
@@ -81,7 +80,7 @@ namespace scene
         }
     }
 
-    void SceneManager::SetActiveScene(const string& name)
+    void SceneManager::SetActiveScene(const std::string& name)
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {
@@ -94,7 +93,7 @@ namespace scene
         }
     }
 
-    string SceneManager::GetActiveSceneName() const
+    std::string SceneManager::GetActiveSceneName() const
     {
         if (!m_ActiveScene) return "None";
 

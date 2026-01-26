@@ -1,14 +1,9 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "graphics/color.hpp"
-#include "graphics/gl.hpp"
 
 namespace graphics
 {
-    using namespace glm;
-
     class Renderer
     {
     public:

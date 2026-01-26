@@ -1,4 +1,5 @@
 #include "ui/panels/performance_panel.hpp"
+
 #include "core/engine.hpp"
 
 namespace ui::panels

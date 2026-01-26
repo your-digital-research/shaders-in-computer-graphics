@@ -9,7 +9,6 @@
 
 namespace scene
 {
-    using namespace std;
     using namespace platform;
 
     class SceneManager
@@ -20,13 +19,13 @@ namespace scene
 
         void InitializeDefaultScenes();
 
-        void AddScene(const string& name, unique_ptr<Scene> scene);
-        void RemoveScene(const string& name);
-        void SetActiveScene(const string& name);
+        void AddScene(const std::string& name, std::unique_ptr<Scene> scene);
+        void RemoveScene(const std::string& name);
+        void SetActiveScene(const std::string& name);
 
         [[nodiscard]] Scene* GetActiveScene() const { return m_ActiveScene; }
-        [[nodiscard]] string GetActiveSceneName() const;
-        [[nodiscard]] const unordered_map<string, unique_ptr<Scene>>& GetAllScenes() const { return m_Scenes; }
+        [[nodiscard]] std::string GetActiveSceneName() const;
+        [[nodiscard]] const std::unordered_map<std::string, std::unique_ptr<Scene>>& GetAllScenes() const { return m_Scenes; }
 
         void UpdateActiveScene(float deltaTime) const;
         void RenderActiveScene() const;
@@ -34,6 +33,6 @@ namespace scene
     private:
         Window* m_Window;
         Scene* m_ActiveScene;
-        unordered_map<string, unique_ptr<Scene>> m_Scenes;
+        std::unordered_map<std::string, std::unique_ptr<Scene>> m_Scenes;
     };
 }

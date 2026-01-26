@@ -6,7 +6,6 @@
 
 namespace examples
 {
-    using namespace glm;
     using namespace scene;
     using namespace graphics;
 
@@ -41,7 +40,7 @@ namespace examples
         Mesh* m_PlaneMesh;
         Shader* m_Shader;
 
-        mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix;
 
         int m_WaveCount;
         float m_Time;

@@ -1,18 +1,16 @@
+#include "examples/scenes/cube_scene.hpp"
+
 #include <string>
 #include <vector>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/paths.hpp"
-#include "examples/scenes/cube_scene.hpp"
 #include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
-#include "view/camera.hpp"
 
 namespace examples
 {
-    using namespace std;
-    using namespace glm;
     using namespace graphics;
 
     CubeScene::CubeScene()
@@ -44,40 +42,40 @@ namespace examples
         constexpr float faceWidth = 1.0f / 6.0f;
 
         const Vertices vertices = {
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_FrontColor, vec2(faceWidth * 1, 0.0f)),
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_FrontColor, vec2(faceWidth * 2, 0.0f)),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_FrontColor, vec2(faceWidth * 2, 1.0f)),
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_FrontColor, vec2(faceWidth * 1, 1.0f)),
+            Vertex(glm::vec3(-halfSize, -halfSize, halfSize), m_FrontColor, glm::vec2(faceWidth * 1, 0.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, halfSize), m_FrontColor, glm::vec2(faceWidth * 2, 0.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, halfSize), m_FrontColor, glm::vec2(faceWidth * 2, 1.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, halfSize), m_FrontColor, glm::vec2(faceWidth * 1, 1.0f)),
 
             // Back face - UV range [3/6, 4/6]
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BackColor, vec2(faceWidth * 4, 0.0f)),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_BackColor, vec2(faceWidth * 4, 1.0f)),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_BackColor, vec2(faceWidth * 3, 1.0f)),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BackColor, vec2(faceWidth * 3, 0.0f)),
+            Vertex(glm::vec3(-halfSize, -halfSize, -halfSize), m_BackColor, glm::vec2(faceWidth * 4, 0.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, -halfSize), m_BackColor, glm::vec2(faceWidth * 4, 1.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, -halfSize), m_BackColor, glm::vec2(faceWidth * 3, 1.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, -halfSize), m_BackColor, glm::vec2(faceWidth * 3, 0.0f)),
 
             // Right face - UV range [2/6, 3/6]
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_RightColor, vec2(faceWidth * 2, 0.0f)),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_RightColor, vec2(faceWidth * 3, 0.0f)),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_RightColor, vec2(faceWidth * 3, 1.0f)),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_RightColor, vec2(faceWidth * 2, 1.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, halfSize), m_RightColor, glm::vec2(faceWidth * 2, 0.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, -halfSize), m_RightColor, glm::vec2(faceWidth * 3, 0.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, -halfSize), m_RightColor, glm::vec2(faceWidth * 3, 1.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, halfSize), m_RightColor, glm::vec2(faceWidth * 2, 1.0f)),
 
             // Left face - UV range [0/6, 1/6]
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_LeftColor, vec2(faceWidth * 0, 0.0f)),
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_LeftColor, vec2(faceWidth * 1, 0.0f)),
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_LeftColor, vec2(faceWidth * 1, 1.0f)),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_LeftColor, vec2(faceWidth * 0, 1.0f)),
+            Vertex(glm::vec3(-halfSize, -halfSize, -halfSize), m_LeftColor, glm::vec2(faceWidth * 0, 0.0f)),
+            Vertex(glm::vec3(-halfSize, -halfSize, halfSize), m_LeftColor, glm::vec2(faceWidth * 1, 0.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, halfSize), m_LeftColor, glm::vec2(faceWidth * 1, 1.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, -halfSize), m_LeftColor, glm::vec2(faceWidth * 0, 1.0f)),
 
             // Top face - UV range [4/6, 5/6]
-            Vertex(vec3(-halfSize, halfSize, halfSize), m_TopColor, vec2(faceWidth * 4, 0.0f)),
-            Vertex(vec3(halfSize, halfSize, halfSize), m_TopColor, vec2(faceWidth * 5, 0.0f)),
-            Vertex(vec3(halfSize, halfSize, -halfSize), m_TopColor, vec2(faceWidth * 5, 1.0f)),
-            Vertex(vec3(-halfSize, halfSize, -halfSize), m_TopColor, vec2(faceWidth * 4, 1.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, halfSize), m_TopColor, glm::vec2(faceWidth * 4, 0.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, halfSize), m_TopColor, glm::vec2(faceWidth * 5, 0.0f)),
+            Vertex(glm::vec3(halfSize, halfSize, -halfSize), m_TopColor, glm::vec2(faceWidth * 5, 1.0f)),
+            Vertex(glm::vec3(-halfSize, halfSize, -halfSize), m_TopColor, glm::vec2(faceWidth * 4, 1.0f)),
 
             // Bottom face - UV range [5/6, 6/6]
-            Vertex(vec3(-halfSize, -halfSize, -halfSize), m_BottomColor, vec2(faceWidth * 5, 1.0f)),
-            Vertex(vec3(halfSize, -halfSize, -halfSize), m_BottomColor, vec2(faceWidth * 6, 1.0f)),
-            Vertex(vec3(halfSize, -halfSize, halfSize), m_BottomColor, vec2(faceWidth * 6, 0.0f)),
-            Vertex(vec3(-halfSize, -halfSize, halfSize), m_BottomColor, vec2(faceWidth * 5, 0.0f))
+            Vertex(glm::vec3(-halfSize, -halfSize, -halfSize), m_BottomColor, glm::vec2(faceWidth * 5, 1.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, -halfSize), m_BottomColor, glm::vec2(faceWidth * 6, 1.0f)),
+            Vertex(glm::vec3(halfSize, -halfSize, halfSize), m_BottomColor, glm::vec2(faceWidth * 6, 0.0f)),
+            Vertex(glm::vec3(-halfSize, -halfSize, halfSize), m_BottomColor, glm::vec2(faceWidth * 5, 0.0f))
         };
 
         const VertexIndices indices = {
@@ -116,7 +114,7 @@ namespace examples
         m_Shader = new Shader(constants::paths::COLORED_VERTEX_SHADER,
                               constants::paths::COLORED_FRAGMENT_SHADER);
 
-        m_Camera->SetPosition(vec3(0.0f, 0.0f, 4.0f));
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 4.0f));
     }
 
     void CubeScene::OnUpdate(const float deltaTime)
@@ -124,7 +122,7 @@ namespace examples
         m_RotationAngle += deltaTime * m_RotationSpeed;
         m_RotationAngle = utils::math::WrapAngle360(m_RotationAngle);
 
-        m_ModelMatrix = rotate(mat4(1.0f), utils::math::ToRadians(m_RotationAngle), m_RotationAxis);
+        m_ModelMatrix = glm::rotate(glm::mat4(1.0f), utils::math::ToRadians(m_RotationAngle), m_RotationAxis);
     }
 
     void CubeScene::OnRender()

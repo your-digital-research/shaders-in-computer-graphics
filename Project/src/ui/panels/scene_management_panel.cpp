@@ -1,4 +1,5 @@
 #include "ui/panels/scene_management_panel.hpp"
+
 #include "scene/scene_manager.hpp"
 
 namespace ui::panels

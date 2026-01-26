@@ -6,7 +6,6 @@
 
 namespace examples
 {
-    using namespace glm;
     using namespace scene;
     using namespace graphics;
 
@@ -40,11 +39,11 @@ namespace examples
         Mesh* m_CubeMesh;
         Shader* m_Shader;
 
-        mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix;
 
         float m_RotationAngle;
         float m_RotationSpeed;
-        vec3 m_RotationAxis;
+        glm::vec3 m_RotationAxis;
 
         float m_CubeSize;
 

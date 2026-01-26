@@ -1,3 +1,5 @@
+#include "examples/scenes/sphere_scene.hpp"
+
 #include <cmath>
 #include <string>
 #include <vector>
@@ -6,16 +8,11 @@
 
 #include "constants/math_constants.hpp"
 #include "constants/paths.hpp"
-#include "examples/scenes/sphere_scene.hpp"
 #include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
-#include "view/camera.hpp"
 
 namespace examples
 {
-    using namespace std;
-    using namespace glm;
-
     SphereScene::SphereScene()
         : m_SphereMesh(nullptr),
           m_Shader(nullptr),
@@ -50,20 +47,20 @@ namespace examples
         for (unsigned int ring = 0; ring <= rings; ++ring)
         {
             const float phi = constants::math::PI * static_cast<float>(ring) / static_cast<float>(rings);
-            const float y = radius * cos(phi);
-            const float ringRadius = radius * sin(phi);
+            const float y = radius * glm::cos(phi);
+            const float ringRadius = radius * glm::sin(phi);
 
             for (unsigned int seg = 0; seg <= segments; ++seg)
             {
                 const float theta = constants::math::TWO_PI * static_cast<float>(seg) / static_cast<float>(segments);
-                const float x = ringRadius * cos(theta);
-                const float z = ringRadius * sin(theta);
+                const float x = ringRadius * glm::cos(theta);
+                const float z = ringRadius * glm::sin(theta);
 
-                const vec3 position(x, y, z);
+                const glm::vec3 position(x, y, z);
                 const float u = static_cast<float>(seg) / static_cast<float>(segments);
                 const float v = static_cast<float>(ring) / static_cast<float>(rings);
 
-                vertices.push_back(Vertex(position, Color::White, vec2(u, v)));
+                vertices.emplace_back(position, Color::White, glm::vec2(u, v));
             }
         }
 
@@ -95,7 +92,7 @@ namespace examples
         m_Shader = new Shader(constants::paths::FRESNEL_VERTEX_SHADER,
                               constants::paths::FRESNEL_FRAGMENT_SHADER);
 
-        m_Camera->SetPosition(vec3(0.0f, 0.0f, 4.0f));
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 4.0f));
     }
 
     void SphereScene::OnUpdate(const float deltaTime)
@@ -104,7 +101,7 @@ namespace examples
         m_RotationAngle += deltaTime * m_RotationSpeed;
         m_RotationAngle = utils::math::WrapAngle360(m_RotationAngle);
 
-        m_ModelMatrix = rotate(mat4(1.0f), utils::math::ToRadians(m_RotationAngle), vec3(0.0f, 1.0f, 0.0f));
+        m_ModelMatrix = glm::rotate(glm::mat4(1.0f), utils::math::ToRadians(m_RotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
     void SphereScene::OnRender()

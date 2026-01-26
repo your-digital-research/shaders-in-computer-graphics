@@ -1,12 +1,12 @@
+#include "ui/ui_manager.hpp"
+
 #include <iostream>
 
 #include "core/engine.hpp"
 #include "scene/scene_manager.hpp"
-#include "ui/ui_manager.hpp"
 
 namespace ui
 {
-    using namespace std;
     using namespace core;
     using namespace panels;
 

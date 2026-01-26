@@ -1,13 +1,9 @@
-#include <iostream>
+#include "core/application.hpp"
 
 #include "constants/graphics_constants.hpp"
 
-#include "core/application.hpp"
-#include "platform/window.hpp"
-
 namespace core
 {
-    using namespace std;
     using namespace platform;
 
     Application::Application()

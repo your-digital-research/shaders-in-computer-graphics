@@ -6,8 +6,6 @@
 
 namespace scene
 {
-    using namespace glm;
-    using namespace std;
     using namespace view;
 
     class Scene
@@ -24,37 +22,37 @@ namespace scene
         virtual void RenderSettings() {}
         virtual void ResetToDefault() {}
 
-        [[nodiscard]] vec3 GetCameraPosition() const
+        [[nodiscard]] glm::vec3 GetCameraPosition() const
         {
-            return m_Camera ? m_Camera->GetPosition() : vec3(0.0f);
+            return m_Camera ? m_Camera->GetPosition() : glm::vec3(0.0f);
         }
-        [[nodiscard]] vec3 GetCameraRotation() const
+        [[nodiscard]] glm::vec3 GetCameraRotation() const
         {
-            return m_Camera ? m_Camera->GetEulerAngles() : vec3(0.0f);
+            return m_Camera ? m_Camera->GetEulerAngles() : glm::vec3(0.0f);
         }
 
-        void SetCameraPosition(const vec3& position) const
+        void SetCameraPosition(const glm::vec3& position) const
         {
             if (m_Camera) m_Camera->SetPosition(position);
         }
-        void SetCameraRotation(const vec3& rotation) const
+        void SetCameraRotation(const glm::vec3& rotation) const
         {
             if (m_Camera) m_Camera->SetRotationEuler(rotation);
         }
 
-        [[nodiscard]] virtual vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
-        [[nodiscard]] virtual vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
+        [[nodiscard]] virtual glm::vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
+        [[nodiscard]] virtual glm::vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
 
         void UpdateAspectRatio(const float aspect) const
         {
             if (m_Camera) m_Camera->UpdateAspectRatio(aspect);
         }
 
-        [[nodiscard]] const string& GetName() const { return m_Name; }
-        void SetName(const string& name) { m_Name = name; }
+        [[nodiscard]] const std::string& GetName() const { return m_Name; }
+        void SetName(const std::string& name) { m_Name = name; }
 
     protected:
-        string m_Name;
+        std::string m_Name;
         Camera* m_Camera;
     };
 }

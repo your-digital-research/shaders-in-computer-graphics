@@ -1,5 +1,4 @@
 #include "scene/scene.hpp"
-#include "view/camera.hpp"
 
 namespace scene
 {

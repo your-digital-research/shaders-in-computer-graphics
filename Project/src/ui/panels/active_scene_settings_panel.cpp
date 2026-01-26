@@ -1,6 +1,7 @@
 #include "ui/panels/active_scene_settings_panel.hpp"
-#include "scene/scene_manager.hpp"
+
 #include "scene/scene.hpp"
+#include "scene/scene_manager.hpp"
 
 namespace ui::panels
 {

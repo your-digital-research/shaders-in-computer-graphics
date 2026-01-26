@@ -1,32 +1,30 @@
-#include <glm/glm.hpp>
+#include "view/camera.hpp"
+
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/quaternion.hpp>
 
 #include "constants/graphics_constants.hpp"
-#include "view/camera.hpp"
+
 
 namespace view
 {
-    using namespace glm;
-
-    Camera::Camera(const vec3& position, const vec3& up, const float pitch, const float yaw, const float roll)
+    Camera::Camera(const glm::vec3& position, const glm::vec3& up, const float pitch, const float yaw, const float roll)
         : m_Position(position),
-          m_Front(vec3(0.0f, 0.0f, -1.0f)),
-          m_Back(vec3(0.0f, 0.0f, 1.0f)),
+          m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
+          m_Back(glm::vec3(0.0f, 0.0f, 1.0f)),
           m_Up(up),
           m_Down(-up),
-          m_Right(vec3(1.0f, 0.0f, 0.0f)),
-          m_Left(vec3(-1.0f, 0.0f, 0.0f)),
-          m_WorldFront(vec3(0.0f, 0.0f, -1.0f)),
-          m_WorldBack(vec3(0.0f, 0.0f, 1.0f)),
+          m_Right(glm::vec3(1.0f, 0.0f, 0.0f)),
+          m_Left(glm::vec3(-1.0f, 0.0f, 0.0f)),
+          m_WorldFront(glm::vec3(0.0f, 0.0f, -1.0f)),
+          m_WorldBack(glm::vec3(0.0f, 0.0f, 1.0f)),
           m_WorldUp(up),
           m_WorldDown(-up),
-          m_WorldRight(vec3(1.0f, 0.0f, 0.0f)),
-          m_WorldLeft(vec3(-1.0f, 0.0f, 0.0f)),
+          m_WorldRight(glm::vec3(1.0f, 0.0f, 0.0f)),
+          m_WorldLeft(glm::vec3(-1.0f, 0.0f, 0.0f)),
           m_Yaw(yaw),
           m_Pitch(pitch),
           m_Roll(roll),
-          m_Orientation(quat(1.0f, 0.0f, 0.0f, 0.0f)),
+          m_Orientation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)),
           m_Fov(constants::graphics::DEFAULT_FOV),
           m_AspectRatio(1.0f),
           m_NearPlane(constants::graphics::DEFAULT_NEAR_PLANE),
@@ -35,14 +33,14 @@ namespace view
         UpdateCameraVectors();
     }
 
-    mat4 Camera::GetViewMatrix() const
+    glm::mat4 Camera::GetViewMatrix() const
     {
-        return lookAt(m_Position, m_Position + m_Front, m_Up);
+        return glm::lookAt(m_Position, m_Position + m_Front, m_Up);
     }
 
-    mat4 Camera::GetProjectionMatrix() const
+    glm::mat4 Camera::GetProjectionMatrix() const
     {
-        return perspective(radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
+        return glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
     }
 
     void Camera::SetProjection(const float fov, const float aspect, const float near, const float far)
@@ -58,25 +56,25 @@ namespace view
         m_AspectRatio = aspect;
     }
 
-    void Camera::SetPosition(const vec3& position)
+    void Camera::SetPosition(const glm::vec3& position)
     {
         m_Position = position;
     }
 
-    void Camera::SetRotationEuler(const vec3& eulerAngles)
+    void Camera::SetRotationEuler(const glm::vec3& eulerAngles)
     {
         m_Pitch = eulerAngles.x;
         m_Yaw = eulerAngles.y;
         m_Roll = eulerAngles.z;
 
-        m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
+        m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
 
         UpdateCameraVectors();
     }
 
-    void Camera::SetRotationQuaternion(const quat& quaternion)
+    void Camera::SetRotationQuaternion(const glm::quat& quaternion)
     {
-        m_Orientation = normalize(quaternion);
+        m_Orientation = glm::normalize(quaternion);
 
         UpdateEulerFromQuaternion();
         UpdateCameraVectors();
@@ -89,7 +87,7 @@ namespace view
         m_Roll += roll;
 
         // Clamp pitch to prevent gimbal lock
-        m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
+        m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
 
         // Normalize yaw and roll to [-180, 180]
         while (m_Yaw > 180.0f) m_Yaw -= 360.0f;
@@ -103,28 +101,28 @@ namespace view
     void Camera::UpdateCameraVectors()
     {
         // Calculate front vector from Euler angles
-        vec3 front;
+        glm::vec3 front;
 
-        front.x = sin(radians(m_Yaw)) * cos(radians(m_Pitch));
-        front.y = sin(radians(m_Pitch));
-        front.z = -cos(radians(m_Yaw)) * cos(radians(m_Pitch));
+        front.x = glm::sin(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
+        front.y = glm::sin(glm::radians(m_Pitch));
+        front.z = -glm::cos(glm::radians(m_Yaw)) * glm::cos(glm::radians(m_Pitch));
 
-        m_Front = normalize(front);
+        m_Front = glm::normalize(front);
         m_Back = -m_Front;
 
         // Calculate right vector
-        m_Right = normalize(cross(m_Front, m_WorldUp));
+        m_Right = glm::normalize(glm::cross(m_Front, m_WorldUp));
 
         // Calculate up vector considering roll
-        const vec3 baseUp = normalize(cross(m_Right, m_Front));
+        const glm::vec3 baseUp = glm::normalize(glm::cross(m_Right, m_Front));
 
         // Apply roll rotation around the front axis
-        if (abs(m_Roll) > 0.001f)
+        if (glm::abs(m_Roll) > 0.001f)
         {
-            const quat rollQuat = angleAxis(radians(m_Roll), m_Front);
+            const glm::quat rollQuat = glm::angleAxis(glm::radians(m_Roll), m_Front);
 
-            m_Up = normalize(rollQuat * baseUp);
-            m_Right = normalize(cross(m_Front, m_Up));
+            m_Up = glm::normalize(rollQuat * baseUp);
+            m_Right = glm::normalize(glm::cross(m_Front, m_Up));
         }
         else
         {
@@ -142,23 +140,23 @@ namespace view
     void Camera::UpdateQuaternionFromEuler()
     {
         // Convert Euler angles to quaternion (YXZ order: Yaw-Pitch-Roll)
-        const quat qYaw = angleAxis(radians(m_Yaw), vec3(0.0f, 1.0f, 0.0f));
-        const quat qPitch = angleAxis(radians(m_Pitch), vec3(1.0f, 0.0f, 0.0f));
-        const quat qRoll = angleAxis(radians(m_Roll), vec3(0.0f, 0.0f, 1.0f));
+        const glm::quat qYaw = glm::angleAxis(glm::radians(m_Yaw), glm::vec3(0.0f, 1.0f, 0.0f));
+        const glm::quat qPitch = glm::angleAxis(glm::radians(m_Pitch), glm::vec3(1.0f, 0.0f, 0.0f));
+        const glm::quat qRoll = glm::angleAxis(glm::radians(m_Roll), glm::vec3(0.0f, 0.0f, 1.0f));
 
-        m_Orientation = normalize(qYaw * qPitch * qRoll);
+        m_Orientation = glm::normalize(qYaw * qPitch * qRoll);
     }
 
     void Camera::UpdateEulerFromQuaternion()
     {
         // Convert quaternion to Euler angles
-        const vec3 euler = eulerAngles(m_Orientation);
+        const glm::vec3 euler = eulerAngles(m_Orientation);
 
-        m_Pitch = degrees(euler.x);
-        m_Yaw = degrees(euler.y);
-        m_Roll = degrees(euler.z);
+        m_Pitch = glm::degrees(euler.x);
+        m_Yaw = glm::degrees(euler.y);
+        m_Roll = glm::degrees(euler.z);
 
         // Clamp pitch
-        m_Pitch = clamp(m_Pitch, -89.0f, 89.0f);
+        m_Pitch = glm::clamp(m_Pitch, -89.0f, 89.0f);
     }
 }

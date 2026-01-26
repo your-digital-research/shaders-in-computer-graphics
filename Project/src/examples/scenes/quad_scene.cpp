@@ -1,15 +1,12 @@
+#include "examples/scenes/quad_scene.hpp"
+
 #include <vector>
 
 #include "constants/paths.hpp"
-#include "examples/scenes/quad_scene.hpp"
 #include "graphics/types.hpp"
-#include "view/camera.hpp"
 
 namespace examples
 {
-    using namespace std;
-    using namespace glm;
-
     QuadScene::QuadScene()
         : m_QuadMesh(nullptr),
           m_Shader(nullptr),
@@ -32,10 +29,10 @@ namespace examples
         const float halfHeight = m_QuadHeight * 0.5f;
 
         const Vertices vertices = {
-            Vertex(vec3(-halfWidth, -halfHeight, 0.0f), m_QuadColor, vec2(0.0f, 0.0f)),
-            Vertex(vec3(halfWidth, -halfHeight, 0.0f), m_QuadColor, vec2(1.0f, 0.0f)),
-            Vertex(vec3(halfWidth, halfHeight, 0.0f), m_QuadColor, vec2(1.0f, 1.0f)),
-            Vertex(vec3(-halfWidth, halfHeight, 0.0f), m_QuadColor, vec2(0.0f, 1.0f)),
+            Vertex(glm::vec3(-halfWidth, -halfHeight, 0.0f), m_QuadColor, glm::vec2(0.0f, 0.0f)),
+            Vertex(glm::vec3(halfWidth, -halfHeight, 0.0f), m_QuadColor, glm::vec2(1.0f, 0.0f)),
+            Vertex(glm::vec3(halfWidth, halfHeight, 0.0f), m_QuadColor, glm::vec2(1.0f, 1.0f)),
+            Vertex(glm::vec3(-halfWidth, halfHeight, 0.0f), m_QuadColor, glm::vec2(0.0f, 1.0f)),
         };
 
         const VertexIndices indices = {
@@ -53,7 +50,7 @@ namespace examples
         m_Shader = new Shader(constants::paths::UV_VERTEX_SHADER,
                               constants::paths::UV_FRAGMENT_SHADER);
 
-        m_Camera->SetPosition(vec3(0.0f, 0.0f, 2.5f));
+        m_Camera->SetPosition(glm::vec3(0.0f, 0.0f, 2.5f));
     }
 
     void QuadScene::OnUpdate(float deltaTime)

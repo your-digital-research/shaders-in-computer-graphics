@@ -6,7 +6,6 @@
 
 namespace examples
 {
-    using namespace glm;
     using namespace scene;
     using namespace graphics;
 
@@ -24,8 +23,8 @@ namespace examples
         void RenderSettings() override;
         void ResetToDefault() override;
 
-        [[nodiscard]] vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
-        [[nodiscard]] vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }
+        [[nodiscard]] glm::vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
+        [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }
 
         [[nodiscard]] const Color& GetTopColor() const { return m_TopColor; }
         [[nodiscard]] const Color& GetBottomLeftColor() const { return m_BottomLeftColor; }
@@ -37,15 +36,15 @@ namespace examples
         void SetBottomRightColor(const Color& color);
         void SetTriangleSize(float size);
 
-        void SetTopPosition(const vec3& position);
-        void SetBottomLeftPosition(const vec3& position);
-        void SetBottomRightPosition(const vec3& position);
+        void SetTopPosition(const glm::vec3& position);
+        void SetBottomLeftPosition(const glm::vec3& position);
+        void SetBottomRightPosition(const glm::vec3& position);
 
     private:
         Mesh* m_TriangleMesh;
         Shader* m_Shader;
 
-        mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix;
 
         float m_TriangleSize;
         float m_DefaultTriangleSize;
@@ -58,20 +57,20 @@ namespace examples
         Color m_DefaultBottomLeftColor;
         Color m_DefaultBottomRightColor;
 
-        vec3 m_TopPosition;
-        vec3 m_BottomLeftPosition;
-        vec3 m_BottomRightPosition;
+        glm::vec3 m_TopPosition;
+        glm::vec3 m_BottomLeftPosition;
+        glm::vec3 m_BottomRightPosition;
 
-        vec3 m_DefaultTopPosition;
-        vec3 m_DefaultBottomLeftPosition;
-        vec3 m_DefaultBottomRightPosition;
+        glm::vec3 m_DefaultTopPosition;
+        glm::vec3 m_DefaultBottomLeftPosition;
+        glm::vec3 m_DefaultBottomRightPosition;
 
-        vec3 m_BaseTopPosition;
-        vec3 m_BaseBottomLeftPosition;
-        vec3 m_BaseBottomRightPosition;
+        glm::vec3 m_BaseTopPosition;
+        glm::vec3 m_BaseBottomLeftPosition;
+        glm::vec3 m_BaseBottomRightPosition;
 
-        vec3 m_DefaultCameraPosition;
-        vec3 m_DefaultCameraRotation;
+        glm::vec3 m_DefaultCameraPosition;
+        glm::vec3 m_DefaultCameraRotation;
 
         void CreateTriangle();
     };

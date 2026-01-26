@@ -1,24 +1,24 @@
+#include "platform/window.hpp"
+
 #include <iostream>
 
 #include "constants/graphics_constants.hpp"
 #include "graphics/renderer.hpp"
-#include "platform/window.hpp"
 
 namespace platform
 {
-    using namespace std;
     using namespace graphics;
 
-    Window::Window(const int width, const int height, const string& title)
+    Window::Window(const int width, const int height, const std::string& title)
         : m_Width(width),
           m_Height(height)
     {
         // Try to initialize GLFW
         if (!glfwInit())
         {
-            cerr << "[GLFW Error] Failed to initialize GLFW!" << endl;
+            std::cerr << "[GLFW Error] Failed to initialize GLFW!" << std::endl;
 
-            exit(EXIT_FAILURE);
+            std::exit(EXIT_FAILURE);
         }
 
         // Set GLFW window hints
@@ -44,11 +44,11 @@ namespace platform
         // Check if the window was created successfully
         if (!m_Window)
         {
-            cerr << "[GLFW Error] Failed to create GLFW window!" << endl;
+            std::cerr << "[GLFW Error] Failed to create GLFW window!" << std::endl;
 
             glfwTerminate();
 
-            exit(EXIT_FAILURE);
+            std::exit(EXIT_FAILURE);
         }
 
         // Make the window's context current
