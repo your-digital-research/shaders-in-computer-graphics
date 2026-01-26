@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 
 #include <glm/gtc/type_ptr.hpp>
 
@@ -18,12 +19,42 @@ namespace graphics
         const std::string vertexSource = ReadFile(vertexPath);
         const std::string fragmentSource = ReadFile(fragmentPath);
 
+        if (vertexSource.empty())
+        {
+            throw std::runtime_error("Failed to read vertex shader: " + vertexPath);
+        }
+
+        if (fragmentSource.empty())
+        {
+            throw std::runtime_error("Failed to read fragment shader: " + fragmentPath);
+        }
+
         // Compile shaders
         const GLuint vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSource);
         const GLuint fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
+        if (vertexShader == 0)
+        {
+            throw std::runtime_error("Failed to compile vertex shader: " + vertexPath);
+        }
+
+        if (fragmentShader == 0)
+        {
+            glDeleteShader(vertexShader);
+
+            throw std::runtime_error("Failed to compile fragment shader: " + fragmentPath);
+        }
+
         // Link shaders into a program
         Link(vertexShader, fragmentShader);
+
+        if (m_RendererID == 0)
+        {
+            glDeleteShader(vertexShader);
+            glDeleteShader(fragmentShader);
+
+            throw std::runtime_error("Failed to link shader program");
+        }
 
         // Delete individual shaders (they're now linked into the program)
         glDeleteShader(vertexShader);

@@ -1,5 +1,7 @@
 #include "core/engine.hpp"
 
+#include <stdexcept>
+
 namespace core
 {
     using namespace platform;
@@ -14,6 +16,11 @@ namespace core
           m_CurrentDeltaTime(0.0f),
           m_Running(true)
     {
+        if (!m_Window)
+        {
+            throw std::invalid_argument("Window pointer cannot be null!");
+        }
+
         Initialize();
     }
 
@@ -24,12 +31,32 @@ namespace core
 
     void Engine::Initialize()
     {
-        m_Renderer = new Renderer();
-        m_UIManager = new UIManager(m_Window);
+        try
+        {
+            m_Renderer = new Renderer();
 
-        m_Window->InitializeRenderer();
-        m_SceneManager.InitializeDefaultScenes();
-        m_UIManager->InitializePanels(this);
+            if (!m_Renderer)
+            {
+                throw std::runtime_error("Failed to create Renderer!");
+            }
+
+            m_UIManager = new UIManager(m_Window);
+
+            if (!m_UIManager)
+            {
+                throw std::runtime_error("Failed to create UIManager!");
+            }
+
+            m_Window->InitializeRenderer();
+            m_SceneManager.InitializeDefaultScenes();
+            m_UIManager->InitializePanels(this);
+        }
+        catch (...)
+        {
+            Shutdown();
+
+            throw;
+        }
     }
 
     void Engine::Shutdown()
@@ -72,6 +99,11 @@ namespace core
 
     void Engine::Run()
     {
+        if (!m_Window || !m_Renderer || !m_UIManager)
+        {
+            throw std::runtime_error("Engine components not properly initialized!");
+        }
+
         while (m_Running && !m_Window->ShouldClose())
         {
             m_Window->PollEvents();

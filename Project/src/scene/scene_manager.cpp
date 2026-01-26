@@ -1,5 +1,7 @@
 #include "scene/scene_manager.hpp"
 
+#include <stdexcept>
+
 #include "examples/scenes/cube_scene.hpp"
 #include "examples/scenes/plane_scene.hpp"
 #include "examples/scenes/quad_scene.hpp"
@@ -17,7 +19,10 @@ namespace scene
         : m_Window(window),
           m_ActiveScene(nullptr)
     {
-        //
+        if (!m_Window)
+        {
+            throw std::invalid_argument("Window pointer cannot be null!");
+        }
     }
 
     void SceneManager::InitializeDefaultScenes()

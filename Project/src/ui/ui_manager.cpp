@@ -1,6 +1,7 @@
 #include "ui/ui_manager.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "core/engine.hpp"
 #include "scene/scene_manager.hpp"
@@ -13,10 +14,19 @@ namespace ui
     UIManager::UIManager(const Window* window)
         : m_Enabled(true)
     {
+        if (!window)
+        {
+            throw std::invalid_argument("Window pointer cannot be null!");
+        }
+
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
 
-        ImGui::CreateContext();
+        if (!ImGui::CreateContext())
+        {
+            throw std::runtime_error("Failed to create ImGui context!");
+        }
+
         ImGuiIO& io = ImGui::GetIO();
 
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
@@ -25,8 +35,20 @@ namespace ui
         ImGui::StyleColorsClassic();
 
         // Setup Platform / Renderer backends
-        ImGui_ImplOpenGL3_Init("#version 330");
-        ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true);
+        if (!ImGui_ImplOpenGL3_Init("#version 330"))
+        {
+            ImGui::DestroyContext();
+
+            throw std::runtime_error("Failed to initialize ImGui OpenGL3 backend!");
+        }
+
+        if (!ImGui_ImplGlfw_InitForOpenGL(window->GetNativeWindow(), true))
+        {
+            ImGui_ImplOpenGL3_Shutdown();
+            ImGui::DestroyContext();
+
+            throw std::runtime_error("Failed to initialize ImGui GLFW backend!");
+        }
     }
 
     UIManager::~UIManager()

@@ -1,6 +1,7 @@
 #include "platform/window.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "constants/graphics_constants.hpp"
 #include "graphics/renderer.hpp"
@@ -18,7 +19,7 @@ namespace platform
         {
             std::cerr << "[GLFW Error] Failed to initialize GLFW!" << std::endl;
 
-            std::exit(EXIT_FAILURE);
+            throw std::runtime_error("Failed to initialize GLFW!");
         }
 
         // Set GLFW window hints
@@ -48,7 +49,7 @@ namespace platform
 
             glfwTerminate();
 
-            std::exit(EXIT_FAILURE);
+            throw std::runtime_error("Failed to create GLFW window!");
         }
 
         // Make the window's context current
@@ -72,7 +73,12 @@ namespace platform
 
     Window::~Window()
     {
-        glfwDestroyWindow(m_Window);
+        if (m_Window)
+        {
+            glfwDestroyWindow(m_Window);
+
+            m_Window = nullptr;
+        }
 
         glfwTerminate();
     }

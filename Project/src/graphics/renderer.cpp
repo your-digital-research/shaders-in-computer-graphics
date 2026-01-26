@@ -1,6 +1,7 @@
 #include "graphics/renderer.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 #include "constants/graphics_constants.hpp"
 #include "graphics/gl.hpp"
@@ -19,7 +20,7 @@ namespace graphics
         {
             std::cerr << "[OpenGL Error] Failed to initialize GLAD!" << std::endl;
 
-            return;
+            throw std::runtime_error("Failed to initialize GLAD!");
         }
 
         // Print OpenGL version
