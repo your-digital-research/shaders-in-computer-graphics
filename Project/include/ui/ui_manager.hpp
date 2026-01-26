@@ -6,6 +6,7 @@
 
 #include "platform/window.hpp"
 
+#include "ui/panels/active_scene_settings_panel.hpp"
 #include "ui/panels/engine_settings_panel.hpp"
 #include "ui/panels/performance_panel.hpp"
 #include "ui/panels/scene_management_panel.hpp"
@@ -42,5 +43,6 @@ namespace ui
         mutable PerformancePanel m_PerformancePanel;
         mutable EngineSettingsPanel m_EngineSettingsPanel;
         mutable SceneManagementPanel m_SceneManagementPanel;
+        mutable ActiveSceneSettingsPanel m_ActiveSceneSettingsPanel;
     };
 }

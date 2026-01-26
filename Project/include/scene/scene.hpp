@@ -6,6 +6,7 @@
 
 namespace scene
 {
+    using namespace glm;
     using namespace std;
     using namespace view;
 
@@ -19,6 +20,30 @@ namespace scene
         virtual void OnUpdate(float deltaTime) = 0;
         virtual void OnRender() = 0;
         virtual void OnDestroy() = 0;
+
+        virtual void RenderSettings() {}
+        virtual void ResetToDefault() {}
+
+        [[nodiscard]] vec3 GetCameraPosition() const
+        {
+            return m_Camera ? m_Camera->GetPosition() : vec3(0.0f);
+        }
+        [[nodiscard]] vec3 GetCameraRotation() const
+        {
+            return m_Camera ? m_Camera->GetEulerAngles() : vec3(0.0f);
+        }
+
+        void SetCameraPosition(const vec3& position) const
+        {
+            if (m_Camera) m_Camera->SetPosition(position);
+        }
+        void SetCameraRotation(const vec3& rotation) const
+        {
+            if (m_Camera) m_Camera->SetRotationEuler(rotation);
+        }
+
+        [[nodiscard]] virtual vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
+        [[nodiscard]] virtual vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
 
         void UpdateAspectRatio(const float aspect) const
         {

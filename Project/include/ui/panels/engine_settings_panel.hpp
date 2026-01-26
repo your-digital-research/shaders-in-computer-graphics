@@ -6,8 +6,15 @@
 
 #include "ui/panels/panel.hpp"
 
+namespace scene
+{
+    class SceneManager;
+}
+
 namespace ui::panels
 {
+    using namespace scene;
+
     class EngineSettingsPanel final : public Panel
     {
     public:
@@ -15,6 +22,8 @@ namespace ui::panels
         ~EngineSettingsPanel() override = default;
 
         void Render() override;
+
+        void SetSceneManager(SceneManager* sceneManager) { m_SceneManager = sceneManager; }
 
     private:
         int m_BlendMode = 0;
@@ -29,7 +38,13 @@ namespace ui::panels
             constants::graphics::DEFAULT_BACKGROUND_COLOR.b
         };
 
+        float m_CameraPosition[3] = {0.0f, 0.0f, 3.0f};
+        float m_CameraRotation[3] = {0.0f, 0.0f, 0.0f};
+
+        SceneManager* m_SceneManager = nullptr;
+
         void Initialize();
         void ResetToDefault();
+        void UpdateCameraFromScene();
     };
 }

@@ -1,6 +1,12 @@
+#include "constants/graphics_constants.hpp"
+
 #include "ui/panels/engine_settings_panel.hpp"
+
 #include "graphics/renderer.hpp"
 #include "graphics/color.hpp"
+
+#include "scene/scene_manager.hpp"
+#include "scene/scene.hpp"
 
 namespace ui::panels
 {
@@ -11,7 +17,7 @@ namespace ui::panels
         if (!m_Enabled) return;
 
         constexpr float panelWidth = 280.0f;
-        constexpr float panelHeight = 360.0f;
+        constexpr float panelHeight = 310.0f;
         constexpr float padding = 10.0f;
 
         ImGui::SetNextWindowPos(ImVec2(padding, padding), ImGuiCond_Always);
@@ -146,6 +152,29 @@ namespace ui::panels
         ImGui::Separator();
         ImGui::Spacing();
 
+        ImGui::Text("Camera");
+        ImGui::Spacing();
+
+        if (ImGui::DragFloat3("Position##Camera", m_CameraPosition, 0.05f, -10.0f, 10.0f, "%.2f"))
+        {
+            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            {
+                m_SceneManager->GetActiveScene()->SetCameraPosition(vec3(m_CameraPosition[0], m_CameraPosition[1], m_CameraPosition[2]));
+            }
+        }
+
+        if (ImGui::DragFloat3("Rotation##Camera", m_CameraRotation, 1.0f, -180.0f, 180.0f, "%.1f"))
+        {
+            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            {
+                m_SceneManager->GetActiveScene()->SetCameraRotation(vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
+            }
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
         constexpr float buttonHeight = 30.0f;
 
         if (const float availableHeight = ImGui::GetContentRegionAvail().y; availableHeight > buttonHeight)
@@ -153,22 +182,24 @@ namespace ui::panels
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
         }
 
-        ImGui::Separator();
+        // ImGui::Separator();
 
         if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
         {
             ResetToDefault();
         }
 
+        UpdateCameraFromScene();
+
         ImGui::End();
     }
 
     void EngineSettingsPanel::Initialize()
     {
-        // Query current OpenGL depth test state
+        // Query the current OpenGL depth test state
         m_DepthTestEnabled = glIsEnabled(GL_DEPTH_TEST);
 
-        // Query current OpenGL blending state
+        // Query the current OpenGL blending state
         if (const bool isBlendingEnabled = glIsEnabled(GL_BLEND); !isBlendingEnabled)
         {
             m_BlendMode = 0; // None
@@ -214,5 +245,35 @@ namespace ui::panels
 
         m_PolygonMode = 0;
         Renderer::SetPolygonModeFill();
+
+        if (m_SceneManager && m_SceneManager->GetActiveScene())
+        {
+            const vec3 position = m_SceneManager->GetActiveScene()->GetDefaultCameraPosition();
+            m_SceneManager->GetActiveScene()->SetCameraPosition(position);
+            m_CameraPosition[0] = position.x;
+            m_CameraPosition[1] = position.y;
+            m_CameraPosition[2] = position.z;
+
+            const vec3 rotation = m_SceneManager->GetActiveScene()->GetDefaultCameraRotation();
+            m_SceneManager->GetActiveScene()->SetCameraRotation(rotation);
+            m_CameraRotation[0] = rotation.x;
+            m_CameraRotation[1] = rotation.y;
+            m_CameraRotation[2] = rotation.z;
+        }
+    }
+
+    void EngineSettingsPanel::UpdateCameraFromScene()
+    {
+        if (!m_SceneManager || !m_SceneManager->GetActiveScene()) return;
+
+        const vec3 position = m_SceneManager->GetActiveScene()->GetCameraPosition();
+        m_CameraPosition[0] = position.x;
+        m_CameraPosition[1] = position.y;
+        m_CameraPosition[2] = position.z;
+
+        const vec3 rotation = m_SceneManager->GetActiveScene()->GetCameraRotation();
+        m_CameraRotation[0] = rotation.x;
+        m_CameraRotation[1] = rotation.y;
+        m_CameraRotation[2] = rotation.z;
     }
 }

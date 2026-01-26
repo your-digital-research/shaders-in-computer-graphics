@@ -85,6 +85,11 @@ namespace scene
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {
+            if (m_ActiveScene != nullptr)
+            {
+                m_ActiveScene->ResetToDefault();
+            }
+
             m_ActiveScene = it->second.get();
         }
     }

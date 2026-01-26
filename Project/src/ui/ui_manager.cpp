@@ -61,7 +61,9 @@ namespace ui
         const auto sceneManager = &engine->GetSceneManager();
 
         m_PerformancePanel.SetEngine(engine);
+        m_EngineSettingsPanel.SetSceneManager(sceneManager);
         m_SceneManagementPanel.SetSceneManager(sceneManager);
+        m_ActiveSceneSettingsPanel.SetSceneManager(sceneManager);
     }
 
     void UIManager::RenderUI() const
@@ -71,5 +73,6 @@ namespace ui
         m_PerformancePanel.Render();
         m_EngineSettingsPanel.Render();
         m_SceneManagementPanel.Render();
+        m_ActiveSceneSettingsPanel.Render();
     }
 }

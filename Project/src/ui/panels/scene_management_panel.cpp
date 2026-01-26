@@ -7,8 +7,8 @@ namespace ui::panels
     {
         if (!m_Enabled || !m_SceneManager) return;
 
-        constexpr float panelWidth = 280.0f;
-        constexpr float panelHeight = 100.0f;
+        constexpr float panelWidth = 340.0f;
+        constexpr float panelHeight = 90.0f;
         constexpr float padding = 10.0f;
 
         const ImGuiIO& io = ImGui::GetIO();
