@@ -48,7 +48,7 @@ namespace view
         [[nodiscard]] float GetPitch() const { return m_Pitch; }
         [[nodiscard]] float GetRoll() const { return m_Roll; }
 
-        [[nodiscard]] vec3 GetEulerAngles() const { return {m_Yaw, m_Pitch, m_Roll}; }
+        [[nodiscard]] vec3 GetEulerAngles() const { return {m_Pitch, m_Yaw, m_Roll}; }
         [[nodiscard]] quat GetQuaternion() const { return m_Orientation; }
 
     private:
