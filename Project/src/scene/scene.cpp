@@ -4,7 +4,7 @@ namespace scene
 {
     using namespace view;
 
-    Scene::Scene() : m_Camera(nullptr)
+    Scene::Scene()
     {
         m_Camera = new Camera();
     }

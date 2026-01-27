@@ -52,7 +52,7 @@ namespace scene
         void SetName(const std::string& name) { m_Name = name; }
 
     protected:
-        std::string m_Name;
-        Camera* m_Camera;
+        std::string m_Name = "";
+        Camera* m_Camera = nullptr;
     };
 }

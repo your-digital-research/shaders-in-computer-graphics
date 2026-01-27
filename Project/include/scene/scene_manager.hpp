@@ -31,8 +31,8 @@ namespace scene
         void RenderActiveScene() const;
 
     private:
-        Window* m_Window;
-        Scene* m_ActiveScene;
+        Window* m_Window = nullptr;
+        Scene* m_ActiveScene = nullptr;
         std::unordered_map<std::string, std::unique_ptr<Scene>> m_Scenes;
     };
 }

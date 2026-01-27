@@ -2,33 +2,17 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "constants/graphics_constants.hpp"
-
-
 namespace view
 {
     Camera::Camera(const glm::vec3& position, const glm::vec3& up, const float pitch, const float yaw, const float roll)
         : m_Position(position),
-          m_Front(glm::vec3(0.0f, 0.0f, -1.0f)),
-          m_Back(glm::vec3(0.0f, 0.0f, 1.0f)),
           m_Up(up),
           m_Down(-up),
-          m_Right(glm::vec3(1.0f, 0.0f, 0.0f)),
-          m_Left(glm::vec3(-1.0f, 0.0f, 0.0f)),
-          m_WorldFront(glm::vec3(0.0f, 0.0f, -1.0f)),
-          m_WorldBack(glm::vec3(0.0f, 0.0f, 1.0f)),
           m_WorldUp(up),
           m_WorldDown(-up),
-          m_WorldRight(glm::vec3(1.0f, 0.0f, 0.0f)),
-          m_WorldLeft(glm::vec3(-1.0f, 0.0f, 0.0f)),
           m_Yaw(yaw),
           m_Pitch(pitch),
-          m_Roll(roll),
-          m_Orientation(glm::quat(1.0f, 0.0f, 0.0f, 0.0f)),
-          m_Fov(constants::graphics::DEFAULT_FOV),
-          m_AspectRatio(1.0f),
-          m_NearPlane(constants::graphics::DEFAULT_NEAR_PLANE),
-          m_FarPlane(constants::graphics::DEFAULT_FAR_PLANE)
+          m_Roll(roll)
     {
         UpdateCameraVectors();
     }

@@ -30,7 +30,7 @@ namespace graphics
         void SetMat4(const std::string& name, const glm::mat4& value) const;
 
     private:
-        GLuint m_RendererID;
+        GLuint m_RendererID = 0;
         mutable std::unordered_map<std::string, GLint> m_UniformLocationCache;
 
         static GLuint CompileShader(GLenum type, const std::string& source);

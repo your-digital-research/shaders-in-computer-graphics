@@ -19,11 +19,11 @@ namespace graphics
         static void Unbind();
 
     private:
-        GLuint m_VAO;
-        GLuint m_VBO;
-        GLuint m_IBO;
+        GLuint m_VAO = 0;
+        GLuint m_VBO = 0;
+        GLuint m_IBO = 0;
 
-        unsigned int m_IndexCount;
+        unsigned int m_IndexCount = 0;
 
         void SetupMesh(const Vertices& vertices, const VertexIndices& indices);
     };

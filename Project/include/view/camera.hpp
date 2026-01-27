@@ -3,6 +3,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 
+#include "constants/graphics_constants.hpp"
+
 namespace view
 {
     class Camera
@@ -49,32 +51,32 @@ namespace view
         [[nodiscard]] glm::quat GetQuaternion() const { return m_Orientation; }
 
     private:
-        glm::vec3 m_Position;
+        glm::vec3 m_Position = glm::vec3(0.0f, 0.0f, 3.0f);
 
-        glm::vec3 m_Front;
-        glm::vec3 m_Back;
-        glm::vec3 m_Up;
-        glm::vec3 m_Down;
-        glm::vec3 m_Right;
-        glm::vec3 m_Left;
+        glm::vec3 m_Front = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 m_Back = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 m_Up = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::vec3 m_Down = glm::vec3(0.0f, -1.0f, 0.0f);
+        glm::vec3 m_Right = glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 m_Left = glm::vec3(-1.0f, 0.0f, 0.0f);
 
-        glm::vec3 m_WorldFront;
-        glm::vec3 m_WorldBack;
-        glm::vec3 m_WorldUp;
-        glm::vec3 m_WorldDown;
-        glm::vec3 m_WorldRight;
-        glm::vec3 m_WorldLeft;
+        glm::vec3 m_WorldFront = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 m_WorldBack = glm::vec3(0.0f, 0.0f, 1.0f);
+        glm::vec3 m_WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::vec3 m_WorldDown = glm::vec3(0.0f, -1.0f, 0.0f);
+        glm::vec3 m_WorldRight = glm::vec3(1.0f, 0.0f, 0.0f);
+        glm::vec3 m_WorldLeft = glm::vec3(-1.0f, 0.0f, 0.0f);
 
-        float m_Yaw;
-        float m_Pitch;
-        float m_Roll;
+        float m_Yaw = 0.0f;
+        float m_Pitch = 0.0f;
+        float m_Roll = 0.0f;
 
-        glm::quat m_Orientation;
+        glm::quat m_Orientation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 
-        float m_Fov;
-        float m_AspectRatio;
-        float m_NearPlane;
-        float m_FarPlane;
+        float m_Fov = constants::graphics::DEFAULT_FOV;
+        float m_AspectRatio = 1.0f;
+        float m_NearPlane = constants::graphics::DEFAULT_NEAR_PLANE;
+        float m_FarPlane = constants::graphics::DEFAULT_FAR_PLANE;
 
         void UpdateCameraVectors();
         void UpdateQuaternionFromEuler();

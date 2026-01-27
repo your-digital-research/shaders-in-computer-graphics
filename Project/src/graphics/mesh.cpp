@@ -3,10 +3,7 @@
 namespace graphics
 {
     Mesh::Mesh(const Vertices& vertices, const VertexIndices& indices)
-        : m_VAO(0),
-          m_VBO(0),
-          m_IBO(0),
-          m_IndexCount(indices.size())
+        : m_IndexCount(indices.size())
     {
         SetupMesh(vertices, indices);
     }

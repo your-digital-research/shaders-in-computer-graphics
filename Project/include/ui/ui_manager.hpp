@@ -38,7 +38,7 @@ namespace ui
         [[nodiscard]] bool IsEnabled() const { return m_Enabled; }
 
     private:
-        bool m_Enabled;
+        bool m_Enabled = true;
 
         mutable PerformancePanel m_PerformancePanel;
         mutable EngineSettingsPanel m_EngineSettingsPanel;

@@ -12,7 +12,6 @@ namespace ui
     using namespace panels;
 
     UIManager::UIManager(const Window* window)
-        : m_Enabled(true)
     {
         if (!window)
         {

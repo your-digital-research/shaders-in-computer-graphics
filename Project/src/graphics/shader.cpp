@@ -13,7 +13,6 @@
 namespace graphics
 {
     Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
-        : m_RendererID(0)
     {
         // Read shader source files
         const std::string vertexSource = ReadFile(vertexPath);

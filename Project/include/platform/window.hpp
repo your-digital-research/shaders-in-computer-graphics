@@ -35,7 +35,8 @@ namespace platform
         static void WindowFocusCallback(GLFWwindow* window, int focused);
         static void WindowSizeCallback(GLFWwindow* window, int width, int height);
 
-        GLFWwindow* m_Window;
+        GLFWwindow* m_Window = nullptr;
+
         int m_Width;
         int m_Height;
     };

@@ -26,14 +26,16 @@ namespace core
         SceneManager& GetSceneManager() { return m_SceneManager; }
 
     private:
-        Window* m_Window;
-        Renderer* m_Renderer;
-        UIManager* m_UIManager;
+        Window* m_Window = nullptr;
+        Renderer* m_Renderer = nullptr;
+        UIManager* m_UIManager = nullptr;
+
         SceneManager m_SceneManager;
 
-        float m_LastFrameTime;
-        float m_CurrentDeltaTime;
-        bool m_Running;
+        float m_LastFrameTime = 0.0f;
+        float m_CurrentDeltaTime = 0.0f;
+
+        bool m_Running = true;
 
         void Initialize();
         void Shutdown();

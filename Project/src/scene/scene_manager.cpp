@@ -16,8 +16,7 @@ namespace scene
     using namespace examples;
 
     SceneManager::SceneManager(Window* window)
-        : m_Window(window),
-          m_ActiveScene(nullptr)
+        : m_Window(window)
     {
         if (!m_Window)
         {

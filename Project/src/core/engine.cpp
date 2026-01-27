@@ -9,12 +9,8 @@ namespace core
 
     Engine::Engine(Window* window)
         : m_Window(window),
-          m_Renderer(nullptr),
-          m_UIManager(nullptr),
           m_SceneManager(window),
-          m_LastFrameTime(static_cast<float>(glfwGetTime())),
-          m_CurrentDeltaTime(0.0f),
-          m_Running(true)
+          m_LastFrameTime(static_cast<float>(glfwGetTime()))
     {
         if (!m_Window)
         {
