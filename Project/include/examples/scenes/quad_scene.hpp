@@ -33,20 +33,21 @@ namespace examples
         void SetQuadHeight(float height);
 
     private:
-        Mesh* m_QuadMesh;
-        Shader* m_Shader;
+        Mesh* m_Mesh = nullptr;
+        Shader* m_Shader = nullptr;
 
-        glm::mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 
-        float m_QuadWidth;
-        float m_QuadHeight;
-        Color m_QuadColor;
+        float m_QuadWidth = 1.0f;
+        float m_QuadHeight = 1.0f;
 
-        float m_DefaultQuadWidth;
-        float m_DefaultQuadHeight;
+        Color m_QuadColor = Color::White;
 
-        glm::vec3 m_DefaultCameraPosition;
-        glm::vec3 m_DefaultCameraRotation;
+        float m_DefaultQuadWidth = 1.0f;
+        float m_DefaultQuadHeight = 1.0f;
+
+        glm::vec3 m_DefaultCameraPosition = glm::vec3(0.0f, 0.0f, 2.5f);
+        glm::vec3 m_DefaultCameraRotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
         void CreateQuad();
     };

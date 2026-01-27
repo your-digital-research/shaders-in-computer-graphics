@@ -1,7 +1,6 @@
 #include "examples/scenes/sphere_scene.hpp"
 
 #include <cmath>
-#include <string>
 #include <vector>
 
 #include "imgui.h"
@@ -10,37 +9,11 @@
 
 #include "constants/math_constants.hpp"
 #include "constants/paths.hpp"
-#include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
 
 namespace examples
 {
     SphereScene::SphereScene()
-        : m_SphereMesh(nullptr),
-          m_Shader(nullptr),
-          m_ModelMatrix(1.0f),
-          m_RotationAngle(0.0f),
-          m_RotationSpeed(16.0f),
-          m_PulseSpeed(2.0f),
-          m_Time(0.0f),
-          m_SphereRadius(1.0f),
-          m_Segments(64),
-          m_Rings(32),
-          m_RimPower(2.0f),
-          m_RimIntensity(4.0f),
-          m_RimColor(Color::White),
-          m_CoreColor(Color::White),
-          m_CurrentColorTheme(SphereColorTheme::DeepSpace),
-          m_DefaultSphereRadius(1.0f),
-          m_DefaultSegments(64),
-          m_DefaultRings(32),
-          m_DefaultRotationSpeed(16.0f),
-          m_DefaultPulseSpeed(2.0f),
-          m_DefaultRimPower(2.0f),
-          m_DefaultRimIntensity(4.0f),
-          m_DefaultColorTheme(SphereColorTheme::DeepSpace),
-          m_DefaultCameraPosition(0.0f, 0.0f, 4.0f),
-          m_DefaultCameraRotation(0.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -54,11 +27,11 @@ namespace examples
 
     void SphereScene::CreateSphere(const float radius, const unsigned int segments, const unsigned int rings)
     {
-        if (m_SphereMesh != nullptr)
+        if (m_Mesh != nullptr)
         {
-            delete m_SphereMesh;
+            delete m_Mesh;
 
-            m_SphereMesh = nullptr;
+            m_Mesh = nullptr;
         }
 
         Vertices vertices;
@@ -103,7 +76,7 @@ namespace examples
             }
         }
 
-        m_SphereMesh = new Mesh(vertices, indices);
+        m_Mesh = new Mesh(vertices, indices);
     }
 
     void SphereScene::OnCreate()
@@ -127,6 +100,8 @@ namespace examples
 
     void SphereScene::OnRender()
     {
+        if (m_Mesh == nullptr || m_Shader == nullptr) return;
+
         m_Shader->Bind();
 
         m_Shader->SetMat4("uModel", m_ModelMatrix);
@@ -143,8 +118,8 @@ namespace examples
         m_Shader->SetVec4("uRimColor", m_RimColor.ToVec4());
         m_Shader->SetVec4("uCoreColor", m_CoreColor.ToVec4());
 
-        m_SphereMesh->Bind();
-        m_SphereMesh->Draw();
+        m_Mesh->Bind();
+        m_Mesh->Draw();
 
         Mesh::Unbind();
         Shader::Unbind();
@@ -152,10 +127,10 @@ namespace examples
 
     void SphereScene::OnDestroy()
     {
-        delete m_SphereMesh;
+        delete m_Mesh;
         delete m_Shader;
 
-        m_SphereMesh = nullptr;
+        m_Mesh = nullptr;
         m_Shader = nullptr;
     }
 
@@ -434,8 +409,6 @@ namespace examples
         {
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
         }
-
-        // ImGui::Separator();
 
         if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
         {

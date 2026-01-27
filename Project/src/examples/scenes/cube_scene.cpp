@@ -1,6 +1,5 @@
 #include "examples/scenes/cube_scene.hpp"
 
-#include <string>
 #include <vector>
 
 #include "imgui.h"
@@ -8,7 +7,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/paths.hpp"
-#include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
 
 namespace examples
@@ -16,20 +14,6 @@ namespace examples
     using namespace graphics;
 
     CubeScene::CubeScene()
-        : m_CubeMesh(nullptr),
-          m_Shader(nullptr),
-          m_ModelMatrix(1.0f),
-          m_RotationAngle(0.0f),
-          m_RotationSpeed(30.0f),
-          m_RotationAxis(0.5f, 1.0f, 0.25f),
-          m_DefaultRotationSpeed(30.0f),
-          m_DefaultRotationAxis(0.5f, 1.0f, 0.25f),
-          m_CubeSize(1.0f),
-          m_DefaultCubeSize(1.0f),
-          m_CurrentColorTheme(CubeColorTheme::MonochromeGray),
-          m_DefaultColorTheme(CubeColorTheme::MonochromeGray),
-          m_DefaultCameraPosition(0.0f, 0.0f, 4.0f),
-          m_DefaultCameraRotation(0.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -43,11 +27,11 @@ namespace examples
 
     void CubeScene::CreateCube()
     {
-        if (m_CubeMesh != nullptr)
+        if (m_Mesh != nullptr)
         {
-            delete m_CubeMesh;
+            delete m_Mesh;
 
-            m_CubeMesh = nullptr;
+            m_Mesh = nullptr;
         }
 
         const float halfSize = m_CubeSize * 0.5f;
@@ -119,7 +103,7 @@ namespace examples
             22, 23, 20
         };
 
-        m_CubeMesh = new Mesh(vertices, indices);
+        m_Mesh = new Mesh(vertices, indices);
     }
 
     void CubeScene::OnCreate()
@@ -152,6 +136,8 @@ namespace examples
 
     void CubeScene::OnRender()
     {
+        if (m_Mesh == nullptr || m_Shader == nullptr) return;
+
         m_Shader->Bind();
 
         m_Shader->SetMat4("uModel", m_ModelMatrix);
@@ -162,8 +148,8 @@ namespace examples
         // constexpr Color color = Color::GrayAlpha(0.7f, 1.0f);
         // m_Shader->SetVec4("uColor", color.ToVec4());
 
-        m_CubeMesh->Bind();
-        m_CubeMesh->Draw();
+        m_Mesh->Bind();
+        m_Mesh->Draw();
 
         Mesh::Unbind();
         Shader::Unbind();
@@ -171,10 +157,10 @@ namespace examples
 
     void CubeScene::OnDestroy()
     {
-        delete m_CubeMesh;
+        delete m_Mesh;
         delete m_Shader;
 
-        m_CubeMesh = nullptr;
+        m_Mesh = nullptr;
         m_Shader = nullptr;
     }
 
@@ -290,7 +276,7 @@ namespace examples
     void CubeScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
-        constexpr float panelHeight = 250.0f;
+        constexpr float panelHeight = 260.0f;
         constexpr float padding = 10.0f;
 
         const ImGuiIO& io = ImGui::GetIO();
@@ -383,8 +369,6 @@ namespace examples
         {
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
         }
-
-        // ImGui::Separator();
 
         if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
         {

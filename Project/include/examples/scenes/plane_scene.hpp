@@ -3,6 +3,7 @@
 #include "scene/scene.hpp"
 #include "graphics/mesh.hpp"
 #include "graphics/shader.hpp"
+#include "constants/math_constants.hpp"
 
 namespace examples
 {
@@ -53,49 +54,52 @@ namespace examples
         void SetWaveSpeed(float speed);
         void SetWaveAmplitude(float amplitude);
         void SetWaveFrequency(float frequency);
-        void SetOpacityFadeStart(float opacityStart);
-        void SetGridSize(int gridSize);
-        void SetPlaneSize(float planeSize);
 
+        void SetPlaneSize(float planeSize);
+        void SetGridSize(int gridSize);
+
+        void SetOpacityFadeStart(float opacityStart);
+
+        void SetWaveTroughColor(const Color& color);
+        void SetWavePeakColor(const Color& color);
         void SetCenterColor(const Color& color);
         void SetEdgeColor(const Color& color);
-        void SetWavePeakColor(const Color& color);
-        void SetWaveTroughColor(const Color& color);
 
     private:
-        Mesh* m_PlaneMesh;
-        Shader* m_Shader;
+        Mesh* m_Mesh = nullptr;
+        Shader* m_Shader = nullptr;
 
-        glm::mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 
-        int m_WaveCount;
-        float m_Time;
-        float m_WaveSpeed;
-        float m_WaveAmplitude;
-        float m_WaveFrequency;
-        float m_OpacityFadeStart;
+        int m_WaveCount = 8;
+        float m_Time = 0.0f;
+        float m_WaveSpeed = 5.0f;
+        float m_WaveAmplitude = 0.25f;
+        float m_WaveFrequency = constants::math::PI;
+        float m_OpacityFadeStart = 0.5f;
 
-        int m_GridSize;
-        float m_PlaneSize;
-        float m_PlaneRadius;
+        int m_GridSize = 128;
+        float m_PlaneSize = 8.0f;
+        float m_PlaneRadius = 0.0f;
 
         Color m_CenterColor = Color::White;
         Color m_EdgeColor = Color::White;
         Color m_WavePeakColor = Color::White;
         Color m_WaveTroughColor = Color::White;
-        PlaneColorTheme m_CurrentColorTheme = PlaneColorTheme::Unknown;
+        PlaneColorTheme m_CurrentColorTheme = PlaneColorTheme::NeonCyberpunk;
 
-        int m_DefaultGridSize;
-        float m_DefaultPlaneSize;
-        float m_DefaultWaveSpeed;
-        float m_DefaultWaveAmplitude;
-        float m_DefaultWaveFrequency;
-        float m_DefaultOpacityFadeStart;
+        float m_DefaultWaveSpeed = 5.0f;
+        float m_DefaultWaveAmplitude = 0.25f;
+        float m_DefaultWaveFrequency = constants::math::PI;
+        float m_DefaultOpacityFadeStart = 0.5f;
 
-        PlaneColorTheme m_DefaultColorTheme;
+        int m_DefaultGridSize = 128;
+        float m_DefaultPlaneSize = 8.0f;
 
-        glm::vec3 m_DefaultCameraPosition;
-        glm::vec3 m_DefaultCameraRotation;
+        PlaneColorTheme m_DefaultColorTheme = PlaneColorTheme::NeonCyberpunk;
+
+        glm::vec3 m_DefaultCameraPosition = glm::vec3(0.0f, 7.5f, 8.25f);
+        glm::vec3 m_DefaultCameraRotation = glm::vec3(-45.0f, 0.0f, 0.0f);
 
         void CreatePlane(int gridSize, float planeSize);
         void SetColorTheme(PlaneColorTheme theme);

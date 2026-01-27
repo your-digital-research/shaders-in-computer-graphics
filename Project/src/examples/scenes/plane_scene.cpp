@@ -6,36 +6,12 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "constants/math_constants.hpp"
 #include "constants/paths.hpp"
-#include "graphics/types.hpp"
 #include "utils/math_utils.hpp"
 
 namespace examples
 {
     PlaneScene::PlaneScene()
-        : m_PlaneMesh(nullptr),
-          m_Shader(nullptr),
-          m_ModelMatrix(1.0f),
-          m_WaveCount(8),
-          m_Time(0.0f),
-          m_WaveSpeed(5.0f),
-          m_WaveAmplitude(0.25f),
-          m_WaveFrequency(constants::math::PI),
-          m_OpacityFadeStart(0.5f),
-          m_GridSize(128),
-          m_PlaneSize(8.0f),
-          m_PlaneRadius(0.0f),
-          m_CurrentColorTheme(PlaneColorTheme::NeonCyberpunk),
-          m_DefaultWaveSpeed(5.0f),
-          m_DefaultWaveAmplitude(0.25f),
-          m_DefaultWaveFrequency(constants::math::PI),
-          m_DefaultOpacityFadeStart(0.5f),
-          m_DefaultGridSize(128),
-          m_DefaultPlaneSize(8.0f),
-          m_DefaultColorTheme(PlaneColorTheme::NeonCyberpunk),
-          m_DefaultCameraPosition(0.0f, 7.5f, 8.25f),
-          m_DefaultCameraRotation(-45.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -49,11 +25,11 @@ namespace examples
 
     void PlaneScene::CreatePlane(const int gridSize, const float planeSize)
     {
-        if (m_PlaneMesh != nullptr)
+        if (m_Mesh != nullptr)
         {
-            delete m_PlaneMesh;
+            delete m_Mesh;
 
-            m_PlaneMesh = nullptr;
+            m_Mesh = nullptr;
         }
 
         Vertices vertices;
@@ -97,7 +73,7 @@ namespace examples
             }
         }
 
-        m_PlaneMesh = new Mesh(vertices, indices);
+        m_Mesh = new Mesh(vertices, indices);
     }
 
     void PlaneScene::OnCreate()
@@ -129,6 +105,8 @@ namespace examples
 
     void PlaneScene::OnRender()
     {
+        if (m_Mesh == nullptr || m_Shader == nullptr) return;
+
         m_Shader->Bind();
 
         m_Shader->SetMat4("uModel", m_ModelMatrix);
@@ -146,8 +124,8 @@ namespace examples
         m_Shader->SetVec4("uWavePeakColor", m_WavePeakColor.ToVec4());
         m_Shader->SetVec4("uWaveTroughColor", m_WaveTroughColor.ToVec4());
 
-        m_PlaneMesh->Bind();
-        m_PlaneMesh->Draw();
+        m_Mesh->Bind();
+        m_Mesh->Draw();
 
         Mesh::Unbind();
         Shader::Unbind();
@@ -155,10 +133,10 @@ namespace examples
 
     void PlaneScene::OnDestroy()
     {
-        delete m_PlaneMesh;
+        delete m_Mesh;
         delete m_Shader;
 
-        m_PlaneMesh = nullptr;
+        m_Mesh = nullptr;
         m_Shader = nullptr;
     }
 
@@ -316,7 +294,7 @@ namespace examples
     void PlaneScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
-        constexpr float panelHeight = 480.0f;
+        constexpr float panelHeight = 500.0f;
         constexpr float padding = 10.0f;
 
         const ImGuiIO& io = ImGui::GetIO();
@@ -486,8 +464,6 @@ namespace examples
         {
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
         }
-
-        // ImGui::Separator();
 
         if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
         {

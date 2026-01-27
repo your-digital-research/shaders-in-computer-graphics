@@ -5,33 +5,10 @@
 #include "imgui.h"
 
 #include "constants/paths.hpp"
-#include "graphics/types.hpp"
 
 namespace examples
 {
     TriangleScene::TriangleScene()
-        : m_TriangleMesh(nullptr),
-          m_Shader(nullptr),
-          m_ModelMatrix(1.0f),
-          m_TriangleSize(1.0f),
-          m_DefaultTriangleSize(1.0f),
-          m_TopColor(Color::Red),
-          m_BottomLeftColor(Color::Green),
-          m_BottomRightColor(Color::Blue),
-          m_DefaultTopColor(Color::Red),
-          m_DefaultBottomLeftColor(Color::Green),
-          m_DefaultBottomRightColor(Color::Blue),
-          m_TopPosition(0.0f, 0.5f, 0.0f),
-          m_BottomLeftPosition(-0.5f, -0.5f, 0.0f),
-          m_BottomRightPosition(0.5f, -0.5f, 0.0f),
-          m_DefaultTopPosition(0.0f, 0.5f, 0.0f),
-          m_DefaultBottomLeftPosition(-0.5f, -0.5f, 0.0f),
-          m_DefaultBottomRightPosition(0.5f, -0.5f, 0.0f),
-          m_BaseTopPosition(0.0f, 0.5f, 0.0f),
-          m_BaseBottomLeftPosition(-0.5f, -0.5f, 0.0f),
-          m_BaseBottomRightPosition(0.5f, -0.5f, 0.0f),
-          m_DefaultCameraPosition(0.0f, 0.0f, 2.5f),
-          m_DefaultCameraRotation(0.0f, 0.0f, 0.0f)
     {
         TriangleScene::OnCreate();
     }
@@ -43,11 +20,11 @@ namespace examples
 
     void TriangleScene::CreateTriangle()
     {
-        if (m_TriangleMesh != nullptr)
+        if (m_Mesh != nullptr)
         {
-            delete m_TriangleMesh;
+            delete m_Mesh;
 
-            m_TriangleMesh = nullptr;
+            m_Mesh = nullptr;
         }
 
         const Vertices vertices = {
@@ -58,7 +35,7 @@ namespace examples
 
         const VertexIndices indices = {0, 1, 2};
 
-        m_TriangleMesh = new Mesh(vertices, indices);
+        m_Mesh = new Mesh(vertices, indices);
     }
 
     void TriangleScene::OnCreate()
@@ -78,14 +55,16 @@ namespace examples
 
     void TriangleScene::OnRender()
     {
+        if (m_Mesh == nullptr || m_Shader == nullptr) return;
+
         m_Shader->Bind();
 
         m_Shader->SetMat4("uModel", m_ModelMatrix);
         m_Shader->SetMat4("uView", m_Camera->GetViewMatrix());
         m_Shader->SetMat4("uProjection", m_Camera->GetProjectionMatrix());
 
-        m_TriangleMesh->Bind();
-        m_TriangleMesh->Draw();
+        m_Mesh->Bind();
+        m_Mesh->Draw();
 
         Mesh::Unbind();
         Shader::Unbind();
@@ -93,11 +72,23 @@ namespace examples
 
     void TriangleScene::OnDestroy()
     {
-        delete m_TriangleMesh;
+        delete m_Mesh;
         delete m_Shader;
 
-        m_TriangleMesh = nullptr;
+        m_Mesh = nullptr;
         m_Shader = nullptr;
+    }
+
+    void TriangleScene::SetTriangleSize(const float size)
+    {
+        m_TriangleSize = glm::max(0.1f, size);
+
+        // Scale the vertex positions from base positions based on size
+        m_TopPosition = m_BaseTopPosition * m_TriangleSize;
+        m_BottomLeftPosition = m_BaseBottomLeftPosition * m_TriangleSize;
+        m_BottomRightPosition = m_BaseBottomRightPosition * m_TriangleSize;
+
+        CreateTriangle();
     }
 
     void TriangleScene::SetTopColor(const Color& color)
@@ -117,18 +108,6 @@ namespace examples
     void TriangleScene::SetBottomRightColor(const Color& color)
     {
         m_BottomRightColor = color;
-
-        CreateTriangle();
-    }
-
-    void TriangleScene::SetTriangleSize(float size)
-    {
-        m_TriangleSize = glm::max(0.1f, size);
-
-        // Scale the vertex positions from base positions based on size
-        m_TopPosition = m_BaseTopPosition * m_TriangleSize;
-        m_BottomLeftPosition = m_BaseBottomLeftPosition * m_TriangleSize;
-        m_BottomRightPosition = m_BaseBottomRightPosition * m_TriangleSize;
 
         CreateTriangle();
     }
@@ -181,7 +160,7 @@ namespace examples
     void TriangleScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
-        constexpr float panelHeight = 330.0f;
+        constexpr float panelHeight = 360.0f;
         constexpr float padding = 10.0f;
 
         const ImGuiIO& io = ImGui::GetIO();
@@ -270,8 +249,6 @@ namespace examples
         {
             ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
         }
-
-        // ImGui::Separator();
 
         if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
         {

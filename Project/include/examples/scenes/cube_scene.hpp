@@ -42,20 +42,16 @@ namespace examples
         [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }
 
     private:
-        Mesh* m_CubeMesh;
-        Shader* m_Shader;
+        Mesh* m_Mesh = nullptr;
+        Shader* m_Shader = nullptr;
 
-        glm::mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 
-        float m_RotationAngle;
-        float m_RotationSpeed;
-        glm::vec3 m_RotationAxis;
+        glm::vec3 m_RotationAxis = glm::vec3(0.5f, 1.0f, 0.25f);
+        float m_RotationAngle = 0.0f;
+        float m_RotationSpeed = 30.0f;
 
-        float m_DefaultRotationSpeed;
-        glm::vec3 m_DefaultRotationAxis;
-
-        float m_CubeSize;
-        float m_DefaultCubeSize;
+        float m_CubeSize = 1.0f;
 
         Color m_FrontColor = Color::White;
         Color m_BackColor = Color::White;
@@ -63,11 +59,17 @@ namespace examples
         Color m_LeftColor = Color::White;
         Color m_TopColor = Color::White;
         Color m_BottomColor = Color::White;
-        CubeColorTheme m_CurrentColorTheme = CubeColorTheme::Unknown;
-        CubeColorTheme m_DefaultColorTheme = CubeColorTheme::Unknown;
+        CubeColorTheme m_CurrentColorTheme = CubeColorTheme::MonochromeGray;
 
-        glm::vec3 m_DefaultCameraPosition;
-        glm::vec3 m_DefaultCameraRotation;
+        glm::vec3 m_DefaultRotationAxis = glm::vec3(0.5f, 1.0f, 0.25f);
+
+        float m_DefaultRotationSpeed = 30.0f;
+        float m_DefaultCubeSize = 1.0f;
+
+        CubeColorTheme m_DefaultColorTheme = CubeColorTheme::MonochromeGray;
+
+        glm::vec3 m_DefaultCameraPosition = glm::vec3(0.0f, 0.0f, 4.0f);
+        glm::vec3 m_DefaultCameraRotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
         void CreateCube();
         void SetColorTheme(CubeColorTheme theme);

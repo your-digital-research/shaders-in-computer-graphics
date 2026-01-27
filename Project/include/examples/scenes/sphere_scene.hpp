@@ -63,41 +63,41 @@ namespace examples
         void SetRimColor(const Color& color);
 
     private:
-        Mesh* m_SphereMesh;
-        Shader* m_Shader;
+        Mesh* m_Mesh = nullptr;
+        Shader* m_Shader = nullptr;
 
-        glm::mat4 m_ModelMatrix;
+        glm::mat4 m_ModelMatrix = glm::mat4(1.0f);
 
-        float m_RotationAngle;
-        float m_RotationSpeed;
-        float m_PulseSpeed;
-        float m_Time;
+        float m_RotationAngle = 0.0f;
+        float m_RotationSpeed = 16.0f;
+        float m_PulseSpeed = 2.0f;
+        float m_Time = 0.0f;
 
-        float m_SphereRadius;
-        int m_Segments;
-        int m_Rings;
+        float m_SphereRadius = 1.0f;
+        int m_Segments = 64;
+        int m_Rings = 32;
 
-        float m_RimPower;
-        float m_RimIntensity;
+        float m_RimPower = 2.0f;
+        float m_RimIntensity = 4.0f;
 
-        Color m_RimColor;
-        Color m_CoreColor;
-        SphereColorTheme m_CurrentColorTheme;
+        Color m_RimColor = Color::White;
+        Color m_CoreColor = Color::White;
+        SphereColorTheme m_CurrentColorTheme = SphereColorTheme::DeepSpace;
 
-        float m_DefaultSphereRadius;
+        float m_DefaultSphereRadius = 1.0f;
 
-        int m_DefaultSegments;
-        int m_DefaultRings;
+        int m_DefaultSegments = 64;
+        int m_DefaultRings = 32;
 
-        float m_DefaultRotationSpeed;
-        float m_DefaultPulseSpeed;
-        float m_DefaultRimPower;
-        float m_DefaultRimIntensity;
+        float m_DefaultRotationSpeed = 16.0f;
+        float m_DefaultPulseSpeed = 2.0f;
+        float m_DefaultRimPower = 2.0f;
+        float m_DefaultRimIntensity = 4.0f;
 
-        SphereColorTheme m_DefaultColorTheme;
+        SphereColorTheme m_DefaultColorTheme = SphereColorTheme::DeepSpace;
 
-        glm::vec3 m_DefaultCameraPosition;
-        glm::vec3 m_DefaultCameraRotation;
+        glm::vec3 m_DefaultCameraPosition = glm::vec3(0.0f, 0.0f, 4.0f);
+        glm::vec3 m_DefaultCameraRotation = glm::vec3(0.0f, 0.0f, 0.0f);
 
         void CreateSphere(float radius, unsigned int segments, unsigned int rings);
         void SetColorTheme(SphereColorTheme theme);
