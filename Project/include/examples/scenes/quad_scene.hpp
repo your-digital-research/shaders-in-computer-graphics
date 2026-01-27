@@ -20,6 +20,18 @@ namespace examples
         void OnRender() override;
         void OnDestroy() override;
 
+        void RenderSettings() override;
+        void ResetToDefault() override;
+
+        [[nodiscard]] glm::vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
+        [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }
+
+        [[nodiscard]] float GetQuadWidth() const { return m_QuadWidth; }
+        [[nodiscard]] float GetQuadHeight() const { return m_QuadHeight; }
+
+        void SetQuadWidth(float width);
+        void SetQuadHeight(float height);
+
     private:
         Mesh* m_QuadMesh;
         Shader* m_Shader;
@@ -29,6 +41,12 @@ namespace examples
         float m_QuadWidth;
         float m_QuadHeight;
         Color m_QuadColor;
+
+        float m_DefaultQuadWidth;
+        float m_DefaultQuadHeight;
+
+        glm::vec3 m_DefaultCameraPosition;
+        glm::vec3 m_DefaultCameraRotation;
 
         void CreateQuad();
     };
