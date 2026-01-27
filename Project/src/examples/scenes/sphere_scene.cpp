@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "imgui.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/math_constants.hpp"
@@ -26,7 +28,19 @@ namespace examples
           m_Rings(32),
           m_RimPower(2.0f),
           m_RimIntensity(4.0f),
-          m_CurrentColorTheme(SphereColorTheme::DeepSpace)
+          m_RimColor(Color::White),
+          m_CoreColor(Color::White),
+          m_CurrentColorTheme(SphereColorTheme::DeepSpace),
+          m_DefaultSphereRadius(1.0f),
+          m_DefaultSegments(64),
+          m_DefaultRings(32),
+          m_DefaultRotationSpeed(16.0f),
+          m_DefaultPulseSpeed(2.0f),
+          m_DefaultRimPower(2.0f),
+          m_DefaultRimIntensity(4.0f),
+          m_DefaultColorTheme(SphereColorTheme::DeepSpace),
+          m_DefaultCameraPosition(0.0f, 0.0f, 4.0f),
+          m_DefaultCameraRotation(0.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -40,6 +54,13 @@ namespace examples
 
     void SphereScene::CreateSphere(const float radius, const unsigned int segments, const unsigned int rings)
     {
+        if (m_SphereMesh != nullptr)
+        {
+            delete m_SphereMesh;
+
+            m_SphereMesh = nullptr;
+        }
+
         Vertices vertices;
         VertexIndices indices;
 
@@ -199,5 +220,251 @@ namespace examples
             m_CoreColor = Color::RGB(0.1f, 0.1f, 0.3f); // Dark blue
             break;
         }
+    }
+
+    void SphereScene::SetSphereRadius(const float radius)
+    {
+        m_SphereRadius = glm::max(0.1f, radius);
+
+        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
+    }
+
+    void SphereScene::SetSegments(const int segments)
+    {
+        m_Segments = glm::max(3, segments);
+
+        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
+    }
+
+    void SphereScene::SetRings(const int rings)
+    {
+        m_Rings = glm::max(2, rings);
+
+        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
+    }
+
+    void SphereScene::SetRotationSpeed(const float speed)
+    {
+        m_RotationSpeed = speed;
+    }
+
+    void SphereScene::SetPulseSpeed(const float speed)
+    {
+        m_PulseSpeed = speed;
+    }
+
+    void SphereScene::SetRimIntensity(const float intensity)
+    {
+        m_RimIntensity = glm::max(0.0f, intensity);
+    }
+
+    void SphereScene::SetRimPower(const float power)
+    {
+        m_RimPower = glm::max(0.1f, power);
+    }
+
+    void SphereScene::SetCoreColor(const Color& color)
+    {
+        m_CoreColor = color;
+        m_CurrentColorTheme = SphereColorTheme::Unknown;
+    }
+
+    void SphereScene::SetRimColor(const Color& color)
+    {
+        m_RimColor = color;
+        m_CurrentColorTheme = SphereColorTheme::Unknown;
+    }
+
+    void SphereScene::RenderSettings()
+    {
+        constexpr float panelWidth = 340.0f;
+        constexpr float panelHeight = 480.0f;
+        constexpr float padding = 10.0f;
+
+        const ImGuiIO& io = ImGui::GetIO();
+        const float xPos = io.DisplaySize.x - panelWidth - padding;
+        const float yPos = io.DisplaySize.y - panelHeight - padding;
+
+        ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(panelWidth, panelHeight), ImGuiCond_Always);
+
+        ImGui::Begin("Scene Settings", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+        ImGui::Text("Sphere Properties");
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Sphere Radius
+        float sphereRadius = m_SphereRadius;
+        if (ImGui::SliderFloat("Radius", &sphereRadius, 0.1f, 5.0f, "%.2f"))
+        {
+            SetSphereRadius(sphereRadius);
+        }
+
+        // Segments
+        int segments = m_Segments;
+        if (ImGui::SliderInt("Segments", &segments, 3, 128))
+        {
+            SetSegments(segments);
+        }
+
+        // Rings
+        int rings = m_Rings;
+        if (ImGui::SliderInt("Rings", &rings, 2, 128))
+        {
+            SetRings(rings);
+        }
+
+        // Rotation Speed
+        float rotationSpeed = m_RotationSpeed;
+        if (ImGui::SliderFloat("Rotation Speed", &rotationSpeed, -180.0f, 180.0f, "%.1f°/s"))
+        {
+            SetRotationSpeed(rotationSpeed);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Text("Effect Properties");
+        ImGui::Spacing();
+
+        // Rim Power
+        float rimPower = m_RimPower;
+        if (ImGui::SliderFloat("Rim Power", &rimPower, 0.1f, 10.0f, "%.2f"))
+        {
+            SetRimPower(rimPower);
+        }
+
+        // Rim Intensity
+        float rimIntensity = m_RimIntensity;
+        if (ImGui::SliderFloat("Rim Intensity", &rimIntensity, 0.0f, 10.0f, "%.2f"))
+        {
+            SetRimIntensity(rimIntensity);
+        }
+
+        // Pulse Speed
+        float pulseSpeed = m_PulseSpeed;
+        if (ImGui::SliderFloat("Pulse Speed", &pulseSpeed, 0.0f, 10.0f, "%.2f"))
+        {
+            SetPulseSpeed(pulseSpeed);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Color Theme Selection
+        ImGui::Text("Color Theme");
+        ImGui::Spacing();
+
+        const char* themeNames[] = {
+            "Custom",
+            "Cyber Glow",
+            "Fire Ball",
+            "Ice Sphere",
+            "Neon Pink",
+            "Energy Shield",
+            "Aurora Borealis",
+            "Sunset Glow",
+            "Toxic Waste",
+            "Deep Space",
+            "Hologram Blue"
+        };
+
+        constexpr SphereColorTheme themes[] = {
+            SphereColorTheme::Unknown,
+            SphereColorTheme::CyberGlow,
+            SphereColorTheme::FireBall,
+            SphereColorTheme::IceSphere,
+            SphereColorTheme::NeonPink,
+            SphereColorTheme::EnergyShield,
+            SphereColorTheme::AuroraBorealis,
+            SphereColorTheme::SunsetGlow,
+            SphereColorTheme::ToxicWaste,
+            SphereColorTheme::DeepSpace,
+            SphereColorTheme::HologramBlue
+        };
+
+        int currentThemeIndex = 0;
+        for (int i = 0; i < 11; i++)
+        {
+            if (m_CurrentColorTheme == themes[i])
+            {
+                currentThemeIndex = i;
+
+                break;
+            }
+        }
+
+        if (ImGui::Combo("Preset", &currentThemeIndex, themeNames, IM_ARRAYSIZE(themeNames)))
+        {
+            SetColorTheme(themes[currentThemeIndex]);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Individual Color Controls
+        ImGui::Text("Custom Colors");
+        ImGui::Spacing();
+
+        // Rim Color
+        float rimColor[3] = {m_RimColor.r, m_RimColor.g, m_RimColor.b};
+        if (ImGui::ColorEdit3("Rim", rimColor))
+        {
+            SetRimColor(Color::RGB(rimColor[0], rimColor[1], rimColor[2]));
+        }
+
+        // Core Color
+        float coreColor[3] = {m_CoreColor.r, m_CoreColor.g, m_CoreColor.b};
+        if (ImGui::ColorEdit3("Core", coreColor))
+        {
+            SetCoreColor(Color::RGB(coreColor[0], coreColor[1], coreColor[2]));
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        constexpr float buttonHeight = 30.0f;
+        if (const float availableHeight = ImGui::GetContentRegionAvail().y; availableHeight > buttonHeight)
+        {
+            ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
+        }
+
+        // ImGui::Separator();
+
+        if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
+        {
+            ResetToDefault();
+        }
+
+        ImGui::End();
+    }
+
+    void SphereScene::ResetToDefault()
+    {
+        m_SphereRadius = m_DefaultSphereRadius;
+        m_Segments = m_DefaultSegments;
+        m_Rings = m_DefaultRings;
+
+        m_RotationSpeed = m_DefaultRotationSpeed;
+        m_PulseSpeed = m_DefaultPulseSpeed;
+
+        m_RimIntensity = m_DefaultRimIntensity;
+        m_RimPower = m_DefaultRimPower;
+
+        m_RotationAngle = 0.0f;
+        m_Time = 0.0f;
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
     }
 }
