@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "imgui.h"
+
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "constants/math_constants.hpp"
@@ -24,7 +26,16 @@ namespace examples
           m_GridSize(128),
           m_PlaneSize(8.0f),
           m_PlaneRadius(0.0f),
-          m_CurrentColorTheme(PlaneColorTheme::NeonCyberpunk)
+          m_CurrentColorTheme(PlaneColorTheme::NeonCyberpunk),
+          m_DefaultWaveSpeed(5.0f),
+          m_DefaultWaveAmplitude(0.25f),
+          m_DefaultWaveFrequency(constants::math::PI),
+          m_DefaultOpacityFadeStart(0.5f),
+          m_DefaultGridSize(128),
+          m_DefaultPlaneSize(8.0f),
+          m_DefaultColorTheme(PlaneColorTheme::NeonCyberpunk),
+          m_DefaultCameraPosition(0.0f, 7.5f, 8.25f),
+          m_DefaultCameraRotation(-45.0f, 0.0f, 0.0f)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -38,6 +49,13 @@ namespace examples
 
     void PlaneScene::CreatePlane(const int gridSize, const float planeSize)
     {
+        if (m_PlaneMesh != nullptr)
+        {
+            delete m_PlaneMesh;
+
+            m_PlaneMesh = nullptr;
+        }
+
         Vertices vertices;
         VertexIndices indices;
 
@@ -100,6 +118,8 @@ namespace examples
         {
             m_WaveFrequency = (static_cast<float>(m_WaveCount) * constants::math::TWO_PI) / m_PlaneRadius;
         }
+
+        m_DefaultWaveFrequency = m_WaveFrequency;
     }
 
     void PlaneScene::OnUpdate(const float deltaTime)
@@ -232,5 +252,268 @@ namespace examples
             m_WaveTroughColor = Color::RGB(0.0f, 0.4f, 0.1f); // Dark emerald
             break;
         }
+    }
+
+    void PlaneScene::SetWaveSpeed(const float speed)
+    {
+        m_WaveSpeed = speed;
+    }
+
+    void PlaneScene::SetWaveAmplitude(const float amplitude)
+    {
+        m_WaveAmplitude = glm::max(0.0f, amplitude);
+    }
+
+    void PlaneScene::SetWaveFrequency(const float frequency)
+    {
+        m_WaveFrequency = glm::max(0.1f, frequency);
+    }
+
+    void PlaneScene::SetOpacityFadeStart(const float opacityStart)
+    {
+        m_OpacityFadeStart = glm::clamp(opacityStart, 0.0f, 1.0f);
+    }
+
+    void PlaneScene::SetGridSize(const int gridSize)
+    {
+        m_GridSize = glm::max(2, gridSize);
+
+        CreatePlane(m_GridSize, m_PlaneSize);
+    }
+
+    void PlaneScene::SetPlaneSize(const float planeSize)
+    {
+        m_PlaneSize = glm::max(1.0f, planeSize);
+        m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
+
+        CreatePlane(m_GridSize, m_PlaneSize);
+    }
+
+    void PlaneScene::SetCenterColor(const Color& color)
+    {
+        m_CenterColor = color;
+        m_CurrentColorTheme = PlaneColorTheme::Unknown;
+    }
+
+    void PlaneScene::SetEdgeColor(const Color& color)
+    {
+        m_EdgeColor = color;
+        m_CurrentColorTheme = PlaneColorTheme::Unknown;
+    }
+
+    void PlaneScene::SetWavePeakColor(const Color& color)
+    {
+        m_WavePeakColor = color;
+        m_CurrentColorTheme = PlaneColorTheme::Unknown;
+    }
+
+    void PlaneScene::SetWaveTroughColor(const Color& color)
+    {
+        m_WaveTroughColor = color;
+        m_CurrentColorTheme = PlaneColorTheme::Unknown;
+    }
+
+    void PlaneScene::RenderSettings()
+    {
+        constexpr float panelWidth = 340.0f;
+        constexpr float panelHeight = 480.0f;
+        constexpr float padding = 10.0f;
+
+        const ImGuiIO& io = ImGui::GetIO();
+        const float xPos = io.DisplaySize.x - panelWidth - padding;
+        const float yPos = io.DisplaySize.y - panelHeight - padding;
+
+        ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(panelWidth, panelHeight), ImGuiCond_Always);
+
+        ImGui::Begin("Scene Settings", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+
+        ImGui::Text("Plane Properties");
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Grid Size
+        int gridSize = m_GridSize;
+        if (ImGui::SliderInt("Grid Size", &gridSize, 2, 256))
+        {
+            SetGridSize(gridSize);
+        }
+
+        // Plane Size
+        float planeSize = m_PlaneSize;
+        if (ImGui::SliderFloat("Plane Size", &planeSize, 1.0f, 20.0f, "%.2f"))
+        {
+            SetPlaneSize(planeSize);
+        }
+
+        ImGui::Spacing();
+
+        // Plane Radius (read-only display)
+        ImGui::Text("Plane Radius: %.2f", m_PlaneRadius);
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        ImGui::Text("Wave Properties");
+        ImGui::Spacing();
+
+        // Wave Speed
+        float waveSpeed = m_WaveSpeed;
+        if (ImGui::SliderFloat("Wave Speed", &waveSpeed, 0.0f, 20.0f, "%.2f"))
+        {
+            SetWaveSpeed(waveSpeed);
+        }
+
+        // Wave Amplitude
+        float waveAmplitude = m_WaveAmplitude;
+        if (ImGui::SliderFloat("Amplitude", &waveAmplitude, 0.0f, 2.0f, "%.3f"))
+        {
+            SetWaveAmplitude(waveAmplitude);
+        }
+
+        // Wave Frequency
+        float waveFrequency = m_WaveFrequency;
+        if (ImGui::SliderFloat("Frequency", &waveFrequency, 0.1f, 20.0f, "%.3f"))
+        {
+            SetWaveFrequency(waveFrequency);
+        }
+
+        // Opacity Fade Start
+        float opacityFadeStart = m_OpacityFadeStart;
+        if (ImGui::SliderFloat("Opacity Start", &opacityFadeStart, 0.0f, 1.0f, "%.3f"))
+        {
+            SetOpacityFadeStart(opacityFadeStart);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Color Theme Selection
+        ImGui::Text("Color Theme");
+        ImGui::Spacing();
+
+        const char* themeNames[] = {
+            "Custom",
+            "Aurora Sunset",
+            "Neon Cyberpunk",
+            "Ocean Depth",
+            "Fire Lava",
+            "Mint Rose",
+            "Toxic Green",
+            "Royal Purple Gold",
+            "Cotton Candy",
+            "Electric Storm",
+            "Peach Sunset",
+            "Matrix Green"
+        };
+
+        constexpr PlaneColorTheme themes[] = {
+            PlaneColorTheme::Unknown,
+            PlaneColorTheme::AuroraSunset,
+            PlaneColorTheme::NeonCyberpunk,
+            PlaneColorTheme::OceanDepth,
+            PlaneColorTheme::FireLava,
+            PlaneColorTheme::MintRose,
+            PlaneColorTheme::ToxicGreen,
+            PlaneColorTheme::RoyalPurpleGold,
+            PlaneColorTheme::CottonCandy,
+            PlaneColorTheme::ElectricStorm,
+            PlaneColorTheme::PeachSunset,
+            PlaneColorTheme::MatrixGreen
+        };
+
+        int currentThemeIndex = 0;
+        for (int i = 0; i < 12; i++)
+        {
+            if (m_CurrentColorTheme == themes[i])
+            {
+                currentThemeIndex = i;
+
+                break;
+            }
+        }
+
+        if (ImGui::Combo("Preset", &currentThemeIndex, themeNames, IM_ARRAYSIZE(themeNames)))
+        {
+            SetColorTheme(themes[currentThemeIndex]);
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        // Individual Color Controls
+        ImGui::Text("Custom Colors");
+        ImGui::Spacing();
+
+        // Center Color
+        float centerColor[3] = {m_CenterColor.r, m_CenterColor.g, m_CenterColor.b};
+        if (ImGui::ColorEdit3("Center", centerColor))
+        {
+            SetCenterColor(Color::RGB(centerColor[0], centerColor[1], centerColor[2]));
+        }
+
+        // Edge Color
+        float edgeColor[3] = {m_EdgeColor.r, m_EdgeColor.g, m_EdgeColor.b};
+        if (ImGui::ColorEdit3("Edge", edgeColor))
+        {
+            SetEdgeColor(Color::RGB(edgeColor[0], edgeColor[1], edgeColor[2]));
+        }
+
+        // Wave Peak Color
+        float wavePeakColor[3] = {m_WavePeakColor.r, m_WavePeakColor.g, m_WavePeakColor.b};
+        if (ImGui::ColorEdit3("Peak", wavePeakColor))
+        {
+            SetWavePeakColor(Color::RGB(wavePeakColor[0], wavePeakColor[1], wavePeakColor[2]));
+        }
+
+        // Wave Trough Color
+        float waveTroughColor[3] = {m_WaveTroughColor.r, m_WaveTroughColor.g, m_WaveTroughColor.b};
+        if (ImGui::ColorEdit3("Trough", waveTroughColor))
+        {
+            SetWaveTroughColor(Color::RGB(waveTroughColor[0], waveTroughColor[1], waveTroughColor[2]));
+        }
+
+        ImGui::Spacing();
+        ImGui::Separator();
+        ImGui::Spacing();
+
+        constexpr float buttonHeight = 30.0f;
+        if (const float availableHeight = ImGui::GetContentRegionAvail().y; availableHeight > buttonHeight)
+        {
+            ImGui::Dummy(ImVec2(0.0f, availableHeight - buttonHeight));
+        }
+
+        // ImGui::Separator();
+
+        if (ImGui::Button("Reset to Default", ImVec2(-1, 0)))
+        {
+            ResetToDefault();
+        }
+
+        ImGui::End();
+    }
+
+    void PlaneScene::ResetToDefault()
+    {
+        m_WaveSpeed = m_DefaultWaveSpeed;
+        m_WaveAmplitude = m_DefaultWaveAmplitude;
+        m_WaveFrequency = m_DefaultWaveFrequency;
+        m_OpacityFadeStart = m_DefaultOpacityFadeStart;
+        m_GridSize = m_DefaultGridSize;
+        m_PlaneSize = m_DefaultPlaneSize;
+        m_Time = 0.0f;
+
+        m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreatePlane(m_GridSize, m_PlaneSize);
     }
 }
