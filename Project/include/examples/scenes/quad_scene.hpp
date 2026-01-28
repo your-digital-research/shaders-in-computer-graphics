@@ -12,7 +12,7 @@ namespace examples
     class QuadScene final : public Scene
     {
     public:
-        QuadScene();
+        explicit QuadScene(Camera* camera);
         ~QuadScene() override;
 
         void OnCreate() override;
@@ -20,8 +20,8 @@ namespace examples
         void OnRender() override;
         void OnDestroy() override;
 
-        void RenderSettings() override;
         void ResetToDefault() override;
+        void RenderSettings() override;
 
         [[nodiscard]] glm::vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
         [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }

@@ -11,7 +11,8 @@
 
 namespace examples
 {
-    PlaneScene::PlaneScene()
+    PlaneScene::PlaneScene(Camera* camera)
+        : Scene(camera)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -291,6 +292,26 @@ namespace examples
         m_CurrentColorTheme = PlaneColorTheme::Unknown;
     }
 
+    void PlaneScene::ResetToDefault()
+    {
+        m_WaveSpeed = m_DefaultWaveSpeed;
+        m_WaveAmplitude = m_DefaultWaveAmplitude;
+        m_WaveFrequency = m_DefaultWaveFrequency;
+        m_OpacityFadeStart = m_DefaultOpacityFadeStart;
+        m_GridSize = m_DefaultGridSize;
+        m_PlaneSize = m_DefaultPlaneSize;
+        m_Time = 0.0f;
+
+        m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreatePlane(m_GridSize, m_PlaneSize);
+    }
+
     void PlaneScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
@@ -471,25 +492,5 @@ namespace examples
         }
 
         ImGui::End();
-    }
-
-    void PlaneScene::ResetToDefault()
-    {
-        m_WaveSpeed = m_DefaultWaveSpeed;
-        m_WaveAmplitude = m_DefaultWaveAmplitude;
-        m_WaveFrequency = m_DefaultWaveFrequency;
-        m_OpacityFadeStart = m_DefaultOpacityFadeStart;
-        m_GridSize = m_DefaultGridSize;
-        m_PlaneSize = m_DefaultPlaneSize;
-        m_Time = 0.0f;
-
-        m_PlaneRadius = m_PlaneSize * (constants::math::SQRT_2 / 2.0f);
-
-        SetColorTheme(m_DefaultColorTheme);
-
-        m_Camera->SetPosition(m_DefaultCameraPosition);
-        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
-
-        CreatePlane(m_GridSize, m_PlaneSize);
     }
 }

@@ -13,7 +13,8 @@ namespace examples
 {
     using namespace graphics;
 
-    CubeScene::CubeScene()
+    CubeScene::CubeScene(Camera* camera)
+        : Scene(camera)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -273,6 +274,21 @@ namespace examples
         CreateCube();
     }
 
+    void CubeScene::ResetToDefault()
+    {
+        m_CubeSize = m_DefaultCubeSize;
+        m_RotationSpeed = m_DefaultRotationSpeed;
+        m_RotationAxis = m_DefaultRotationAxis;
+        m_RotationAngle = 0.0f;
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreateCube();
+    }
+
     void CubeScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
@@ -376,20 +392,5 @@ namespace examples
         }
 
         ImGui::End();
-    }
-
-    void CubeScene::ResetToDefault()
-    {
-        m_CubeSize = m_DefaultCubeSize;
-        m_RotationSpeed = m_DefaultRotationSpeed;
-        m_RotationAxis = m_DefaultRotationAxis;
-        m_RotationAngle = 0.0f;
-
-        SetColorTheme(m_DefaultColorTheme);
-
-        m_Camera->SetPosition(m_DefaultCameraPosition);
-        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
-
-        CreateCube();
     }
 }

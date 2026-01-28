@@ -2,10 +2,9 @@
 
 namespace scene
 {
-    using namespace view;
-
-    Scene::Scene()
+    Scene::Scene(Camera* camera)
+        : m_Camera(camera)
     {
-        m_Camera = new Camera();
+        //
     }
 }

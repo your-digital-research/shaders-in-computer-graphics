@@ -8,7 +8,8 @@
 
 namespace examples
 {
-    QuadScene::QuadScene()
+    QuadScene::QuadScene(Camera* camera)
+        : Scene(camera)
     {
         QuadScene::OnCreate();
     }
@@ -100,6 +101,17 @@ namespace examples
         CreateQuad();
     }
 
+    void QuadScene::ResetToDefault()
+    {
+        m_QuadWidth = m_DefaultQuadWidth;
+        m_QuadHeight = m_DefaultQuadHeight;
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreateQuad();
+    }
+
     void QuadScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
@@ -150,16 +162,5 @@ namespace examples
         }
 
         ImGui::End();
-    }
-
-    void QuadScene::ResetToDefault()
-    {
-        m_QuadWidth = m_DefaultQuadWidth;
-        m_QuadHeight = m_DefaultQuadHeight;
-
-        m_Camera->SetPosition(m_DefaultCameraPosition);
-        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
-
-        CreateQuad();
     }
 }

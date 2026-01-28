@@ -17,6 +17,7 @@ namespace scene
 
     SceneManager::SceneManager(Window* window)
         : m_Window(window)
+        , m_Camera(std::make_unique<Camera>())
     {
         if (!m_Window)
         {
@@ -26,11 +27,11 @@ namespace scene
 
     void SceneManager::InitializeDefaultScenes()
     {
-        auto triangleScene = std::make_unique<TriangleScene>();
-        auto cubeScene = std::make_unique<CubeScene>();
-        auto planeScene = std::make_unique<PlaneScene>();
-        auto quadScene = std::make_unique<QuadScene>();
-        auto sphereScene = std::make_unique<SphereScene>();
+        auto triangleScene = std::make_unique<TriangleScene>(m_Camera.get());
+        auto cubeScene = std::make_unique<CubeScene>(m_Camera.get());
+        auto planeScene = std::make_unique<PlaneScene>(m_Camera.get());
+        auto quadScene = std::make_unique<QuadScene>(m_Camera.get());
+        auto sphereScene = std::make_unique<SphereScene>(m_Camera.get());
 
         AddScene("rainbow-triangle", std::move(triangleScene));
         AddScene("rotating-cube", std::move(cubeScene));
@@ -88,12 +89,8 @@ namespace scene
     {
         if (const auto it = m_Scenes.find(name); it != m_Scenes.end())
         {
-            if (m_ActiveScene != nullptr)
-            {
-                m_ActiveScene->ResetToDefault();
-            }
-
             m_ActiveScene = it->second.get();
+            m_ActiveScene->ResetToDefault();
         }
     }
 
@@ -108,7 +105,10 @@ namespace scene
     {
         if (!m_ActiveScene) return;
 
-        m_ActiveScene->UpdateAspectRatio(m_Window->GetAspectRatio());
+        if (m_Camera)
+        {
+            m_Camera->UpdateAspectRatio(m_Window->GetAspectRatio());
+        }
 
         m_ActiveScene->OnUpdate(deltaTime);
     }

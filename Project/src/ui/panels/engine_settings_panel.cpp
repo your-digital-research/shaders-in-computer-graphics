@@ -154,9 +154,9 @@ namespace ui::panels
 
         if (ImGui::DragFloat3("Position##Camera", m_CameraPosition, 0.05f, -10.0f, 10.0f, "%.2f"))
         {
-            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            if (m_SceneManager && m_SceneManager->GetCamera())
             {
-                m_SceneManager->GetActiveScene()->SetCameraPosition(glm::vec3(m_CameraPosition[0], m_CameraPosition[1], m_CameraPosition[2]));
+                m_SceneManager->GetCamera()->SetPosition(glm::vec3(m_CameraPosition[0], m_CameraPosition[1], m_CameraPosition[2]));
             }
         }
 
@@ -164,9 +164,9 @@ namespace ui::panels
 
         if (ImGui::DragFloat3("Rotation##Camera", m_CameraRotation, 1.0f, -180.0f, 180.0f, "%.1f"))
         {
-            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            if (m_SceneManager && m_SceneManager->GetCamera())
             {
-                m_SceneManager->GetActiveScene()->SetCameraRotation(glm::vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
+                m_SceneManager->GetCamera()->SetRotationEuler(glm::vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
             }
         }
 
@@ -184,9 +184,9 @@ namespace ui::panels
                 {
                     m_CameraProjectionType = i;
 
-                    if (m_SceneManager && m_SceneManager->GetActiveScene())
+                    if (m_SceneManager && m_SceneManager->GetCamera())
                     {
-                        m_SceneManager->GetActiveScene()->SetCameraProjectionType(
+                        m_SceneManager->GetCamera()->SetProjectionType(
                             i == 0 ? ProjectionType::Perspective : ProjectionType::Orthographic
                         );
                     }
@@ -208,9 +208,9 @@ namespace ui::panels
         {
             if (ImGui::DragFloat("FOV##Camera", &m_CameraFov, 0.5f, 1.0f, 120.0f, "%.1f"))
             {
-                if (m_SceneManager && m_SceneManager->GetActiveScene())
+                if (m_SceneManager && m_SceneManager->GetCamera())
                 {
-                    m_SceneManager->GetActiveScene()->SetCameraFov(m_CameraFov);
+                    m_SceneManager->GetCamera()->SetFov(m_CameraFov);
                 }
             }
         }
@@ -219,9 +219,9 @@ namespace ui::panels
 
         if (ImGui::DragFloat("Near Plane##Camera", &m_CameraNearPlane, 0.1f, 0.01f, m_CameraFarPlane - 0.1f, "%.2f"))
         {
-            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            if (m_SceneManager && m_SceneManager->GetCamera())
             {
-                m_SceneManager->GetActiveScene()->SetCameraNearPlane(m_CameraNearPlane);
+                m_SceneManager->GetCamera()->SetNearPlane(m_CameraNearPlane);
             }
         }
 
@@ -229,9 +229,9 @@ namespace ui::panels
 
         if (ImGui::DragFloat("Far Plane##Camera", &m_CameraFarPlane, 0.1f, m_CameraNearPlane + 0.1f, 1000.0f, "%.1f"))
         {
-            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            if (m_SceneManager && m_SceneManager->GetCamera())
             {
-                m_SceneManager->GetActiveScene()->SetCameraFarPlane(m_CameraFarPlane);
+                m_SceneManager->GetCamera()->SetFarPlane(m_CameraFarPlane);
             }
         }
 
@@ -269,7 +269,7 @@ namespace ui::panels
         }
         else
         {
-            m_BlendMode = 1; // Alpha (default)
+            m_BlendMode = 1; // Alpha
         }
 
         // Query current OpenGL polygon mode
@@ -311,52 +311,59 @@ namespace ui::panels
 
         if (m_SceneManager && m_SceneManager->GetActiveScene())
         {
+            Camera* camera = m_SceneManager->GetCamera();
+
+            if (!camera) return;
+
             const glm::vec3 position = m_SceneManager->GetActiveScene()->GetDefaultCameraPosition();
-            m_SceneManager->GetActiveScene()->SetCameraPosition(position);
+            camera->SetPosition(position);
             m_CameraPosition[0] = position.x;
             m_CameraPosition[1] = position.y;
             m_CameraPosition[2] = position.z;
 
             const glm::vec3 rotation = m_SceneManager->GetActiveScene()->GetDefaultCameraRotation();
-            m_SceneManager->GetActiveScene()->SetCameraRotation(rotation);
+            camera->SetRotationEuler(rotation);
             m_CameraRotation[0] = rotation.x;
             m_CameraRotation[1] = rotation.y;
             m_CameraRotation[2] = rotation.z;
 
-            // Reset camera projection settings
-            m_CameraProjectionType = 0; // Perspective
-            m_SceneManager->GetActiveScene()->SetCameraProjectionType(ProjectionType::Perspective);
+            m_CameraProjectionType = 0;
+            camera->SetProjectionType(ProjectionType::Perspective);
 
             m_CameraFov = constants::graphics::DEFAULT_FOV;
-            m_SceneManager->GetActiveScene()->SetCameraFov(m_CameraFov);
+            camera->SetFov(m_CameraFov);
 
             m_CameraNearPlane = constants::graphics::DEFAULT_NEAR_PLANE;
-            m_SceneManager->GetActiveScene()->SetCameraNearPlane(m_CameraNearPlane);
+            camera->SetNearPlane(m_CameraNearPlane);
 
             m_CameraFarPlane = constants::graphics::DEFAULT_FAR_PLANE;
-            m_SceneManager->GetActiveScene()->SetCameraFarPlane(m_CameraFarPlane);
+            camera->SetFarPlane(m_CameraFarPlane);
         }
     }
 
     void EngineSettingsPanel::UpdateCameraFromScene()
     {
-        if (!m_SceneManager || !m_SceneManager->GetActiveScene()) return;
+        if (!m_SceneManager) return;
 
-        const glm::vec3 position = m_SceneManager->GetActiveScene()->GetCameraPosition();
+        const Camera* camera = m_SceneManager->GetCamera();
+
+        if (!camera) return;
+
+        const glm::vec3 position = camera->GetPosition();
         m_CameraPosition[0] = position.x;
         m_CameraPosition[1] = position.y;
         m_CameraPosition[2] = position.z;
 
-        const glm::vec3 rotation = m_SceneManager->GetActiveScene()->GetCameraRotation();
+        const glm::vec3 rotation = camera->GetEulerAngles();
         m_CameraRotation[0] = rotation.x;
         m_CameraRotation[1] = rotation.y;
         m_CameraRotation[2] = rotation.z;
 
-        const ProjectionType projType = m_SceneManager->GetActiveScene()->GetCameraProjectionType();
+        const ProjectionType projType = camera->GetProjectionType();
         m_CameraProjectionType = (projType == ProjectionType::Perspective) ? 0 : 1;
 
-        m_CameraFov = m_SceneManager->GetActiveScene()->GetCameraFov();
-        m_CameraNearPlane = m_SceneManager->GetActiveScene()->GetCameraNearPlane();
-        m_CameraFarPlane = m_SceneManager->GetActiveScene()->GetCameraFarPlane();
+        m_CameraFov = camera->GetFov();
+        m_CameraNearPlane = camera->GetNearPlane();
+        m_CameraFarPlane = camera->GetFarPlane();
     }
 }

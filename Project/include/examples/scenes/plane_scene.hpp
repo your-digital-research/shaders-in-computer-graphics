@@ -29,7 +29,7 @@ namespace examples
     class PlaneScene final : public Scene
     {
     public:
-        PlaneScene();
+        explicit PlaneScene(Camera* camera);
         ~PlaneScene() override;
 
         void OnCreate() override;
@@ -37,8 +37,8 @@ namespace examples
         void OnRender() override;
         void OnDestroy() override;
 
-        void RenderSettings() override;
         void ResetToDefault() override;
+        void RenderSettings() override;
 
         [[nodiscard]] glm::vec3 GetDefaultCameraPosition() const override { return m_DefaultCameraPosition; }
         [[nodiscard]] glm::vec3 GetDefaultCameraRotation() const override { return m_DefaultCameraRotation; }

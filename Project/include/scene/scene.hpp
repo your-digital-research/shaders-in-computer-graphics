@@ -11,7 +11,7 @@ namespace scene
     class Scene
     {
     public:
-        Scene();
+        explicit Scene(Camera* camera);
         virtual ~Scene() = default;
 
         virtual void OnCreate() = 0;
@@ -19,73 +19,16 @@ namespace scene
         virtual void OnRender() = 0;
         virtual void OnDestroy() = 0;
 
-        virtual void RenderSettings() {}
         virtual void ResetToDefault() {}
-
-        [[nodiscard]] glm::vec3 GetCameraPosition() const
-        {
-            return m_Camera ? m_Camera->GetPosition() : glm::vec3(0.0f);
-        }
-        [[nodiscard]] glm::vec3 GetCameraRotation() const
-        {
-            return m_Camera ? m_Camera->GetEulerAngles() : glm::vec3(0.0f);
-        }
-
-        void SetCameraPosition(const glm::vec3& position) const
-        {
-            if (m_Camera) m_Camera->SetPosition(position);
-        }
-        void SetCameraRotation(const glm::vec3& rotation) const
-        {
-            if (m_Camera) m_Camera->SetRotationEuler(rotation);
-        }
-
-        [[nodiscard]] ProjectionType GetCameraProjectionType() const
-        {
-            return m_Camera ? m_Camera->GetProjectionType() : ProjectionType::Perspective;
-        }
-        void SetCameraProjectionType(const ProjectionType type) const
-        {
-            if (m_Camera) m_Camera->SetProjectionType(type);
-        }
-
-        [[nodiscard]] float GetCameraFov() const
-        {
-            return m_Camera ? m_Camera->GetFov() : 45.0f;
-        }
-        void SetCameraFov(const float fov) const
-        {
-            if (m_Camera) m_Camera->SetFov(fov);
-        }
-
-        [[nodiscard]] float GetCameraNearPlane() const
-        {
-            return m_Camera ? m_Camera->GetNearPlane() : 0.1f;
-        }
-        void SetCameraNearPlane(const float near) const
-        {
-            if (m_Camera) m_Camera->SetNearPlane(near);
-        }
-
-        [[nodiscard]] float GetCameraFarPlane() const
-        {
-            return m_Camera ? m_Camera->GetFarPlane() : 100.0f;
-        }
-        void SetCameraFarPlane(const float far) const
-        {
-            if (m_Camera) m_Camera->SetFarPlane(far);
-        }
-
-        [[nodiscard]] virtual glm::vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
-        [[nodiscard]] virtual glm::vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
-
-        void UpdateAspectRatio(const float aspect) const
-        {
-            if (m_Camera) m_Camera->UpdateAspectRatio(aspect);
-        }
+        virtual void RenderSettings() {}
 
         [[nodiscard]] const std::string& GetName() const { return m_Name; }
         void SetName(const std::string& name) { m_Name = name; }
+
+        [[nodiscard]] Camera* GetCamera() const { return m_Camera; }
+
+        [[nodiscard]] virtual glm::vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
+        [[nodiscard]] virtual glm::vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
 
     protected:
         std::string m_Name = "";

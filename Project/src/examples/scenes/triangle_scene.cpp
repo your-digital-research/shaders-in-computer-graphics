@@ -8,7 +8,8 @@
 
 namespace examples
 {
-    TriangleScene::TriangleScene()
+    TriangleScene::TriangleScene(Camera* camera)
+        : Scene(camera)
     {
         TriangleScene::OnCreate();
     }

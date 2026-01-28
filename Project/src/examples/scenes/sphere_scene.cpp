@@ -13,7 +13,8 @@
 
 namespace examples
 {
-    SphereScene::SphereScene()
+    SphereScene::SphereScene(Camera* camera)
+        : Scene(camera)
     {
         SetColorTheme(m_CurrentColorTheme);
 
@@ -250,6 +251,29 @@ namespace examples
         m_CurrentColorTheme = SphereColorTheme::Unknown;
     }
 
+    void SphereScene::ResetToDefault()
+    {
+        m_SphereRadius = m_DefaultSphereRadius;
+        m_Segments = m_DefaultSegments;
+        m_Rings = m_DefaultRings;
+
+        m_RotationSpeed = m_DefaultRotationSpeed;
+        m_PulseSpeed = m_DefaultPulseSpeed;
+
+        m_RimIntensity = m_DefaultRimIntensity;
+        m_RimPower = m_DefaultRimPower;
+
+        m_RotationAngle = 0.0f;
+        m_Time = 0.0f;
+
+        SetColorTheme(m_DefaultColorTheme);
+
+        m_Camera->SetPosition(m_DefaultCameraPosition);
+        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
+
+        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
+    }
+
     void SphereScene::RenderSettings()
     {
         constexpr float panelWidth = 340.0f;
@@ -416,28 +440,5 @@ namespace examples
         }
 
         ImGui::End();
-    }
-
-    void SphereScene::ResetToDefault()
-    {
-        m_SphereRadius = m_DefaultSphereRadius;
-        m_Segments = m_DefaultSegments;
-        m_Rings = m_DefaultRings;
-
-        m_RotationSpeed = m_DefaultRotationSpeed;
-        m_PulseSpeed = m_DefaultPulseSpeed;
-
-        m_RimIntensity = m_DefaultRimIntensity;
-        m_RimPower = m_DefaultRimPower;
-
-        m_RotationAngle = 0.0f;
-        m_Time = 0.0f;
-
-        SetColorTheme(m_DefaultColorTheme);
-
-        m_Camera->SetPosition(m_DefaultCameraPosition);
-        m_Camera->SetRotationEuler(m_DefaultCameraRotation);
-
-        CreateSphere(m_SphereRadius, m_Segments, m_Rings);
     }
 }
