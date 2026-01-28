@@ -206,7 +206,7 @@ namespace ui::panels
         // FOV control (only for perspective)
         if (m_CameraProjectionType == 0)
         {
-            if (ImGui::DragFloat("FOV##Camera", &m_CameraFov, 0.5f, 1.0f, 120.0f, "%.1f"))
+            if (ImGui::SliderFloat("FOV##Camera", &m_CameraFov, 1.0f, 120.0f, "%.1f"))
             {
                 if (m_SceneManager && m_SceneManager->GetCamera())
                 {
