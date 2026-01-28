@@ -40,6 +40,42 @@ namespace scene
             if (m_Camera) m_Camera->SetRotationEuler(rotation);
         }
 
+        [[nodiscard]] ProjectionType GetCameraProjectionType() const
+        {
+            return m_Camera ? m_Camera->GetProjectionType() : ProjectionType::Perspective;
+        }
+        void SetCameraProjectionType(const ProjectionType type) const
+        {
+            if (m_Camera) m_Camera->SetProjectionType(type);
+        }
+
+        [[nodiscard]] float GetCameraFov() const
+        {
+            return m_Camera ? m_Camera->GetFov() : 45.0f;
+        }
+        void SetCameraFov(const float fov) const
+        {
+            if (m_Camera) m_Camera->SetFov(fov);
+        }
+
+        [[nodiscard]] float GetCameraNearPlane() const
+        {
+            return m_Camera ? m_Camera->GetNearPlane() : 0.1f;
+        }
+        void SetCameraNearPlane(const float near) const
+        {
+            if (m_Camera) m_Camera->SetNearPlane(near);
+        }
+
+        [[nodiscard]] float GetCameraFarPlane() const
+        {
+            return m_Camera ? m_Camera->GetFarPlane() : 100.0f;
+        }
+        void SetCameraFarPlane(const float far) const
+        {
+            if (m_Camera) m_Camera->SetFarPlane(far);
+        }
+
         [[nodiscard]] virtual glm::vec3 GetDefaultCameraPosition() const { return {0.0f, 0.0f, 3.0f}; }
         [[nodiscard]] virtual glm::vec3 GetDefaultCameraRotation() const { return {0.0f, 0.0f, 0.0f}; }
 

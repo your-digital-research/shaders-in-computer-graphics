@@ -24,7 +24,31 @@ namespace view
 
     glm::mat4 Camera::GetProjectionMatrix() const
     {
+        switch (m_ProjectionType)
+        {
+            case ProjectionType::Perspective:
+                return GetPerspectiveProjectionMatrix();
+
+            case ProjectionType::Orthographic:
+                return GetOrthographicProjectionMatrix();
+
+            default:
+                return GetPerspectiveProjectionMatrix();
+        }
+    }
+
+    glm::mat4 Camera::GetPerspectiveProjectionMatrix() const
+    {
         return glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
+    }
+
+    glm::mat4 Camera::GetOrthographicProjectionMatrix() const
+    {
+        // For orthographic projection, calculate the visible area based on an aspect ratio
+        constexpr float height = 5.0f; // Fixed orthographic height
+        const float width = height * m_AspectRatio;
+
+        return glm::ortho(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f, m_NearPlane, m_FarPlane);
     }
 
     void Camera::SetProjection(const float fov, const float aspect, const float near, const float far)

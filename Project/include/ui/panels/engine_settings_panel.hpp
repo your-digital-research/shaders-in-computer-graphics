@@ -36,8 +36,14 @@ namespace ui::panels
             constants::graphics::DEFAULT_BACKGROUND_COLOR.b
         };
 
+        int m_CameraProjectionType = 0;
+
         float m_CameraPosition[3] = {0.0f, 0.0f, 3.0f};
         float m_CameraRotation[3] = {0.0f, 0.0f, 0.0f};
+
+        float m_CameraFov = constants::graphics::DEFAULT_FOV;
+        float m_CameraNearPlane = constants::graphics::DEFAULT_NEAR_PLANE;
+        float m_CameraFarPlane = constants::graphics::DEFAULT_FAR_PLANE;
 
         SceneManager* m_SceneManager = nullptr;
 

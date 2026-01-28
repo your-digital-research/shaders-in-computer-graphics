@@ -9,13 +9,14 @@
 namespace ui::panels
 {
     using namespace graphics;
+    using namespace view;
 
     void EngineSettingsPanel::Render()
     {
         if (!m_Enabled) return;
 
         constexpr float panelWidth = 280.0f;
-        constexpr float panelHeight = 310.0f;
+        constexpr float panelHeight = 420.0f;
         constexpr float padding = 10.0f;
 
         ImGui::SetNextWindowPos(ImVec2(padding, padding), ImGuiCond_Always);
@@ -49,11 +50,9 @@ namespace ui::panels
         const char* blendModes[] = { "None", "Alpha", "Additive", "Multiply" };
         const char* currentBlendMode = blendModes[m_BlendMode];
 
-        ImGui::Text("Blend Mode:");
-        ImGui::SameLine();
-        ImGui::SetNextItemWidth(120.0f);
+        ImGui::SetNextItemWidth(150.0f);
 
-        if (ImGui::BeginCombo("##BlendMode", currentBlendMode))
+        if (ImGui::BeginCombo("Blend Mode", currentBlendMode))
         {
             for (int i = 0; i < 4; i++)
             {
@@ -97,11 +96,9 @@ namespace ui::panels
         const char* polygonModes[] = { "Fill", "Wireframe", "Point" };
         const char* currentPolygonMode = polygonModes[m_PolygonMode];
 
-        ImGui::Text("Polygon Mode:");
-        ImGui::SameLine();
-        ImGui::SetNextItemWidth(120.0f);
+        ImGui::SetNextItemWidth(150.0f);
 
-        if (ImGui::BeginCombo("##PolygonMode", currentPolygonMode))
+        if (ImGui::BeginCombo("Polygon Mode", currentPolygonMode))
         {
             for (int i = 0; i < 3; i++)
             {
@@ -153,6 +150,8 @@ namespace ui::panels
         ImGui::Text("Camera");
         ImGui::Spacing();
 
+        ImGui::SetNextItemWidth(175.0f);
+
         if (ImGui::DragFloat3("Position##Camera", m_CameraPosition, 0.05f, -10.0f, 10.0f, "%.2f"))
         {
             if (m_SceneManager && m_SceneManager->GetActiveScene())
@@ -161,11 +160,78 @@ namespace ui::panels
             }
         }
 
+        ImGui::SetNextItemWidth(175.0f);
+
         if (ImGui::DragFloat3("Rotation##Camera", m_CameraRotation, 1.0f, -180.0f, 180.0f, "%.1f"))
         {
             if (m_SceneManager && m_SceneManager->GetActiveScene())
             {
                 m_SceneManager->GetActiveScene()->SetCameraRotation(glm::vec3(m_CameraRotation[0], m_CameraRotation[1], m_CameraRotation[2]));
+            }
+        }
+
+        ImGui::SetNextItemWidth(175.0f);
+
+        const char* projectionTypes[] = { "Perspective", "Orthographic" };
+
+        if (const char* currentProjectionType = projectionTypes[m_CameraProjectionType]; ImGui::BeginCombo("Projection", currentProjectionType))
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                const bool isSelected = (m_CameraProjectionType == i);
+
+                if (ImGui::Selectable(projectionTypes[i], isSelected))
+                {
+                    m_CameraProjectionType = i;
+
+                    if (m_SceneManager && m_SceneManager->GetActiveScene())
+                    {
+                        m_SceneManager->GetActiveScene()->SetCameraProjectionType(
+                            i == 0 ? ProjectionType::Perspective : ProjectionType::Orthographic
+                        );
+                    }
+                }
+
+                if (isSelected)
+                {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+
+            ImGui::EndCombo();
+        }
+
+        ImGui::SetNextItemWidth(175.0f);
+
+        // FOV control (only for perspective)
+        if (m_CameraProjectionType == 0)
+        {
+            if (ImGui::DragFloat("FOV##Camera", &m_CameraFov, 0.5f, 1.0f, 120.0f, "%.1f"))
+            {
+                if (m_SceneManager && m_SceneManager->GetActiveScene())
+                {
+                    m_SceneManager->GetActiveScene()->SetCameraFov(m_CameraFov);
+                }
+            }
+        }
+
+        ImGui::SetNextItemWidth(175.0f);
+
+        if (ImGui::DragFloat("Near Plane##Camera", &m_CameraNearPlane, 0.1f, 0.01f, m_CameraFarPlane - 0.1f, "%.2f"))
+        {
+            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            {
+                m_SceneManager->GetActiveScene()->SetCameraNearPlane(m_CameraNearPlane);
+            }
+        }
+
+        ImGui::SetNextItemWidth(175.0f);
+
+        if (ImGui::DragFloat("Far Plane##Camera", &m_CameraFarPlane, 0.1f, m_CameraNearPlane + 0.1f, 1000.0f, "%.1f"))
+        {
+            if (m_SceneManager && m_SceneManager->GetActiveScene())
+            {
+                m_SceneManager->GetActiveScene()->SetCameraFarPlane(m_CameraFarPlane);
             }
         }
 
@@ -256,6 +322,19 @@ namespace ui::panels
             m_CameraRotation[0] = rotation.x;
             m_CameraRotation[1] = rotation.y;
             m_CameraRotation[2] = rotation.z;
+
+            // Reset camera projection settings
+            m_CameraProjectionType = 0; // Perspective
+            m_SceneManager->GetActiveScene()->SetCameraProjectionType(ProjectionType::Perspective);
+
+            m_CameraFov = constants::graphics::DEFAULT_FOV;
+            m_SceneManager->GetActiveScene()->SetCameraFov(m_CameraFov);
+
+            m_CameraNearPlane = constants::graphics::DEFAULT_NEAR_PLANE;
+            m_SceneManager->GetActiveScene()->SetCameraNearPlane(m_CameraNearPlane);
+
+            m_CameraFarPlane = constants::graphics::DEFAULT_FAR_PLANE;
+            m_SceneManager->GetActiveScene()->SetCameraFarPlane(m_CameraFarPlane);
         }
     }
 
@@ -272,5 +351,12 @@ namespace ui::panels
         m_CameraRotation[0] = rotation.x;
         m_CameraRotation[1] = rotation.y;
         m_CameraRotation[2] = rotation.z;
+
+        const ProjectionType projType = m_SceneManager->GetActiveScene()->GetCameraProjectionType();
+        m_CameraProjectionType = (projType == ProjectionType::Perspective) ? 0 : 1;
+
+        m_CameraFov = m_SceneManager->GetActiveScene()->GetCameraFov();
+        m_CameraNearPlane = m_SceneManager->GetActiveScene()->GetCameraNearPlane();
+        m_CameraFarPlane = m_SceneManager->GetActiveScene()->GetCameraFarPlane();
     }
 }
