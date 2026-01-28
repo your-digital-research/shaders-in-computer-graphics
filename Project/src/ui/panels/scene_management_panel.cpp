@@ -31,10 +31,6 @@ namespace ui::panels
         ImGui::Separator();
         ImGui::Spacing();
 
-        ImGui::Text("Select:");
-        ImGui::SameLine();
-        ImGui::SetNextItemWidth(170.0f);
-
         if (ImGui::BeginCombo("##SceneSelect", currentSceneName.c_str()))
         {
             for (const auto& [name, scene] : scenes)
