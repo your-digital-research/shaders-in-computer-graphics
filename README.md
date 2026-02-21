@@ -19,6 +19,8 @@ At its core, this project is a Minimal Rendering Application designed to serve a
 
 Beyond research and learning, the project is built with Extensibility and Modularity in mind, serving as a foundation that can later be developed into a more substantial system, such as a Game Engine or a more comprehensive Graphics Framework.
 
+I would like to extend my sincere gratitude to my mentors, [Bagrat Dabaghyan](https://github.com/dBagrat) and [Andranik Melikyan](https://github.com/andranik3949), for their invaluable support, guidance, and mentorship throughout this project.
+
 ## <a name="preview"></a> Preview
 
 ### Showcases
